@@ -3,123 +3,160 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EasyRice Admin - จัดการระบบ</title>
-    <link rel="stylesheet" href="style.css">
+    <title>EasyRice Admin Panel</title>
+    
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        /* สไตล์เพิ่มเติมสำหรับหน้า Admin */
-        .admin-main { padding: 40px 0; background: #f4f7f6; min-height: 100vh; }
-        .admin-card { background: #fff; padding: 30px; border-radius: 15px; box-shadow: var(--shadow); margin-bottom: 30px; }
-        .admin-header-flex { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        .form-grid-admin { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; }
-        .status-pill { padding: 4px 10px; border-radius: 20px; font-size: 0.8rem; }
-        .btn-delete { background: #ff5252; color: white; padding: 5px 10px; border-radius: 5px; border: none; cursor: pointer; }
-    </style>
+    
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <header class="navbar">
-        <div class="container">
-            <a href="index.html" class="logo">🌾 EasyRice Admin</a>
-            <nav>
-                <ul>
-                    <li><a href="admin.html" class="active">แผงควบคุม</a></li>
-                    <li><a href="history.html">รายการสั่งซื้อ</a></li>
-                </ul>
-            </nav>
-            <span style="color: var(--primary-color);">แอดมิน: ผู้ดูแลระบบ</span>
-        </div>
-    </header>
-
-    <main class="admin-main">
-        <div class="container">
+    <div class="admin-wrapper">
+        
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>EasyRice Admin</h2>
+            </div>
             
-            <div class="admin-card">
-                <div class="admin-header-flex">
-                    <h3><i class="fas fa-plus-circle"></i> เพิ่มพันธุ์กล้าข้าวใหม่</h3>
+            <nav class="sidebar-menu">
+                <a href="admin.html" class="menu-item active"><i class="fas fa-home"></i> แดชบอร์ด</a>
+                <a href="#" class="menu-item"><i class="fas fa-seedling"></i> จัดการสินค้า</a>
+                <a href="#" class="menu-item"><i class="fas fa-calendar-alt"></i> การจอง</a>
+                <a href="#" class="menu-item"><i class="fas fa-credit-card"></i> การชำระเงิน</a>
+                <a href="index.html" class="menu-item logout"><i class="fas fa-power-off"></i> ออกจากระบบ</a>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <div class="content-container">
+                
+                <div class="stats-grid">
+                    <div class="stat-card card-yellow">
+                        <h3>สินค้าทั้งหมด</h3>
+                        <div class="stat-value" id="countTotal">0</div>
+                    </div>
+                    <div class="stat-card card-green">
+                        <h3>สต็อกรวม (ถาด)</h3>
+                        <div class="stat-value" id="countStock">0</div>
+                    </div>
+                    <div class="stat-card card-grey">
+                        <h3>รอตรวจสอบ</h3>
+                        <div class="stat-value">2</div>
+                    </div>
+                    <div class="stat-card card-orange">
+                        <h3>คำสั่งซื้อวันนี้</h3>
+                        <div class="stat-value">5</div>
+                    </div>
                 </div>
+
+                <div class="table-card">
+                    <div class="table-header-row">
+                        <h3><i class="fas fa-boxes"></i> รายการสินค้าในระบบ</h3>
+                        <button onclick="openModal()" class="btn-add-top">
+                            <i class="fas fa-plus"></i> เพิ่มต้นกล้าใหม่
+                        </button>
+                    </div>
+
+                    <div style="overflow-x: auto;">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>รูปภาพ</th>
+                                    <th>ชื่อพันธุ์ข้าว</th>
+                                    <th>ราคา/ถาด</th>
+                                    <th>เวลาปลูก (วัน)</th>
+                                    <th>คงเหลือ</th>
+                                    <th>จัดการ</th>
+                                </tr>
+                            </thead>
+                            <tbody id="adminProductList">
+                                </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <div id="productModal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-seedling"></i> เพิ่มข้อมูลพันธุ์ข้าว</h3>
+                <span class="close-modal" onclick="closeModal()">&times;</span>
+            </div>
+            <div class="modal-body">
                 <form id="addSeedlingForm">
-                    <div class="form-grid-admin">
+                    <div class="form-group">
+                        <label>ชื่อพันธุ์ข้าว</label>
+                        <input type="text" id="pName" class="form-control" placeholder="เช่น ข้าวหอมมะลิ" required>
+                    </div>
+                    <div class="form-row-2">
                         <div class="form-group">
-                            <label>ชื่อพันธุ์ข้าว</label>
-                            <input type="text" id="pName" class="form-control" placeholder="เช่น ข้าวหอมมะลิ" required>
+                            <label>ราคา (บาท)</label>
+                            <input type="number" id="pPrice" class="form-control" placeholder="13" required>
                         </div>
                         <div class="form-group">
                             <label>เวลาเติบโต (วัน)</label>
                             <input type="number" id="pTime" class="form-control" placeholder="120" required>
                         </div>
-                        <div class="form-group">
-                            <label>ราคา (บาท/ถาด)</label>
-                            <input type="number" id="pPrice" class="form-control" value="13" required>
-                        </div>
-                        <div class="form-group">
-                            <label>จำนวนสต็อก (ถาด)</label>
-                            <input type="number" id="pStock" class="form-control" required>
-                        </div>
                     </div>
                     <div class="form-group">
-                        <label>URL รูปภาพสินค้า</label>
+                        <label>จำนวนสต็อก (ถาด)</label>
+                        <input type="number" id="pStock" class="form-control" placeholder="0" required>
+                    </div>
+                    <div class="form-group">
+                        <label>URL รูปภาพ</label>
                         <input type="text" id="pImg" class="form-control" placeholder="https://..." required>
                     </div>
-                    <button type="submit" class="btn-primary">บันทึกและเพิ่มเข้าหน้าเว็บ</button>
+                    <button type="submit" class="btn-save full-width">บันทึกข้อมูล</button>
                 </form>
             </div>
-
-            <div class="admin-card">
-                <h3><i class="fas fa-boxes"></i> จัดการสต็อกสินค้าหน้าร้าน</h3>
-                <div style="overflow-x: auto; margin-top: 20px;">
-                    <table style="width: 100%; border-collapse: collapse;">
-                        <thead>
-                            <tr style="border-bottom: 2px solid var(--primary-color); text-align: left;">
-                                <th style="padding: 10px;">รูป</th>
-                                <th style="padding: 10px;">พันธุ์ข้าว</th>
-                                <th style="padding: 10px;">ราคา</th>
-                                <th style="padding: 10px;">สต็อก</th>
-                                <th style="padding: 10px;">จัดการ</th>
-                            </tr>
-                        </thead>
-                        <tbody id="adminProductList">
-                            </tbody>
-                    </table>
-                </div>
-            </div>
-
         </div>
-    </main>
+    </div>
 
     <script>
-        // ฟังก์ชันโหลดข้อมูลสินค้ามาแสดงในหน้า Admin
+        // --- ส่วนจัดการข้อมูล (Logic) ---
+
         function loadAdminProducts() {
+            // ดึงข้อมูล หรือ ใช้ค่าเริ่มต้น
             const products = JSON.parse(localStorage.getItem('easyrice_products')) || [
-                { id: 1, name: 'ข้าวหอมมะลิ 105', price: 35, stock: 150, img: 'https://via.placeholder.com/300x200', time: 120 },
-                { id: 2, name: 'ข้าวไรซ์เบอร์รี่', price: 45, stock: 25, img: 'https://via.placeholder.com/300x200', time: 130 }
+                { id: 1, name: 'ข้าวหอมมะลิ 105', price: 35, stock: 150, img: 'https://via.placeholder.com/100', time: 120 },
+                { id: 2, name: 'ข้าวไรซ์เบอร์รี่', price: 45, stock: 25, img: 'https://via.placeholder.com/100', time: 130 }
             ];
 
             const tbody = document.getElementById('adminProductList');
             tbody.innerHTML = '';
 
+            let totalStock = 0;
+
             products.forEach(p => {
+                totalStock += parseInt(p.stock);
                 tbody.innerHTML += `
-                    <tr style="border-bottom: 1px solid #eee;">
-                        <td style="padding: 10px;"><img src="${p.img}" width="50" style="border-radius:5px;"></td>
-                        <td style="padding: 10px;">${p.name}</td>
-                        <td style="padding: 10px;">฿${p.price}</td>
-                        <td style="padding: 10px;">${p.stock} ถาด</td>
-                        <td style="padding: 10px;">
-                            <button onclick="deleteProduct(${p.id})" class="btn-delete"><i class="fas fa-trash"></i></button>
+                    <tr>
+                        <td><img src="${p.img}" class="table-img"></td>
+                        <td style="text-align:left; font-weight:500;">${p.name}</td>
+                        <td>฿${p.price}</td>
+                        <td>${p.time}</td>
+                        <td><span class="stock-pill ${p.stock > 0 ? 'instock' : 'outstock'}">${p.stock}</span></td>
+                        <td>
+                            <button onclick="deleteProduct(${p.id})" class="btn-icon delete" title="ลบสินค้า"><i class="fas fa-trash"></i></button>
                         </td>
                     </tr>
                 `;
             });
-            
-            // เก็บข้อมูลจำลองไว้ในเครื่องถ้ายังไม่มี
+
+            // อัปเดตตัวเลขในกล่องสถิติ
+            document.getElementById('countTotal').innerText = products.length;
+            document.getElementById('countStock').innerText = totalStock.toLocaleString();
+
             if(!localStorage.getItem('easyrice_products')) {
                 localStorage.setItem('easyrice_products', JSON.stringify(products));
             }
         }
 
-        // ฟังก์ชันเพิ่มสินค้า
+        // เพิ่มสินค้าใหม่
         document.getElementById('addSeedlingForm').addEventListener('submit', function(e) {
             e.preventDefault();
             const products = JSON.parse(localStorage.getItem('easyrice_products')) || [];
@@ -127,27 +164,36 @@
             const newProduct = {
                 id: Date.now(),
                 name: document.getElementById('pName').value,
-                time: document.getElementById('pTime').value,
                 price: document.getElementById('pPrice').value,
+                time: document.getElementById('pTime').value,
                 stock: document.getElementById('pStock').value,
                 img: document.getElementById('pImg').value
             };
 
             products.push(newProduct);
             localStorage.setItem('easyrice_products', JSON.stringify(products));
-            alert('เพิ่มต้นกล้าพันธุ์ใหม่เรียบร้อยแล้ว! ข้อมูลจะปรากฏที่หน้าหลักและหน้าสินค้า');
+            
+            alert('เพิ่มข้อมูลสำเร็จ!');
             this.reset();
-            loadAdminProducts();
+            closeModal(); 
+            loadAdminProducts(); 
         });
 
+        // ลบสินค้า
         function deleteProduct(id) {
-            if(confirm('ยืนยันการลบสินค้านี้?')) {
+            if(confirm('ต้องการลบสินค้านี้ใช่หรือไม่?')) {
                 let products = JSON.parse(localStorage.getItem('easyrice_products'));
                 products = products.filter(p => p.id !== id);
                 localStorage.setItem('easyrice_products', JSON.stringify(products));
                 loadAdminProducts();
             }
         }
+
+        // --- ส่วนจัดการ Modal ---
+        const modal = document.getElementById('productModal');
+        function openModal() { modal.style.display = 'flex'; }
+        function closeModal() { modal.style.display = 'none'; }
+        window.onclick = function(event) { if (event.target == modal) closeModal(); }
 
         window.onload = loadAdminProducts;
     </script>
