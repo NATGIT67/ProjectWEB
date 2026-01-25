@@ -1,14 +1,30 @@
-/* --- Global Styles & Variables --- */
+/* =========================================
+   1. GLOBAL VARIABLES & RESET
+   ========================================= */
 :root {
-    --primary-color: #4CAF50;
-    --secondary-color: #8D6E63;
-    --accent-color: #FFC107;
+    /* Color Palette - Main Theme */
+    --primary-color: #2e7d32;   /* เขียวเข้ม (Official) */
+    --secondary-color: #4CAF50; /* เขียวสด (Meadow) */
+    --accent-color: #fbc02d;    /* เหลืองทอง (Harvest) */
+    --light-yellow: #fff9c4;
+    
+    /* Neutrals */
     --dark-color: #212121;
+    --text-grey: #666666;
     --light-color: #F5F5F5;
     --white-color: #FFFFFF;
+    --border-color: #ddd;
+
+    /* Admin Specific */
+    --admin-sidebar: #484b36;   /* Olive Green */
+    --admin-highlight: #dce775;
+
+    /* Settings */
     --font-family: 'Kanit', sans-serif;
     --border-radius: 8px;
     --shadow: 0 4px 10px rgba(0,0,0,0.08);
+    --glass-bg: rgba(255, 255, 255, 0.8);
+    --glass-border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 * {
@@ -22,6 +38,7 @@ body {
     line-height: 1.6;
     color: var(--dark-color);
     background-color: var(--white-color);
+    /* พื้นหลังเริ่มต้น */
     background-image: url('../project/images/background.png');
     background-size: cover;
     background-position: center;
@@ -29,818 +46,104 @@ body {
     background-attachment: fixed;
 }
 
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
-}
-
 h1, h2, h3 {
     font-weight: 700;
     line-height: 1.2;
 }
 
-h2 { text-align: center; margin-bottom: 2rem; font-size: 2.5rem; }
-section { padding: 4rem 0; }
+a { text-decoration: none; color: inherit; }
+ul { list-style: none; }
 
-/* --- Buttons --- */
+/* =========================================
+   2. UI COMPONENTS (Buttons, Forms)
+   ========================================= */
+/* Buttons */
 .btn-primary, .btn-secondary, .btn-reserve, .btn-signin {
     display: inline-block;
-    padding: 12px 25px;
-    border-radius: var(--border-radius);
+    padding: 10px 25px;
+    border-radius: 25px; /* Rounded pill shape */
     font-weight: 500;
     text-align: center;
     cursor: pointer;
     transition: all 0.3s ease;
     border: none;
     font-size: 1rem;
+    text-decoration: none;
 }
-.btn-primary { background-color: var(--accent-color); color: var(--dark-color); }
-.btn-primary:hover { background-color: #e0a800; transform: translateY(-2px); }
-.btn-secondary { background-color: transparent; color: var(--white-color); border: 2px solid var(--white-color); }
-.btn-secondary:hover { background-color: var(--white-color); color: var(--dark-color); }
-.btn-reserve { background-color: var(--primary-color); color: var(--white-color); width: 100%; }
-.btn-reserve:hover:not(.disabled) { background-color: #45a049; }
-.btn-reserve.disabled { background-color: #cccccc; color: #666666; cursor: not-allowed; }
-.btn-signin { background-color: transparent; color: var(--primary-color); border: 2px solid var(--primary-color); }
-.btn-signin:hover { background-color: var(--primary-color); color: var(--white-color); }
+
+.btn-primary {
+    background-color: var(--primary-color);
+    color: var(--white-color);
+}
+.btn-primary:hover {
+    background-color: #1b5e20;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(46, 125, 50, 0.3);
+}
+
+.btn-secondary {
+    background-color: transparent;
+    color: var(--white-color);
+    border: 2px solid var(--white-color);
+}
+.btn-secondary:hover {
+    background-color: var(--white-color);
+    color: var(--dark-color);
+}
+
+.btn-signin {
+    background-color: transparent;
+    color: var(--primary-color);
+    border: 2px solid var(--primary-color);
+}
+.btn-signin:hover, .btn-signin.active {
+    background-color: var(--primary-color);
+    color: var(--white-color);
+}
+
 .full-width { width: 100%; }
 
-/* --- Navigation Bar --- */
-.navbar { background: var(--white-color); box-shadow: 0 2px 5px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 1000; }
-.navbar .container { display: flex; justify-content: space-between; align-items: center; padding: 1rem 20px; }
-.navbar .logo { font-size: 1.5rem; font-weight: 700; color: var(--primary-color); }
-.navbar nav ul { list-style: none; display: flex; }
-.navbar nav ul li { margin-left: 20px; }
-.navbar nav ul li a { font-weight: 500; color: var(--dark-color); transition: color 0.3s ease; }
-.navbar nav ul li a:hover, .navbar nav ul li a.active { color: var(--primary-color); }
-
-/* --- Hero Section --- */
-.hero {
-    background-image: url('../project/images/background.png');
-    background-size: cover;
-    background-position:cover;
-    height: 90vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    color: var(--white-color);
-    padding: 0 20px;
-}
-.hero-content h1 { font-size: 3.5rem; margin-bottom: 1rem; }
-.hero-content p { font-size: 1.2rem; margin-bottom: 2rem; font-weight: 300; }
-.hero-buttons .btn-secondary { margin-left: 15px; }
-
-/* --- How it Works --- */
-.how-it-works { background-color: transparent; }
-.steps-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; text-align: center; }
-.step-card { background: var(--white-color); padding: 2rem; border-radius: var(--border-radius); box-shadow: var(--shadow); }
-.step-icon { font-size: 3rem; margin-bottom: 1rem; }
-
-/* --- Seedling Section --- */
-.seedling-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; }
-.card { background: var(--white-color); border: 1px solid #ddd; border-radius: var(--border-radius); box-shadow: var(--shadow); overflow: hidden; transition: transform 0.3s ease, box-shadow 0.3s ease; display: flex; flex-direction: column; }
-.card:hover { transform: translateY(-5px); box-shadow: 0 8px 20px rgba(0,0,0,0.12); }
-.card img { width: 100%; height: 200px; object-fit: cover; }
-.card-content { padding: 1.5rem; display: flex; flex-direction: column; flex-grow: 1; }
-.card-content h3 { margin-bottom: 0.5rem; font-size: 1.5rem; }
-.card-content p { margin-bottom: 1rem; flex-grow: 1; }
-.price { font-size: 1.25rem; font-weight: 700; color: var(--primary-color); margin-bottom: 1rem; }
-.stock-info { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; font-size: 0.9rem; }
-.stock-status { padding: 3px 8px; border-radius: 12px; font-weight: 500; }
-.stock-status.available { background-color: #e8f5e9; color: #2e7d32; }
-.stock-status.low-stock { background-color: #fff3e0; color: #f57c00; }
-.stock-status.out-of-stock { background-color: #ffebee; color: #c62828; }
-
-/* --- Form Section --- */
-.section-form { background-color: transparent; }
-.form-container { max-width: 600px; margin: 0 auto; background: var(--white-color); padding: 2rem; border-radius: var(--border-radius); box-shadow: var(--shadow); }
+/* Forms (Global) */
 .form-group { margin-bottom: 1.5rem; }
-.form-group label { display: block; margin-bottom: 0.5rem; font-weight: 500; }
-.form-group input,
-.form-group select {
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: var(--dark-color);
+}
+.form-control, 
+.form-group input, 
+.form-group select,
+.form-group textarea {
     width: 100%;
-    padding: 12px;
-    border: 1px solid #ccc;
+    padding: 12px 15px;
+    border: 1px solid var(--border-color);
     border-radius: var(--border-radius);
     font-family: var(--font-family);
     font-size: 1rem;
+    transition: 0.3s;
+    background: var(--white-color);
 }
-.form-group input:focus,
+.form-control:focus, 
+.form-group input:focus, 
 .form-group select:focus {
     outline: none;
     border-color: var(--primary-color);
-    box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2);
+    box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.15);
 }
 
-/* --- Footer --- */
-footer { background-color: var(--dark-color); color: var(--light-color); text-align: center; padding: 2rem 0; }
-
-/* --- Responsive Design --- */
-@media (max-width: 768px) {
-    .navbar .container { flex-direction: column; }
-    .navbar nav { margin-top: 1rem; }
-    .navbar nav ul li { margin: 0 10px; }
-    .btn-signin { margin-top: 1rem; }
-    .hero-content h1 { font-size: 2.5rem; }
-    .hero-content p { font-size: 1rem; }
-    .hero-buttons { display: flex; flex-direction: column; gap: 1rem; }
-    .hero-buttons .btn-secondary { margin-left: 0; }
-}
-
-/* --- Additional Styles for New Pages --- */
-
-/* Page Header ---------------------------*/
-.page-header {
-    
-    text-align: center;
-    padding: 4rem 0 2rem 0;
-    background-color: var(--light-color);
-}
-.page-header h1 {
-    font-size: 2.5rem;
-    margin-bottom: 0.5rem;
-}
-.page-header p {
-    font-size: 1.1rem;
-    color: #666;
-}
-
-/* Checkout Page---------------------------------------------------------------- */
-.checkout-main {
-
-    padding: 2rem 0;
-}
-.checkout-container {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 40px;
-}
-.checkout-section {
-    background-color: var(--white-color);
-    padding: 2rem;
-    border-radius: var(--border-radius);
-    box-shadow: var(--shadow);
-}
-.checkout-section h2 {
-    text-align: left;
-    margin-bottom: 1.5rem;
-    font-size: 1.5rem;
-    border-bottom: 2px solid var(--primary-color);
-    padding-bottom: 0.5rem;
-}
-
-/* Order Summary Table ------------------------------------*/
-.order-summary table {
-    
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 1rem;
-}
-.order-summary th, .order-summary td {
-    padding: 12px 8px;
-    text-align: left;
-    border-bottom: 1px solid var(--border-color);
-}
-.order-summary th {
-    font-weight: 600;
-    color: var(--dark-color);
-}
-.order-total {
-    text-align: right;
-    margin-top: 1rem;
-}
-.order-total h3 {
-    font-size: 1.5rem;
-    color: var(--primary-color);
-}
-.order-total span {
-    font-weight: 700;
-}
-
-/* Checkout Form */
-.checkout-form .form-group {
-    margin-bottom: 1.5rem;
-}
-.checkout-form label {
-    display: block;
-    margin-bottom: 0.5rem;
-    font-weight: 500;
-}
-.checkout-form input,
-.checkout-form textarea {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid #ccc;
-    border-radius: var(--border-radius);
-    font-family: var(--font-family);
-    font-size: 1rem;
-}
-.checkout-form input:focus,
-.checkout-form textarea:focus {
-    outline: none;
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2);
-}
-
-/* Responsive for Checkout */
-@media (max-width: 992px) {
-    .checkout-container {
-        grid-template-columns: 1fr;
-    }
-}
-
-
-/* --- Sign-In Page --------------------------------------------------------- */
-.login-page-body {
-    background-image: url('../project/images/background.png');
-    display: flex;
-    flex-direction: column; /* เปลี่ยนเป็น column เพื่อให้ navbar อยู่ด้านบน */
-    min-height: 100vh;
-}
-
-.login-main {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-grow: 1; /* ให้ main ขยายเต็มที่เหลือ */
-    padding: 2rem 1rem;
-}
-
-.login-card {
-    width: 100%;
-    max-width: 420px;
-    background-color: var(--white-color);
-    border-radius: var(--border-radius);
-    padding: 40px;
-    box-shadow: var(--shadow);
-    animation: fadeIn 0.6s ease-in-out;
-}
-
-.login-header { text-align: center; margin-bottom: 25px; }
-.login-header h2 { color: var(--dark-color); font-size: 1.8rem; font-weight: 600; }
-.login-header p { color: #666; font-size: 0.9rem; margin-top: 8px; }
-
-/* Form Styling */
-.form-group { margin-bottom: 20px; }
-.form-group label { display: block; margin-bottom: 8px; color: var(--dark-color); font-weight: 500; font-size: 0.9rem; }
-
-.form-control {
-    width: 100%;
-    padding: 14px 15px;
-    border: 1px solid #ddd;
-    border-radius: var(--border-radius);
-    font-size: 1rem;
-    font-family: var(--font-family);
-    transition: all 0.3s;
-}
-
-.form-control:focus {
-    outline: none;
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2);
-}
-
-.form-options {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 25px;
-    font-size: 0.9rem;
-}
-
-.remember-me { display: flex; align-items: center; gap: 8px; color: var(--dark-color); }
-.forgot-password { color: var(--primary-color); text-decoration: none; font-weight: 600; }
-.forgot-password:hover { text-decoration: underline; }
-
-/* Divider & Social Login */
-.divider {
-    text-align: center;
-    margin: 20px 0;
-    position: relative;
-}
-.divider::before {
-    content: '';
-    position: absolute;
-    top: 50%; left: 0; width: 100%; height: 1px;
-    background-color: #eee;
-}
-.divider span {
-    background-color: var(--white-color);
-    padding: 0 15px;
-    position: relative;
-    color: #999;
-    font-size: 0.8rem;
-}
-
-.social-login { display: flex; gap: 10px; }
-.social-btn {
-    flex: 1;
-    padding: 12px;
-    border: 1px solid var(--border-color);
-    border-radius: var(--border-radius);
-    background: transparent;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    transition: 0.3s;
-    font-family: var(--font-family);
-    font-weight: 500;
-    color: var(--dark-color);
-}
-.social-btn:hover { background: var(--light-color); }
-
-/* --- Glassmorphism Effect for Cards --- */
-.login-card {
-    background: rgba(255, 255, 255, 0.75) !important; /* ขาวโปร่งแสง */
-    backdrop-filter: blur(15px); /* พื้นหลังเบลอ */
-    -webkit-backdrop-filter: blur(15px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1) !important;
-}
-
-/* --- Forgot Password Specific Styles ----------------------------------------- */
-.forgot-card {
-    text-align: center;
-}
-
-.forgot-card .login-header i {
-    display: inline-block;
-    background: rgba(255, 183, 77, 0.1);
-    padding: 20px;
-    border-radius: 50%;
-    margin-bottom: 15px;
-}
-
-.back-to-login {
-    color: var(--primary-color);
-    text-decoration: none;
-    font-size: 0.95rem;
-    font-weight: 500;
-    transition: all 0.3s ease;
-}
-
-.back-to-login i {
-    margin-right: 5px;
-    transition: transform 0.3s ease;
-}
-
-.back-to-login:hover {
-    color: #2e7d32;
-    text-decoration: underline;
-}
-
-.back-to-login:hover i {
-    transform: translateX(-5px);
-}
-
-/* ปรับสีปุ่มให้เข้ากับหน้าลืมรหัสผ่าน */
-.btn-primary.full-width {
-    margin-top: 10px;
-}
-
-/* --- Navbar Glassmorphism --- */
+/* =========================================
+   3. NAVIGATION BAR
+   ========================================= */
 .navbar {
-    background: rgba(255, 255, 255, 0.8) !important;
+    background: var(--glass-bg) !important;
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-/* --- Alert Box Styles --- */
-.alert-box {
-    display: none;
-    align-items: center;
-    gap: 10px;
-    padding: 12px 15px;
-    background-color: rgba(255, 82, 82, 0.1); /* สีแดงอ่อนโปร่งแสง */
-    border: 1px solid #ff5252;
-    border-radius: var(--border-radius);
-    color: #c62828;
-    font-size: 0.9rem;
-    margin-bottom: 1.5rem;
-    animation: shake 0.4s ease-in-out; /* เพิ่มลูกเล่นการสั่นเมื่อผิด */
-}
-
-.alert-box i {
-    font-size: 1.1rem;
-}
-
-/* เอฟเฟกต์สั่นเมื่อกรอกผิด */
-@keyframes shake {
-    0%, 100% { transform: translateX(0); }
-    25% { transform: translateX(-5px); }
-    75% { transform: translateX(5px); }
-}
-
-/* กรณีที่ต้องการให้ input เปลี่ยนสีเมื่อผิด */
-.input-error {
-    border-color: #ff5252 !important;
-    background-color: #fff8f8 !important;
-}
-
-/* --- Contact Page Styles (Version: High Readability) --- */
-.contact-wrapper {
-    display: grid;
-    grid-template-columns: 1fr 1.2fr;
-    gap: 30px;
-    align-items: start;
-}
-
-
-
-
-
-
-
-
-
-
-
-/* --- Unified Contact Card Styles --- */
-.unified-contact-card {
-    display: grid;
-    grid-template-columns: 400px 1fr; /* แบ่งฝั่งซ้ายคงที่ ฝั่งขวายืดหยุ่น */
-    min-height: 600px;
-    background: rgba(255, 255, 255, 0.95);
-    border-radius: 20px;
-    overflow: hidden;
-    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-}
-
-/* ฝั่งซ้าย: เงาดำจางๆ (rgba) เพื่อให้อ่านตัวหนังสือสีขาว/ทองง่าย */
-.contact-sidebar {
-    background: rgba(0, 0, 0, 0.6); /* ใช้สีดำจางๆ 60% */
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    padding: 50px 40px;
-    color: #FFFFFF;
-}
-
-.contact-sidebar h2 {
-    color: var(--accent-color);
-    text-align: left;
-    margin-bottom: 20px;
-    font-size: 2.2rem;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
-}
-
-.contact-sidebar p {
-    color: rgba(255, 255, 255, 0.85);
-    margin-bottom: 40px;
-}
-
-.method-row {
-    display: flex;
-    gap: 20px;
-    margin-bottom: 30px;
-    align-items: flex-start;
-}
-
-.method-row i {
-    font-size: 1.4rem;
-    color: var(--accent-color);
-    background: rgba(255, 255, 255, 0.1);
-    width: 45px;
-    height: 45px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 50%;
-}
-
-.method-row strong {
-    display: block;
-    color: var(--accent-color);
-    font-size: 1.1rem;
-    margin-bottom: 5px;
-}
-
-.method-row p {
-    margin: 0;
-    font-size: 0.95rem;
-    color: #fff;
-}
-
-.social-icons {
-    display: flex;
-    gap: 15px;
-    margin-top: 40px;
-}
-
-.social-icons a {
-    color: #fff;
-    background: rgba(255, 255, 255, 0.1);
-    width: 40px;
-    height: 40px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 50%;
-    transition: 0.3s;
-    text-decoration: none;
-}
-
-.social-icons a:hover {
-    background: var(--accent-color);
-    color: var(--dark-color);
-    transform: translateY(-5px);
-}
-
-/* ฝั่งขวา: ฟอร์มสีขาวทึบ (High Readability) */
-.contact-form-body {
-    padding: 50px;
-    background: #FFFFFF;
-}
-
-.contact-form-body h3 {
-    color: var(--primary-color);
-    font-size: 1.8rem;
-    margin-bottom: 25px;
-}
-
-.contact-form-body label {
-    color: var(--dark-color) !important;
-    font-weight: 600;
-}
-
-/* ปรับแต่งสำหรับมือถือ */
-@media (max-width: 850px) {
-    .unified-contact-card {
-        grid-template-columns: 1fr;
-    }
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* --- Order Page Styles --- */
-.order-image {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-    border-radius: 15px;
-    margin-bottom: 20px;
-    border: 3px solid rgba(255, 255, 255, 0.2);
-}
-
-.product-info-text p {
-    margin-bottom: 10px;
-    font-size: 1rem;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.product-info-text strong {
-    display: block;
-    font-size: 1.4rem;
-    color: var(--accent-color);
-    margin-bottom: 15px;
-}
-
-#quantityArea input:focus {
-    border-color: var(--accent-color);
-}
-
-.order-summary-box strong {
-    font-family: 'Inter', sans-serif;
-}
-
-
-
-
-
-
-
-/* Style สำหรับหน้าต่างแจ้งเตือนสรุปผล */
-.modal-overlay {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background: rgba(0, 0, 0, 0.7);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 2000;
-    backdrop-filter: blur(8px);
-}
-
-.modal-content {
-    background: white !important;
-    max-height: 90vh;
-    overflow-y: auto;
-}
-
-.summary-details p {
-    margin-bottom: 8px;
-}
-
-.payment-section h3 {
-    font-size: 1rem;
-    margin-bottom: 10px;
-    color: var(--secondary-color);
-}
-
-
-
-
-
-
-/* --- Order History Styles --- */
-.order-history-table th {
-    font-weight: 600;
-    font-size: 0.95rem;
-}
-
-.order-history-table td {
-    font-size: 0.9rem;
-    vertical-align: middle;
-}
-
-.status-badge {
-    padding: 5px 12px;
-    border-radius: 20px;
-    font-size: 0.8rem;
-    font-weight: 500;
-}
-
-/* สีสถานะต่างๆ */
-.status-pending {
-    background-color: #fff3e0;
-    color: #f57c00;
-    border: 1px solid #ffe0b2;
-}
-
-.status-success {
-    background-color: #e8f5e9;
-    color: #2e7d32;
-    border: 1px solid #c8e6c9;
-}
-
-.status-error {
-    background-color: #ffebee;
-    color: #c62828;
-    border: 1px solid #ffcdd2;
-}
-
-.btn-view {
-    background: transparent;
-    border: 1px solid var(--primary-color);
-    color: var(--primary-color);
-    padding: 5px 10px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: 0.3s;
-    font-size: 0.85rem;
-}
-
-.btn-view:hover {
-    background: var(--primary-color);
-    color: #fff;
-}
-
-/* ปรับสีตัวอักษรในตารางให้อ่านง่ายขึ้นบนสีขาวทึบ */
-.order-history-table td strong {
-    color: var(--dark-color);
-}
-/* ================= FAQ SLIDER ================= */
-
-.faq-slide {
-    background: #9e9e9e;
-    color: #000;
-    border-radius: 20px;
-
-    width: 70%;              /* 🔥 สำคัญ: ไม่ให้เต็มจอ */
-    max-width: 800px;        /* จำกัดความกว้าง */
-    margin: 0 auto;          /* ให้อยู่ตรงกลาง */
-
-    padding: 24px 32px;      /* ลด padding */
-    box-sizing: border-box;
-}
-
-
-/*บังอร*/
-/* ===== ตัวครอบสไลด์ ===== */
-.faq-slider {
-  max-width: 700px;
-  margin: 40px auto;
-  position: relative;
-  overflow: hidden;
-}
-
-/* แถบเลื่อน */
-.faq-wrapper {
-  display: flex;
-  transition: transform 0.5s ease;
-}
-
-/* กล่องแต่ละสไลด์ */
-.faq-slide {
-  min-width: 100%;        /* 1 หน้า */
-  flex-shrink: 0;
-  box-sizing: border-box;
-  background: #b3b3b3;
-  padding: 30px 40px;
-  border-radius: 20px;
-}
-
-/* หัวข้อ */
-.faq-slide h2 {
-  font-size: 1.2rem;
-  margin-bottom: 10px;
-  text-align: center;
-}
-
-/* รายการ */
-.faq-slide ul {
-  font-size: 0.95rem;
-  line-height: 1.5;
-  padding-left: 18px;
-}
-
-.faq-slide ul li {
-  margin-bottom: 4px;
-}
-
-/* ===== ลูกศร ===== */
-.arrow {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  background: none;
-  border: none;
-  font-size: 36px;
-  color: #fff;
-  cursor: pointer;
-  z-index: 10;
-}
-
-.arrow.left  { left: -50px; }
-.arrow.right { right: -50px; }
-
-.arrow:hover {
-  transform: translateY(-50%) scale(1.2);
-  color: #f1f1f1;
-}
-
-
-
-
-
-<<<<<<< HEAD
-
-=======
-/* การตั้งค่าพื้นฐาน */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Kanit', sans-serif;
-}
-
-:root {
-    --primary-green: #2e7d32; /* เขียวเข้มแบบทางการ */
-    --meadow-green: #4caf50;
-    --meadow-yellow: #fbc02d;
-    --light-yellow: #fff9c4;
-    --text-dark: #333;
-    --white: #ffffff;
-}
-
-body.login-page-body {
-    /* พื้นหลังไล่เฉดสีทุ่งหญ้า เขียว-เหลือง */
-    background: linear-gradient(135deg, #e8f5e9 0%, #fffde7 100%);
-    background-image: url('../project/images/background.png');
-    background-attachment: fixed;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-}
-
-/* --- Navbar --- */
-.navbar {
-    background-color: var(--white);
-    padding: 1rem 0;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    border-bottom: var(--glass-border);
     position: sticky;
     top: 0;
     z-index: 1000;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
 }
 
 .navbar .container {
@@ -849,53 +152,95 @@ body.login-page-body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 20px;
+    padding: 1rem 20px;
 }
 
-.logo {
+.navbar .logo {
     font-size: 1.5rem;
     font-weight: 700;
-    color: var(--primary-green);
-    text-decoration: none;
+    color: var(--primary-color);
     letter-spacing: 1px;
 }
 
-.navbar nav ul {
-    display: flex;
-    list-style: none;
-}
-
-.navbar nav ul li {
-    margin: 0 15px;
-}
-
+.navbar nav ul { display: flex; align-items: center; }
+.navbar nav ul li { margin-left: 20px; }
 .navbar nav ul li a {
-    text-decoration: none;
-    color: var(--text-dark);
-    font-weight: 400;
-    transition: 0.3s;
-}
-
-.navbar nav ul li a:hover {
-    color: var(--primary-green);
-}
-
-.btn-signin {
-    padding: 8px 20px;
-    border: 2px solid var(--primary-green);
-    border-radius: 25px;
-    color: var(--primary-green);
-    text-decoration: none;
     font-weight: 500;
-    transition: 0.3s;
+    color: var(--dark-color);
+    transition: color 0.3s ease;
+}
+.navbar nav ul li a:hover, .navbar nav ul li a.active {
+    color: var(--primary-color);
 }
 
-.btn-signin.active, .btn-signin:hover {
-    background-color: var(--primary-green);
-    color: var(--white);
+/* =========================================
+   4. PAGE SECTIONS (User Side)
+   ========================================= */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+section { padding: 4rem 0; }
+h2 { text-align: center; margin-bottom: 2rem; font-size: 2.5rem; color: var(--dark-color); }
+
+/* Hero Section */
+.hero {
+    height: 90vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: var(--white-color);
+    padding: 0 20px;
+    /* Background inherits from body or can be specific */
+}
+.hero-content h1 { font-size: 3.5rem; margin-bottom: 1rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
+.hero-content p { font-size: 1.2rem; margin-bottom: 2rem; font-weight: 300; text-shadow: 1px 1px 2px rgba(0,0,0,0.5); }
+
+/* How it Works */
+.steps-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; text-align: center; }
+.step-card { background: var(--white-color); padding: 2rem; border-radius: var(--border-radius); box-shadow: var(--shadow); }
+.step-icon { font-size: 3rem; margin-bottom: 1rem; color: var(--primary-color); }
+
+/* Product Cards (Seedlings) */
+.seedling-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; }
+.card {
+    background: var(--white-color);
+    border: 1px solid #ddd;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex; flex-direction: column;
+}
+.card:hover { transform: translateY(-5px); box-shadow: 0 8px 20px rgba(0,0,0,0.12); }
+.card img { width: 100%; height: 200px; object-fit: cover; }
+.card-content { padding: 1.5rem; display: flex; flex-direction: column; flex-grow: 1; }
+.card-content h3 { margin-bottom: 0.5rem; font-size: 1.5rem; color: var(--primary-color); }
+.price { font-size: 1.25rem; font-weight: 700; color: var(--accent-color); margin-bottom: 1rem; }
+
+/* Stock Status Tags */
+.stock-status { padding: 3px 10px; border-radius: 12px; font-weight: 500; font-size: 0.85rem; }
+.stock-status.available { background-color: #e8f5e9; color: #2e7d32; }
+.stock-status.low-stock { background-color: #fff3e0; color: #f57c00; }
+.stock-status.out-of-stock { background-color: #ffebee; color: #c62828; }
+
+/* =========================================
+   5. SPECIAL PAGES (Login, Checkout, Contact)
+   ========================================= */
+
+/* --- Login / Register Page --- */
+.login-page-body {
+    /* พื้นหลังแบบไล่สีทุ่งหญ้า */
+    background: linear-gradient(135deg, rgba(232, 245, 233, 0.9) 0%, rgba(255, 253, 231, 0.9) 100%), url('../project/images/background.png');
+    background-size: cover;
+    background-attachment: fixed;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
-/* --- Login & Sign Up Card --- */
 .login-main {
     flex: 1;
     display: flex;
@@ -905,182 +250,119 @@ body.login-page-body {
 }
 
 .login-card {
-    background: var(--white);
     width: 100%;
     max-width: 450px;
-    padding: 40px;
+    background: rgba(255, 255, 255, 0.85) !important;
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
     border-radius: 15px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-    border-top: 5px solid var(--meadow-yellow); /* เส้นขอบบนสีเหลืองทอง */
+    padding: 40px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1) !important;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-top: 5px solid var(--accent-color);
+    animation: fadeIn 0.6s ease-in-out;
 }
 
-.login-header {
-    text-align: center;
-    margin-bottom: 30px;
-}
-
-.login-header h2 {
-    color: var(--primary-green);
-    font-size: 1.8rem;
-    margin-bottom: 5px;
-}
-
-.login-header p {
-    color: #666;
-    font-size: 0.9rem;
-}
-
-/* --- Form Elements --- */
-.form-group {
-    margin-bottom: 20px;
-}
-
-.form-group label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: 500;
-    color: var(--text-dark);
-}
-
-.form-control {
-    width: 100%;
-    padding: 12px 15px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    font-size: 1rem;
-    transition: 0.3s;
-}
-
-.form-control:focus {
-    outline: none;
-    border-color: var(--meadow-green);
-    box-shadow: 0 0 5px rgba(76, 175, 80, 0.2);
-}
-
-.form-options {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 25px;
-    font-size: 0.9rem;
-}
-
-.btn-primary {
-    background-color: var(--primary-green);
-    color: var(--white);
-    border: none;
-    padding: 12px;
-    border-radius: 8px;
-    font-size: 1.1rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-.btn-primary:hover {
-    background-color: #1b5e20;
-    transform: translateY(-1px);
-}
-
-.full-width {
-    width: 100%;
-}
-
-/* --- Divider & Social --- */
-.divider {
-    text-align: center;
-    margin: 20px 0;
-    position: relative;
-}
-
-.divider::before {
-    content: "";
-    position: absolute;
-    top: 50%;
-    left: 0;
-    width: 100%;
-    height: 1px;
-    background: #eee;
-    z-index: 1;
-}
-
-.divider span {
-    background: var(--white);
-    padding: 0 15px;
-    position: relative;
-    z-index: 2;
-    color: #999;
-    font-size: 0.9rem;
-}
-
-.social-login {
-    display: flex;
-    gap: 10px;
-}
-
+.login-header { text-align: center; margin-bottom: 30px; }
+.login-header h2 { color: var(--primary-color); font-size: 1.8rem; }
+.social-login { display: flex; gap: 10px; margin-top: 20px; }
 .social-btn {
-    flex: 1;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    background: var(--white);
-    cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
+    flex: 1; padding: 10px;
+    border: 1px solid #ddd; border-radius: 8px;
+    background: var(--white-color); cursor: pointer;
+    display: flex; justify-content: center; align-items: center; gap: 8px;
     transition: 0.3s;
 }
+.social-btn:hover { background: #f9f9f9; transform: translateY(-2px); }
 
-.social-btn:hover {
-    background: #f9f9f9;
-    border-color: #bbb;
+/* --- Checkout Page --- */
+.checkout-container { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; padding: 2rem 0; }
+.checkout-section {
+    background-color: var(--white-color);
+    padding: 2rem;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
 }
+.order-summary table { width: 100%; border-collapse: collapse; margin-bottom: 1rem; }
+.order-summary th, .order-summary td { padding: 12px 8px; border-bottom: 1px solid #eee; text-align: left; }
+.order-total { text-align: right; margin-top: 1rem; }
+.order-total h3 { font-size: 1.5rem; color: var(--primary-color); }
 
-.fa-google { color: #db4437; }
-.fa-line { color: #00c300; }
-
-.forgot-password {
-    text-decoration: none;
-    color: var(--primary-green);
+/* --- Contact Page (Unified Card) --- */
+.unified-contact-card {
+    display: grid;
+    grid-template-columns: 400px 1fr;
+    min-height: 600px;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
 }
-
-/* Responsive */
-@media (max-width: 768px) {
-    .navbar nav {
-        display: none; /* ซ่อนเมนูบนมือถือเพื่อความเรียบง่าย */
-    }
+.contact-sidebar {
+    background: rgba(46, 125, 50, 0.9); /* Dark Green Tint */
+    backdrop-filter: blur(10px);
+    padding: 50px 40px;
+    color: var(--white-color);
 }
+.contact-sidebar h2 { color: var(--accent-color); text-align: left; text-shadow: none; }
+.contact-form-body { padding: 50px; background: var(--white-color); }
 
-/* --- css/admin-style.css --- */
+/* --- Order History --- */
+.order-history-table { width: 100%; border-collapse: collapse; }
+.order-history-table th { background: #f5f5f5; padding: 15px; }
+.order-history-table td { padding: 15px; border-bottom: 1px solid #eee; }
+.status-badge { padding: 5px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 500; }
+.status-pending { background-color: #fff3e0; color: #f57c00; border: 1px solid #ffe0b2; }
+.status-success { background-color: #e8f5e9; color: #2e7d32; border: 1px solid #c8e6c9; }
+.status-error { background-color: #ffebee; color: #c62828; border: 1px solid #ffcdd2; }
 
-body { margin: 0; font-family: 'Kanit', sans-serif; overflow: hidden; }
+/* =========================================
+   6. FAQ SLIDER
+   ========================================= */
+.faq-slider { max-width: 800px; margin: 40px auto; position: relative; overflow: hidden; }
+.faq-wrapper { display: flex; transition: transform 0.5s ease; }
+.faq-slide {
+    min-width: 100%;
+    background: var(--light-color);
+    padding: 40px;
+    border-radius: 20px;
+    box-sizing: border-box;
+    text-align: left;
+    border-left: 5px solid var(--primary-color);
+}
+.faq-slide h2 { color: var(--primary-color); margin-bottom: 15px; }
+.arrow {
+    position: absolute; top: 50%; transform: translateY(-50%);
+    background: var(--primary-color); color: #fff;
+    border: none; width: 40px; height: 40px; border-radius: 50%;
+    cursor: pointer; z-index: 10;
+    display: flex; justify-content: center; align-items: center;
+}
+.arrow.left { left: 10px; }
+.arrow.right { right: 10px; }
 
+/* =========================================
+   7. ADMIN PANEL STYLES
+   ========================================= */
+/* Ensure Admin body has no scroll on main wrapper if needed */
+.admin-body { margin: 0; font-family: var(--font-family); overflow: hidden; background: #f0f0f0; }
 .admin-wrapper { display: flex; height: 100vh; width: 100vw; }
 
-/* === Sidebar ด้านซ้าย (สีเขียวขี้ม้า) === */
+/* Sidebar */
 .sidebar {
     width: 250px;
-    background-color: #484b36; /* สีธีม Olive Green */
+    background-color: var(--admin-sidebar);
     color: #fff;
-    display: flex;
-    flex-direction: column;
+    display: flex; flex-direction: column;
     padding: 20px;
     box-shadow: 4px 0 15px rgba(0,0,0,0.3);
-    flex-shrink: 0;
-    z-index: 10;
+    flex-shrink: 0; z-index: 10;
 }
-
 .sidebar-header { 
-    margin-bottom: 30px; 
-    border-bottom: 1px solid rgba(255,255,255,0.3); 
-    padding-bottom: 20px; 
-    text-align: center;
+    margin-bottom: 30px; border-bottom: 1px solid rgba(255,255,255,0.3); 
+    padding-bottom: 20px; text-align: center; 
 }
-.sidebar-header h2 { margin: 0; font-size: 1.5rem; letter-spacing: 1px; }
-
 .sidebar-menu { display: flex; flex-direction: column; gap: 12px; }
-
 .menu-item {
     color: #333; background: #fff;
     padding: 12px 20px; border-radius: 30px;
@@ -1089,28 +371,20 @@ body { margin: 0; font-family: 'Kanit', sans-serif; overflow: hidden; }
     transition: all 0.3s ease;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
-
 .menu-item:hover { transform: translateX(5px); background: #f0f0f0; }
-.menu-item.active { background: #dce775; color: #333; font-weight: bold; } /* สีไฮไลท์ตอนเลือก */
-.menu-item.logout { margin-top: auto; background: #ff5252; color: #fff; border: 1px solid #ff5252; }
-.menu-item.logout:hover { background: #d32f2f; }
+.menu-item.active { background: var(--admin-highlight); color: #333; font-weight: bold; }
+.menu-item.logout { margin-top: auto; background: #ff5252; color: #fff; }
 
-/* === Main Content (พื้นหลังทุ่งนา) === */
+/* Admin Content */
 .main-content {
-    flex: 1;
-    position: relative;
-    /* รูปทุ่งนา Golden Hour */
+    flex: 1; position: relative;
     background: url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80') center/cover;
 }
-
-/* Overlay สีดำจางๆ เพื่อให้อ่านตัวหนังสือออก */
 .main-content::before {
     content: ''; position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(0,0,0,0.15); 
-    pointer-events: none;
+    background: rgba(0,0,0,0.15); pointer-events: none;
 }
-
 .content-container {
     position: relative; z-index: 2;
     padding: 30px; height: 100%; box-sizing: border-box;
@@ -1118,130 +392,159 @@ body { margin: 0; font-family: 'Kanit', sans-serif; overflow: hidden; }
     overflow-y: auto;
 }
 
-/* === Stats Cards (Glassmorphism) === */
-.stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
-
+/* Stats Cards */
+.stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
 .stat-card {
     border-radius: 20px; padding: 25px; color: #333;
-    backdrop-filter: blur(10px); /* เอฟเฟกต์กระจกเบลอ */
+    backdrop-filter: blur(10px);
     box-shadow: 0 8px 32px rgba(0,0,0,0.1);
     text-align: center;
     border: 1px solid rgba(255, 255, 255, 0.3);
     transition: transform 0.3s;
 }
 .stat-card:hover { transform: translateY(-5px); }
-.stat-card h3 { font-size: 1rem; margin: 0 0 10px; opacity: 0.9; font-weight: 500; }
-.stat-card .stat-value { font-size: 2.2rem; font-weight: bold; }
-
-/* สีพื้นหลังแบบโปร่งแสง */
 .card-yellow { background: rgba(255, 241, 118, 0.85); }
 .card-green { background: rgba(174, 213, 129, 0.85); }
 .card-grey { background: rgba(144, 164, 174, 0.85); color: #fff; }
-.card-grey h3 { color: #eee; }
 .card-orange { background: rgba(255, 183, 77, 0.85); }
 
-/* === Table Card === */
+/* Admin Table */
 .table-card {
-    background: rgba(255, 255, 255, 0.95); 
+    background: rgba(255, 255, 255, 0.95);
     border-radius: 20px; padding: 30px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.2);
     flex: 1; display: flex; flex-direction: column;
 }
-
-.table-header-row {
-    display: flex; justify-content: space-between; align-items: center;
-    margin-bottom: 20px; border-bottom: 2px solid #eee; padding-bottom: 15px;
-}
-
-.btn-add-top {
-    background: #484b36; color: #fff; border: none;
-    padding: 12px 25px; border-radius: 30px; cursor: pointer;
-    display: flex; align-items: center; gap: 8px; font-size: 1rem;
-    font-weight: 500; transition: 0.2s;
-    box-shadow: 0 4px 10px rgba(72, 75, 54, 0.3);
-}
-.btn-add-top:hover { background: #606446; transform: scale(1.05); }
-
+.table-header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 2px solid #eee; padding-bottom: 15px; }
 .data-table { width: 100%; border-collapse: separate; border-spacing: 0; }
 .data-table th { background: #f1f8e9; padding: 15px; text-align: center; font-weight: 600; color: #33691e; }
-.data-table th:first-child { border-top-left-radius: 10px; }
-.data-table th:last-child { border-top-right-radius: 10px; }
 .data-table td { padding: 15px; border-bottom: 1px solid #eee; text-align: center; vertical-align: middle; }
-.table-img { width: 60px; height: 60px; object-fit: cover; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
 
-/* Status Pill */
-.stock-pill { padding: 6px 12px; border-radius: 20px; font-size: 0.85rem; font-weight: bold; }
-.stock-pill.instock { background: #c8e6c9; color: #2e7d32; }
-.stock-pill.outstock { background: #ffcdd2; color: #c62828; }
-
-.btn-icon.delete {
-    background: #ffebee; color: #d32f2f;
-    border: none; width: 40px; height: 40px; border-radius: 50%;
-    cursor: pointer; transition: 0.2s; display: inline-flex; align-items: center; justify-content: center;
-}
-.btn-icon.delete:hover { background: #ef9a9a; color: #fff; }
-
-/* === Modal Popup Styles === */
+/* Admin Modal */
 .modal-overlay {
     display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0,0,0,0.6); z-index: 100;
+    background: rgba(0,0,0,0.6); z-index: 2000;
     justify-content: center; align-items: center;
     backdrop-filter: blur(5px);
 }
-
 .modal-content {
     background: #fff; width: 100%; max-width: 500px;
     border-radius: 20px; padding: 0;
     box-shadow: 0 20px 50px rgba(0,0,0,0.4);
     animation: slideUp 0.3s ease-out;
 }
-
-@keyframes slideUp {
-    from { transform: translateY(50px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
-}
-
+@keyframes slideUp { from { transform: translateY(50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 .modal-header {
-    background: #484b36; color: #fff;
+    background: var(--admin-sidebar); color: #fff;
     padding: 20px 30px; border-radius: 20px 20px 0 0;
     display: flex; justify-content: space-between; align-items: center;
 }
-.close-modal { font-size: 1.8rem; cursor: pointer; opacity: 0.8; transition: 0.2s; }
-.close-modal:hover { opacity: 1; transform: rotate(90deg); }
-.modal-body { padding: 30px; }
 
-.form-group { margin-bottom: 20px; }
-.form-group label { display: block; margin-bottom: 8px; font-weight: 500; color: #555; }
-.form-control { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 10px; font-family: inherit; box-sizing: border-box; }
-.form-control:focus { outline: none; border-color: #484b36; box-shadow: 0 0 0 3px rgba(72, 75, 54, 0.1); }
-
-.form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-.btn-save {
-    background: #484b36; color: #fff; border: none;
-    padding: 15px; border-radius: 10px; font-size: 1.1rem; cursor: pointer;
-    margin-top: 10px; width: 100%; font-weight: bold; transition: 0.2s;
+/* =========================================
+   8. FOOTER & RESPONSIVE
+   ========================================= */
+footer {
+    background-color: var(--dark-color);
+    color: var(--light-color);
+    text-align: center;
+    padding: 2rem 0;
 }
-.btn-save:hover { background: #606446; box-shadow: 0 5px 15px rgba(72, 75, 54, 0.3); }
 
-/* Responsive */
-@media (max-width: 900px) {
-    .stats-grid { grid-template-columns: 1fr 1fr; }
+@media (max-width: 992px) {
+    .checkout-container { grid-template-columns: 1fr; }
+    .unified-contact-card { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 768px) {
+    .navbar .container { flex-direction: column; }
+    .navbar nav { margin-top: 1rem; }
+    .hero-content h1 { font-size: 2.5rem; }
+    
+    /* Admin Mobile */
     .admin-wrapper { flex-direction: column; overflow: auto; }
-    .sidebar { width: 100%; padding: 10px; flex-direction: row; overflow-x: auto; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+    .sidebar { width: 100%; flex-direction: row; overflow-x: auto; align-items: center; padding: 10px; }
     .sidebar-header { display: none; }
     .menu-item { white-space: nowrap; padding: 8px 15px; font-size: 0.9rem; }
-    .menu-item i { margin-right: 5px; }
-    .main-content { overflow: visible; }
-    .table-card { padding: 15px; }
 }
-<<<<<<< HEAD
 
+/* =========================================
+   ADDITIONAL: NEWS SECTION STYLES
+   (วางโค้ดนี้ต่อท้ายไฟล์ style.css)
+   ========================================= */
 
-<<<<<<< HEAD
-/* --- css/about.css --- */
-=======
+.news-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 25px;
+}
 
->>>>>>> 0a21f3ffaab9a0d0805ba141953c9159333ab997
+.news-card {
+    background: var(--white-color);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    transition: 0.3s;
+    border: 1px solid #eee;
+}
+
+.news-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+.news-img-wrapper {
+    height: 180px;
+    overflow: hidden;
+}
+
+.news-img-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s;
+}
+
+.news-card:hover .news-img-wrapper img {
+    transform: scale(1.1);
+}
+
+.news-content {
+    padding: 20px;
+}
+
+.news-date {
+    font-size: 0.8rem;
+    color: #888;
+    margin-bottom: 5px;
+}
+
+.news-content h3 {
+    font-size: 1.2rem;
+    margin: 5px 0 10px 0;
+    color: var(--dark-color);
+    line-height: 1.4;
+    font-weight: 600;
+}
+
+.news-content p {
+    font-size: 0.9rem;
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 15px;
+}
+
+.read-more-btn {
+    color: var(--primary-color);
+    font-weight: 500;
+    font-size: 0.9rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.read-more-btn:hover {
+    color: var(--accent-color);
+    text-decoration: underline;
+}
