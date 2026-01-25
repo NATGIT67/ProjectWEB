@@ -737,72 +737,82 @@ footer { background-color: var(--dark-color); color: var(--light-color); text-al
 
 
 .faq-slider {
-    max-width: 900px;
-    margin: 60px auto;
+    max-width: 700px;
+    margin: 40px auto;
     position: relative;
     overflow: hidden;
 }
 
 /* กล่องแต่ละสไลด์ */
 .faq-slide {
-    background: #9e9e9e;
-    padding: 30px 40px;
+    background: rgba(158,158,158,0.9); /* ดูโปรขึ้น */
+    padding: 20px 28px;   /* 🔻 ลด padding */
     border-radius: 16px;
-    min-height: auto;
     box-sizing: border-box;
+    min-width: 100%;      /* สำคัญสำหรับ slider */
+}
+
 }
 
 /* หัวข้อ */
 .faq-slide h2 {
-    font-size: 1.4rem;
-    margin-bottom: 14px;
+    font-size: 1.2rem;   /* 🔻 เล็กลง */
+    margin-bottom: 10px;
     text-align: center;
 }
 
+
 /* รายการ */
 .faq-slide ul {
-    font-size: 1rem;
-    line-height: 1.6;
+    font-size: 0.95rem;
+    line-height: 1.5;
     padding-left: 18px;
 }
 
 .faq-slide ul li {
-    margin-bottom: 6px;
+    margin-bottom: 4px;
 }
+
 
 /* ===== ลูกศรซ้ายขวา ===== */
 .arrow {
+    background: transparent;   /* ไม่มีพื้นหลัง */
+    border: none;
+    font-size: 36px;            /* ปรับขนาดลูกศร */
+    color: #fff;                /* สีลูกศร */
+    cursor: pointer;
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    font-size: 42px;
-    background: rgba(0,0,0,0.5);
-    color: #fff;
-    border: none;
-    padding: 12px 18px;
-    cursor: pointer;
-    border-radius: 50%;
     z-index: 10;
+    
 }
 
-.arrow.left { left: 30px; }
-.arrow.right { right: 30px; }
+.arrow.left { left: 12px; }
+.arrow.right { right: 12px; }
 
 .arrow:hover {
-    background: rgba(0,0,0,0.75);
-}
+    transform: translateY(-50%) scale(1.2);
+    color: #f1f1f1;
 /* ตัวห่อสไลด์ (ต้องมี!) */
+.faq-slider {
+  position: relative;
+  overflow: hidden;   /* สำคัญมาก */
+}
+
 .faq-wrapper {
-    display: flex;
-    transition: transform 0.5s ease;
+  display: flex;              /* ← ตัวนี้แหละ */
+  transition: transform 0.5s ease;
 }
-
-/* ให้แต่ละสไลด์กว้างเต็ม 1 หน้า */
 .faq-slide {
-    min-width: 100%;
+  min-width: 100%;
+  padding: 30px;
 }
 
 
+<<<<<<< HEAD
+
+=======
 /* การตั้งค่าพื้นฐาน */
 * {
     margin: 0;
@@ -1234,3 +1244,4 @@ body { margin: 0; font-family: 'Kanit', sans-serif; overflow: hidden; }
     .main-content { overflow: visible; }
     .table-card { padding: 15px; }
 }
+>>>>>>> 67d7315dfac5eb297885e81c7d23a22faca664f6
