@@ -735,79 +735,72 @@ footer { background-color: var(--dark-color); color: var(--light-color); text-al
 }
 
 
-
+/*บังอร*/
+/* ===== ตัวครอบสไลด์ ===== */
 .faq-slider {
-    max-width: 700px;
-    margin: 40px auto;
-    position: relative;
-    overflow: hidden;
+  max-width: 700px;
+  margin: 40px auto;
+  position: relative;
+  overflow: hidden;
+}
+
+/* แถบเลื่อน */
+.faq-wrapper {
+  display: flex;
+  transition: transform 0.5s ease;
 }
 
 /* กล่องแต่ละสไลด์ */
 .faq-slide {
-    background: rgba(158,158,158,0.9); /* ดูโปรขึ้น */
-    padding: 20px 28px;   /* 🔻 ลด padding */
-    border-radius: 16px;
-    box-sizing: border-box;
-    min-width: 100%;      /* สำคัญสำหรับ slider */
-}
-
+  min-width: 100%;        /* 1 หน้า */
+  flex-shrink: 0;
+  box-sizing: border-box;
+  background: #b3b3b3;
+  padding: 30px 40px;
+  border-radius: 20px;
 }
 
 /* หัวข้อ */
 .faq-slide h2 {
-    font-size: 1.2rem;   /* 🔻 เล็กลง */
-    margin-bottom: 10px;
-    text-align: center;
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+  text-align: center;
 }
-
 
 /* รายการ */
 .faq-slide ul {
-    font-size: 0.95rem;
-    line-height: 1.5;
-    padding-left: 18px;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  padding-left: 18px;
 }
 
 .faq-slide ul li {
-    margin-bottom: 4px;
+  margin-bottom: 4px;
 }
 
-
-/* ===== ลูกศรซ้ายขวา ===== */
+/* ===== ลูกศร ===== */
 .arrow {
-    background: transparent;   /* ไม่มีพื้นหลัง */
-    border: none;
-    font-size: 36px;            /* ปรับขนาดลูกศร */
-    color: #fff;                /* สีลูกศร */
-    cursor: pointer;
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 10;
-    
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  font-size: 36px;
+  color: #fff;
+  cursor: pointer;
+  z-index: 10;
 }
 
-.arrow.left { left: 12px; }
-.arrow.right { right: 12px; }
+.arrow.left  { left: -50px; }
+.arrow.right { right: -50px; }
 
 .arrow:hover {
-    transform: translateY(-50%) scale(1.2);
-    color: #f1f1f1;
-/* ตัวห่อสไลด์ (ต้องมี!) */
-.faq-slider {
-  position: relative;
-  overflow: hidden;   /* สำคัญมาก */
+  transform: translateY(-50%) scale(1.2);
+  color: #f1f1f1;
 }
 
-.faq-wrapper {
-  display: flex;              /* ← ตัวนี้แหละ */
-  transition: transform 0.5s ease;
-}
-.faq-slide {
-  min-width: 100%;
-  padding: 30px;
-}
+
+
 
 
 <<<<<<< HEAD
@@ -1247,4 +1240,8 @@ body { margin: 0; font-family: 'Kanit', sans-serif; overflow: hidden; }
 <<<<<<< HEAD
 
 
+<<<<<<< HEAD
 /* --- css/about.css --- */
+=======
+
+>>>>>>> 0a21f3ffaab9a0d0805ba141953c9159333ab997
