@@ -254,7 +254,7 @@ footer { background-color: var(--dark-color); color: var(--light-color); text-al
 
 /* --- Sign-In Page --------------------------------------------------------- */
 .login-page-body {
-    background-image: url('../images/background.png');
+    background-image: url('../project/images/background.png');
     display: flex;
     flex-direction: column; /* เปลี่ยนเป็น column เพื่อให้ navbar อยู่ด้านบน */
     min-height: 100vh;
