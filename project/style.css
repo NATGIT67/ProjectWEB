@@ -719,3 +719,25 @@ footer { background-color: var(--dark-color); color: var(--light-color); text-al
 .order-history-table td strong {
     color: var(--dark-color);
 }
+
+body { ... }
+.navbar { ... }
+.hero { ... }
+.card { ... }
+
+
+
+.faq {
+    max-width: 900px;
+    margin: 80px auto;
+    font-family: 'Kanit', sans-serif;
+}
+
+.faq h2 {
+    text-align: center;ฆ
+    font-size: 28px;
+    margin-bottom: 40px;
+    font-weight: 500;
+}
+
+
