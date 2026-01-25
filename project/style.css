@@ -541,21 +541,73 @@ h2 { text-align: center; margin-bottom: 2rem; font-size: 2.5rem; color: rgb(0, 0
    8. RESPONSIVE DESIGN (การแสดงผลบนมือถือ)
    ไฟล์ที่ใช้: ทุกไฟล์ (ปรับแต่งการแสดงผล)
 ============================================================ */
+/* ============================================================
+   8. RESPONSIVE DESIGN (ปรับแต่งสำหรับมือถือและแท็บเล็ต)
+   วางส่วนนี้ไว้ล่างสุดของไฟล์ style.css เสมอ
+============================================================ */
 
-@media (max-width: 992px) {
-    .checkout-container { grid-template-columns: 1fr; }
-    .unified-contact-card { grid-template-columns: 1fr; }
+/* --- สำหรับ iPad และ Tablet (หน้าจอขนาดไม่เกิน 1024px) --- */
+@media (max-width: 1024px) {
+    /* ปรับ Container ให้ชิดขอบมากขึ้น เพื่อให้มีพื้นที่เนื้อหาเยอะขึ้น */
+    .container {
+        padding: 0 30px; 
+    }
+
+    /* ปรับหัวข้อให้เล็กลงหน่อยบน Tablet */
+    h1 { font-size: 2.8rem; }
+    h2 { font-size: 2rem; }
+
+    /* ส่วนขั้นตอนการสั่งซื้อ (Steps) ให้เหลือ 2 แถว หรือปรับตามความเหมาะสม */
+    .steps-grid {
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 1.5rem;
+    }
 }
 
+/* --- สำหรับมือถือ (Mobile) (หน้าจอขนาดไม่เกิน 768px) --- */
 @media (max-width: 768px) {
-    .navbar .container { flex-direction: column; }
-    .navbar nav { margin-top: 1rem; }
-    .hero-content h1 { font-size: 2.5rem; }
     
-    /* Admin Mobile */
-    .admin-wrapper { flex-direction: column; overflow: auto; }
-    .sidebar { width: 100%; flex-direction: row; overflow-x: auto; align-items: center; padding: 10px; }
-    .sidebar-header { display: none; }
-    .menu-item { white-space: nowrap; padding: 8px 15px; font-size: 0.9rem; }
+    /* 1. จัดการ Navbar (เมนู) ให้เรียงลงมาแนวตั้ง */
+    .navbar .container {
+        flex-direction: column;
+        gap: 15px;
+    }
+    .navbar nav ul {
+        flex-wrap: wrap; /* ให้เมนูขึ้นบรรทัดใหม่ได้ถ้ายาวเกิน */
+        justify-content: center;
+        gap: 10px;
+    }
+    .navbar nav ul li { margin-left: 10px; margin-right: 10px; }
+
+    /* 2. ส่วน Hero Banner (รูปปก) */
+    .hero { height: auto; padding: 60px 20px; min-height: 400px; }
+    .hero-content h1 { font-size: 2rem; } /* ลดขนาดตัวอักษร */
+    .hero-content p { font-size: 1rem; }
+
+    /* 3. ปรับ Grid ทั้งหมดให้เหลือ 1 คอลัมน์ (เรียงจากบนลงล่าง) */
+    /* .steps-grid คือส่วนขั้นตอน 1-2-3 ในรูป */
+    .steps-grid, 
+    .seedling-grid, 
+    .news-grid,
+    .checkout-container,
+    .unified-contact-card {
+        grid-template-columns: 1fr !important; /* บังคับให้เหลือ 1 ช่องเต็มๆ */
+        gap: 20px;
+    }
+
+    /* 4. ปรับ Admin Dashboard ในมือถือ */
+    .admin-wrapper { flex-direction: column; }
+    .sidebar { width: 100%; flex-direction: row; overflow-x: auto; padding: 10px; }
+    .sidebar-header { display: none; } /* ซ่อนหัวข้อ Sidebar เพื่อประหยัดที่ */
+    .stats-grid { grid-template-columns: 1fr; } /* การ์ดสถิติเรียงเดี่ยว */
+
+    /* 5. อื่นๆ */
+    .btn-primary, .btn-secondary {
+        width: 100%; /* ปุ่มเต็มจอ กดง่ายขึ้น */
+        margin-bottom: 10px;
+    }
+    
+    /* ส่วนรูปภาพใน Step Card ให้เล็กลงหน่อย */
+    .step-icon { font-size: 2.5rem; }
 }
 
