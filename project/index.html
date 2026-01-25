@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="th">
 <head>
@@ -11,17 +12,16 @@
 </head>
 
 <body> 
-    
-
     <!-- Header -->
     <header class="navbar">
+
         <div class="container">
             <a href="#" class="logo">🌾 EasyRice</a>
             <nav>
                 <ul>
                     <li><a href="index.html" class="active">หน้าแรก</a></li>
                     <li><a href="product.html">สินค้า</a></li>
-                    <li><a href="#service">เกี่ยวกับเรา</a></li>
+                    <li><a href="about.html">เกี่ยวกับเรา</a></li>
                     <li><a href="#">ข่าวสาร</a></li>
                     <li><a href="contact.html">ติดต่อ</a></li>
                     <li id="adminMenu" style="display:none;"><a href="admin.html" style="color: red;">จัดการระบบ</a></li>
@@ -118,39 +118,42 @@
         </section>
        
         <!-- FAQ SLIDER -->
-        <section class="faq-section">
-            <div class="faq-slider">
-            <div class="faq-wrapper" id="faqWrapper">
-                <div class="faq-slide">
-                    <h2>คำถามที่พบบ่อย → วิธีการจัดส่งอย่างไร</h2>
-                        <ul>
-                          <li>เลือกต้นกล้าแข็งแรง อายุ 20–30 วัน</li>
-                          <li>มัดเป็นกำเล็ก ๆ</li>
-                          <li>ห่อด้วยผ้าชุบน้ำ</li>
-                          <li>ใส่กล่องที่ระบายอากาศได้</li>
-                          <li>จัดส่งช่วงเช้าหรือเย็น</li>
-                       </ul>
-                </div>
 
+       <section class="faq-section">
+  <div class="faq-slider">
 
-            <div class="faq-slide">
-                   <h2>คำถามที่พบบ่อย → จะเลือกพันธุ์อย่างไร</h2>
-                        <ul>
-                            <li>เลือกให้เหมาะกับพื้นที่</li>
-                            <li>ดูฤดูกาลเพาะปลูก</li>
-                            <li>ต้านทานโรค</li>
-                            <li>ให้ผลผลิตสูง</li>
-                            <li>เมล็ดพันธุ์คุณภาพ</li>
-                        </ul>
-                 </div>
+    <button class="arrow left" onclick="slideFAQ(-1)">❮</button>
 
-            </div>
-        </div>
-                
+    <div class="faq-wrapper" id="faqWrapper">
+      <div class="faq-slide">
+        <h2>คำถามที่พบบ่อย → วิธีการจัดส่งอย่างไร</h2>
+        <ul>
+          <li>เลือกต้นกล้าแข็งแรง อายุ 20–30 วัน</li>
+          <li>มัดเป็นกำเล็ก ๆ</li>
+          <li>ห่อด้วยผ้าชุบน้ำ</li>
+          <li>ใส่กล่องที่ระบายอากาศได้</li>
+          <li>จัดส่งช่วงเช้าหรือเย็น</li>
+        </ul>
+      </div>
 
-    <button onclick="slideFAQ(-1)">◀</button>
-    <button onclick="slideFAQ(1)">▶</button>
+      <div class="faq-slide">
+        <h2>คำถามที่พบบ่อย → จะเลือกพันธุ์อย่างไร</h2>
+        <ul>
+          <li>เลือกให้เหมาะกับพื้นที่</li>
+          <li>ดูฤดูกาลเพาะปลูก</li>
+          <li>ต้านทานโรค</li>
+          <li>ให้ผลผลิตสูง</li>
+          <li>เมล็ดพันธุ์คุณภาพ</li>
+        </ul>
+      </div>
+    </div>
+
+    <button class="arrow right" onclick="slideFAQ(1)">❯</button>
+
+  </div>
 </section>
+
+
 
 
     <!-- Footer -->
@@ -187,22 +190,58 @@
         displayProducts();
     };
 
-    let faqIndex = 0;
+    let index = 0;
 
-function slideFAQ(direction) {
+   function slideFAQ(direction) {
     const wrapper = document.getElementById("faqWrapper");
     const slides = document.querySelectorAll(".faq-slide");
+    const total = slides.length;
 
-    faqIndex += direction;
+    index += direction;
+    if (index < 0) index = total - 1;
+    if (index >= total) index = 0;
 
-    if (faqIndex < 0) faqIndex = slides.length - 1;
-    if (faqIndex >= slides.length) faqIndex = 0;
-
-    wrapper.style.transform = `translateX(-${faqIndex * 100}%)`;
-}
-
-    
+    wrapper.style.transform = `translateX(-${index * 100}%)`;
+    }
 </script>
 
+<!-- Code injected by live-server -->
+<script>
+	// <![CDATA[  <-- For SVG support
+	if ('WebSocket' in window) {
+		(function () {
+			function refreshCSS() {
+				var sheets = [].slice.call(document.getElementsByTagName("link"));
+				var head = document.getElementsByTagName("head")[0];
+				for (var i = 0; i < sheets.length; ++i) {
+					var elem = sheets[i];
+					var parent = elem.parentElement || head;
+					parent.removeChild(elem);
+					var rel = elem.rel;
+					if (elem.href && typeof rel != "string" || rel.length == 0 || rel.toLowerCase() == "stylesheet") {
+						var url = elem.href.replace(/(&|\?)_cacheOverride=\d+/, '');
+						elem.href = url + (url.indexOf('?') >= 0 ? '&' : '?') + '_cacheOverride=' + (new Date().valueOf());
+					}
+					parent.appendChild(elem);
+				}
+			}
+			var protocol = window.location.protocol === 'http:' ? 'ws://' : 'wss://';
+			var address = protocol + window.location.host + window.location.pathname + '/ws';
+			var socket = new WebSocket(address);
+			socket.onmessage = function (msg) {
+				if (msg.data == 'reload') window.location.reload();
+				else if (msg.data == 'refreshcss') refreshCSS();
+			};
+			if (sessionStorage && !sessionStorage.getItem('IsThisFirstTime_Log_From_LiveServer')) {
+				console.log('Live reload enabled.');
+				sessionStorage.setItem('IsThisFirstTime_Log_From_LiveServer', true);
+			}
+		})();
+	}
+	else {
+		console.error('Upgrade your browser. This Browser is NOT supported WebSocket for Live-Reloading.');
+	}
+	// ]]>
+</script>
 </body>
 </html>
