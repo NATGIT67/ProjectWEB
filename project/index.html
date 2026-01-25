@@ -4,26 +4,89 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EasyRice - ระบบจองต้นกล้าและบริการปักดำข้าว</title>
-    <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* CSS เพิ่มเติมเพื่อให้รองรับการ์ดแบบใหม่ */
+        body { font-family: 'Kanit', sans-serif; margin: 0; background-color: #f9f9f9; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        
+        /* Navbar & General (ยึดตามสไตล์เดิมของคุณ) */
+        .navbar { background: #fff; padding: 15px 0; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .navbar .container { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 1.5rem; font-weight: bold; color: #4CAF50; text-decoration: none; }
+        nav ul { list-style: none; display: flex; gap: 20px; padding: 0; margin: 0; }
+        nav a { text-decoration: none; color: #333; }
+        .btn-signin { background: #4CAF50; color: white; padding: 8px 15px; border-radius: 5px; text-decoration: none; }
+
+        /* Hero Section */
+        .hero { text-align: center; padding: 60px 20px; background: #e8f5e9; margin-bottom: 40px; }
+        .hero h1 { margin: 10px 0; color: #2e7d32; }
+        .hero-buttons { margin-top: 20px; display: flex; gap: 15px; justify-content: center; }
+        .btn-primary { background: #4CAF50; color: white; padding: 10px 20px; border-radius: 5px; text-decoration: none; }
+        .btn-secondary { background: white; color: #4CAF50; border: 1px solid #4CAF50; padding: 10px 20px; border-radius: 5px; text-decoration: none; }
+
+        /* How it works */
+        .how-it-works { text-align: center; margin-bottom: 50px; }
+        .steps-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 30px; }
+        .step-card { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .step-icon { font-size: 2rem; margin-bottom: 10px; }
+
+        /* Seedling Section (Product Grid) */
+        .seedling-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 30px; padding-bottom: 50px; }
+        .card { background: #fff; border-radius: 10px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.05); transition: transform 0.3s; display: flex; flex-direction: column; }
+        .card:hover { transform: translateY(-5px); }
+        .card img { width: 100%; height: 200px; object-fit: cover; }
+        .card-content { padding: 20px; flex-grow: 1; display: flex; flex-direction: column; }
+        .card-content h3 { margin: 0 0 10px 0; font-size: 1.4rem; color: #333; }
+        .card-content p { color: #666; font-size: 0.95rem; margin-bottom: 15px; height: 45px; overflow: hidden; }
+        
+        /* New Specs List */
+        .specs-list { list-style: none; padding: 0; margin: 0 0 15px 0; font-size: 0.9rem; color: #555; }
+        .specs-list li { margin-bottom: 5px; display: flex; align-items: center; gap: 8px; }
+
+        .price { color: #4CAF50; font-size: 1.3rem; font-weight: bold; margin-top: auto; }
+        
+        /* Stock Badges */
+        .stock-info { display: flex; justify-content: space-between; align-items: center; margin: 10px 0; font-size: 0.85rem; }
+        .stock-badge { padding: 3px 10px; border-radius: 20px; font-weight: 500; }
+        .bg-success { background: #e8f5e9; color: #2e7d32; }
+        .bg-warning { background: #fff3e0; color: #ef6c00; }
+        .bg-danger { background: #ffebee; color: #c62828; }
+
+        .btn-reserve { display: block; text-align: center; background: #4CAF50; color: white; padding: 10px; border-radius: 5px; text-decoration: none; margin-top: 10px; border: none; cursor: pointer; width: 100%; box-sizing: border-box; }
+        .btn-reserve:hover { background: #43a047; }
+        .btn-reserve.disabled { background: #ccc; cursor: not-allowed; }
+
+        /* FAQ Slider */
+        .faq-section { background: #fff; padding: 40px 0; margin-top: 40px; text-align: center; overflow: hidden; }
+        .faq-slider { position: relative; max-width: 800px; margin: 0 auto; display: flex; align-items: center; }
+        .faq-wrapper { display: flex; transition: transform 0.5s ease-in-out; width: 100%; }
+        .faq-slide { min-width: 100%; box-sizing: border-box; padding: 0 40px; }
+        .arrow { background: none; border: none; font-size: 2rem; cursor: pointer; color: #4CAF50; z-index: 10; padding: 0 10px; }
+        .arrow:hover { color: #2e7d32; }
+        .faq-slide ul { text-align: left; display: inline-block; }
+
+        /* Footer */
+        footer { background: #333; color: white; text-align: center; padding: 20px 0; margin-top: 50px; }
+    </style>
 </head>
 
 <body> 
-    <!-- Header -->
     <header class="navbar">
-
         <div class="container">
             <a href="#" class="logo">🌾 EasyRice</a>
             <nav>
                 <ul>
                     <li><a href="index.html" class="active">หน้าแรก</a></li>
-                    <li><a href="product.html">สินค้า</a></li>
+                    <li><a href="#seedlings">สินค้า</a></li>
                     <li><a href="#service">เกี่ยวกับเรา</a></li>
                     <li><a href="#">ข่าวสาร</a></li>
                     <li><a href="contact.html">ติดต่อ</a></li>
-                    <li id="adminMenu" style="display:none;"><a href="admin.html" style="color: red;">จัดการระบบ</a></li>
+                    <li><a href="admin.html" target="_blank" style="color: #e74c3c;"><i class="fas fa-cog"></i> จัดการระบบ</a></li>
                 </ul>
             </nav>
             <a href="sign-in.html" class="btn-signin">เข้าสู่ระบบ</a>
@@ -31,21 +94,18 @@
     </header>
 
     <main>
-        <!-- Hero Section -->
         <section class="hero">
             <div class="hero-content">
                 <h1>ยินดีต้อนรับสู่ EasyRice</h1>
                 <h1>ระบบจองต้นกล้าและบริการปักดำข้าวออนไลน์</h1>
                 <p>สะดวก รวดเร็ว มั่นใจได้ในคุณภาพสำหรับนาของคุณ</p>
                 <div class="hero-buttons">
-                    <a href="product.html" class="btn-primary">จองต้นกล้า</a>
+                    <a href="#seedlings" class="btn-primary">จองต้นกล้า</a>
                     <a href="#service" class="btn-secondary">จองบริการปักดำ</a>
                 </div>
             </div>
-            
         </section>
         
-        <!-- How it Works Section -->
         <section class="container how-it-works">
             <h2>วิธีการใช้งานระบบ</h2>
             <div class="steps-grid">
@@ -67,142 +127,129 @@
             </div>
         </section>
 
-        <!-- Seedling Reservation Section -->
         <section id="seedlings" class="container">
-            <h2>จองต้นกล้าข้าวพันธุ์ดี</h2>
-            <div class="seedling-grid">
-                <!-- Product Card 1 -->
-                <div class="card">
-                    <img src="https://via.placeholder.com/300x200.png?text=ข้าวหอมมะลิ" alt="ข้าวหอมมะลิ">
-                    <div class="card-content">
-                        <h3>ข้าวหอมมะลิ 105</h3>
-                        <p>ต้นกล้าข้าวหอมมะลิพันธุ์ดี มีกลิ่นหอม ข้าวสุกนุ่ม</p>
-                        <div class="price">฿35 / ถาด</div>
-                        <div class="stock-info">
-                            <span class="stock-status available">✅ มีสินค้า</span>
-                            <span class="stock-quantity">เหลือ 150 ถาด</span>
-                        </div>
-                        <a href="product.html" class="btn-reserve">จองเลย</a>
-                    </div>
-                </div>
-                <!-- Product Card 2 -->
-                <div class="card">
-                    <img src="https://via.placeholder.com/300x200.png?text=ข้าวไรซ์เบอร์รี่" alt="ข้าวไรซ์เบอร์รี่">
-                    <div class="card-content">
-                        <h3>ข้าวไรซ์เบอร์รี่</h3>
-                        <p>ข้าวพันธุ์ใหม่ อุดมด้วยสารต้านอนุมูลอิสระ</p>
-                        <div class="price">฿45 / ถาด</div>
-                        <div class="stock-info">
-                            <span class="stock-status low-stock">⚠️ เหลือน้อย</span>
-                            <span class="stock-quantity">เหลือ 25 ถาด</span>
-                        </div>
-                        <a href="product.html" class="btn-reserve">จองเลย</a>
-                    </div>
-                </div>
-                <!-- Product Card 3 -->
-                <div class="card">
-                    <img src="https://via.placeholder.com/300x200.png?text=ข้าว RD43" alt="ข้าว RD43">
-                    <div class="card-content">
-                        <h3>ข้าว RD43</h3>
-                        <p>พันธุ์ข้าวทนโรค ให้ผลผลิตสูง เหมาะสำหรับการปลูกเชิงพาณิชย์</p>
-                        <div class="price">฿30 / ถาด</div>
-                        <div class="stock-info">
-                            <span class="stock-status out-of-stock">❌ หมดสต็อก</span>
-                            <span class="stock-quantity">เหลือ 0 ถาด</span>
-                        </div>
-                        <a href="#" class="btn-reserve disabled" disabled>หมดสต็อก</a>
-                    </div>
-                </div>
+            <h2 style="text-align: center; margin-bottom: 30px;">จองต้นกล้าข้าวพันธุ์ดี</h2>
+            
+            <div class="seedling-grid" id="productContainer">
+                <p style="text-align:center; width:100%; color:#999;">กำลังโหลดข้อมูล...</p>
             </div>
         </section>
        
-        <!-- FAQ SLIDER -->
+        <section class="faq-section">
+            <div class="faq-slider">
+                <button class="arrow left" onclick="slideFAQ(-1)">❮</button>
+                <div class="faq-wrapper" id="faqWrapper">
+                    <div class="faq-slide">
+                        <h2>คำถามที่พบบ่อย → วิธีการจัดส่งอย่างไร</h2>
+                        <ul>
+                            <li>เลือกต้นกล้าแข็งแรง อายุ 20–30 วัน</li>
+                            <li>มัดเป็นกำเล็ก ๆ ห่อด้วยผ้าชุบน้ำ</li>
+                            <li>ใส่กล่องที่ระบายอากาศได้</li>
+                            <li>จัดส่งช่วงเช้าหรือเย็น</li>
+                        </ul>
+                    </div>
+                    <div class="faq-slide">
+                        <h2>คำถามที่พบบ่อย → จะเลือกพันธุ์อย่างไร</h2>
+                        <ul>
+                            <li>เลือกให้เหมาะกับพื้นที่และฤดูกาล</li>
+                            <li>ต้านทานโรคในพื้นที่นั้นๆ</li>
+                            <li>ให้ผลผลิตสูงคุ้มค่า</li>
+                            <li>เมล็ดพันธุ์คุณภาพจากแหล่งเชื่อถือได้</li>
+                        </ul>
+                    </div>
+                </div>
+                <button class="arrow right" onclick="slideFAQ(1)">❯</button>
+            </div>
+        </section>
+    </main>
 
-       <section class="faq-section">
-  <div class="faq-slider">
-
-    <button class="arrow left" onclick="slideFAQ(-1)">❮</button>
-
-    <div class="faq-wrapper" id="faqWrapper">
-      <div class="faq-slide">
-        <h2>คำถามที่พบบ่อย → วิธีการจัดส่งอย่างไร</h2>
-        <ul>
-          <li>เลือกต้นกล้าแข็งแรง อายุ 20–30 วัน</li>
-          <li>มัดเป็นกำเล็ก ๆ</li>
-          <li>ห่อด้วยผ้าชุบน้ำ</li>
-          <li>ใส่กล่องที่ระบายอากาศได้</li>
-          <li>จัดส่งช่วงเช้าหรือเย็น</li>
-        </ul>
-      </div>
-
-      <div class="faq-slide">
-        <h2>คำถามที่พบบ่อย → จะเลือกพันธุ์อย่างไร</h2>
-        <ul>
-          <li>เลือกให้เหมาะกับพื้นที่</li>
-          <li>ดูฤดูกาลเพาะปลูก</li>
-          <li>ต้านทานโรค</li>
-          <li>ให้ผลผลิตสูง</li>
-          <li>เมล็ดพันธุ์คุณภาพ</li>
-        </ul>
-      </div>
-    </div>
-
-    <button class="arrow right" onclick="slideFAQ(1)">❯</button>
-
-  </div>
-</section>
-
-
-
-
-    <!-- Footer -->
     <footer>
-    <div class="container">
-        <p>&copy; 2024 SeedlingHub. All Rights Reserved.</p>
-    </div>
+        <div class="container">
+            <p>&copy; 2024 SeedlingHub. All Rights Reserved.</p>
+        </div>
     </footer>
 
-<script>
-    function displayProducts() {
-        const products = JSON.parse(localStorage.getItem('easyrice_products'));
-        const grid = document.querySelector('.seedling-grid');
+    <script>
+        // ฟังก์ชันโหลดสินค้า
+        function displayProducts() {
+            // ใช้ Key 'easyrice_db' เพื่อให้ตรงกับหน้า Admin ที่สร้างไปก่อนหน้า
+            const products = JSON.parse(localStorage.getItem('easyrice_db')) || [];
+            const grid = document.getElementById('productContainer');
 
-        if (products && grid) {
-            grid.innerHTML = '';
+            // ถ้าไม่มีข้อมูลใน LocalStorage เลย ให้แสดงข้อความแจ้งเตือน
+            if (products.length === 0) {
+                grid.innerHTML = `
+                    <div style="grid-column: 1/-1; text-align: center; padding: 40px; background: white; border-radius: 10px;">
+                        <i class="fas fa-box-open" style="font-size: 3rem; color: #ccc;"></i>
+                        <p style="margin-top: 10px; color: #777;">ยังไม่มีรายการสินค้าในระบบ</p>
+                        <p style="font-size: 0.9rem; color: #999;">(กรุณาเพิ่มสินค้าผ่านหน้า Admin)</p>
+                    </div>`;
+                return;
+            }
+
+            grid.innerHTML = ''; // เคลียร์ Loading...
+
             products.forEach(p => {
+                // Logic ตรวจสอบสต็อกเพื่อเลือกสีป้ายและปุ่ม
+                let stockStatusHtml = '';
+                let btnHtml = '';
+
+                if (parseInt(p.stock) <= 0) {
+                    stockStatusHtml = `<span class="stock-badge bg-danger"><i class="fas fa-times-circle"></i> สินค้าหมด</span>`;
+                    btnHtml = `<button class="btn-reserve disabled" disabled>สินค้าหมด</button>`;
+                } else if (parseInt(p.stock) < 50) {
+                    stockStatusHtml = `<span class="stock-badge bg-warning"><i class="fas fa-exclamation-triangle"></i> เหลือน้อย (${p.stock})</span>`;
+                    btnHtml = `<button class="btn-reserve" onclick="alert('กดจอง ${p.name} เรียบร้อย!')">จองเลย</button>`;
+                } else {
+                    stockStatusHtml = `<span class="stock-badge bg-success"><i class="fas fa-check-circle"></i> มีสินค้า (${p.stock})</span>`;
+                    btnHtml = `<button class="btn-reserve" onclick="alert('กดจอง ${p.name} เรียบร้อย!')">จองเลย</button>`;
+                }
+
+                // สร้าง HTML Card
                 grid.innerHTML += `
                     <div class="card">
                         <img src="${p.img}" alt="${p.name}">
                         <div class="card-content">
                             <h3>${p.name}</h3>
-                            <p>เวลาเจริญเติบโต: ${p.time} วัน</p>
+                            <p>${p.desc || '-'}</p>
+                            
+                            <ul class="specs-list">
+                                <li><i class="far fa-clock"></i> อายุกล้า: ${p.age} วัน</li>
+                                <li><i class="fas fa-seedling"></i> จุดเด่น: ${p.feature}</li>
+                            </ul>
+
                             <div class="price">฿${p.price} / ถาด</div>
-                            <a href="checkout.html" class="btn-reserve">จองเลย</a>
+                            
+                            <div class="stock-info">
+                                ${stockStatusHtml}
+                            </div>
+                            
+                            ${btnHtml}
                         </div>
                     </div>
                 `;
             });
         }
-    }
 
-    window.onload = function () {
-        displayProducts();
-    };
+        // โหลดสินค้าเมื่อเปิดหน้าเว็บ
+        window.onload = function () {
+            displayProducts();
+        };
 
-    let index = 0;
+        // Script สำหรับ FAQ Slider
+        let index = 0;
+        function slideFAQ(direction) {
+            const wrapper = document.getElementById("faqWrapper");
+            const slides = document.querySelectorAll(".faq-slide");
+            const total = slides.length;
 
-   function slideFAQ(direction) {
-    const wrapper = document.getElementById("faqWrapper");
-    const slides = document.querySelectorAll(".faq-slide");
-    const total = slides.length;
+            index += direction;
+            if (index < 0) index = total - 1;
+            if (index >= total) index = 0;
 
-    index += direction;
-    if (index < 0) index = total - 1;
-    if (index >= total) index = 0;
-
-    wrapper.style.transform = `translateX(-${index * 100}%)`;
-    }
-</script>
+            wrapper.style.transform = `translateX(-${index * 100}%)`;
+        }
+    </script>
 
 </body>
 </html>
