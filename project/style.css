@@ -735,7 +735,7 @@ footer { background-color: var(--dark-color); color: var(--light-color); text-al
 }
 
 
-
+/*บังอร*/
 .faq-slider {
     max-width: 700px;
     margin: 40px auto;
@@ -743,7 +743,7 @@ footer { background-color: var(--dark-color); color: var(--light-color); text-al
     overflow: hidden;
 }
 
-/* กล่องแต่ละสไลด์ */
+/* กล่องแต่ละสไลด์ 
 .faq-slide {
     background: rgba(158,158,158,0.9); /* ดูโปรขึ้น */
     padding: 20px 28px;   /* 🔻 ลด padding */
@@ -752,7 +752,7 @@ footer { background-color: var(--dark-color); color: var(--light-color); text-al
     min-width: 100%;      /* สำคัญสำหรับ slider */
 }
 
-}
+
 
 /* หัวข้อ */
 .faq-slide h2 {
@@ -776,37 +776,43 @@ footer { background-color: var(--dark-color); color: var(--light-color); text-al
 
 /* ===== ลูกศรซ้ายขวา ===== */
 .arrow {
-    background: transparent;   /* ไม่มีพื้นหลัง */
-    border: none;
-    font-size: 36px;            /* ปรับขนาดลูกศร */
-    color: #fff;                /* สีลูกศร */
-    cursor: pointer;
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 10;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;      /* ❌ ไม่เอาวงกลม */
+  border: none;
+  font-size: 36px;
+  color: #fff;
+  cursor: pointer;
+  z-index: 10;
     
 }
 
-.arrow.left { left: 12px; }
-.arrow.right { right: 12px; }
+.arrow.left { left: -50px; }
+.arrow.right { right: -50px; }
 
 .arrow:hover {
     transform: translateY(-50%) scale(1.2);
     color: #f1f1f1;
+}
 /* ตัวห่อสไลด์ (ต้องมี!) */
 .faq-slider {
+  max-width: 700px;
+  margin: 40px auto;
   position: relative;
-  overflow: hidden;   /* สำคัญมาก */
+  overflow: hidden;   /* กันไม่ให้สไลด์ล้น */
 }
 
 .faq-wrapper {
-  display: flex;              /* ← ตัวนี้แหละ */
+  display: flex;              /* ทำให้เรียงแนวนอน */
   transition: transform 0.5s ease;
 }
 .faq-slide {
-  min-width: 100%;
-  padding: 30px;
+  min-width: 100%;            /* 1 สไลด์ = 1 หน้า */
+  box-sizing: border-box;
+}
+html, body {
+  overflow-y: auto;
 }
 
 

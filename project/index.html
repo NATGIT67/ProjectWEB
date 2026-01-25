@@ -191,20 +191,18 @@
         displayProducts();
     };
 
-    let faqIndex = 0;
+    let index = 0;
 
-    let currentIndex = 0;
-
-    function slideFAQ(direction) {
+   function slideFAQ(direction) {
     const wrapper = document.getElementById("faqWrapper");
-    const totalSlides = document.querySelectorAll(".faq-slide").length;
+    const slides = document.querySelectorAll(".faq-slide");
+    const total = slides.length;
 
-    currentIndex += direction;
+    index += direction;
+    if (index < 0) index = total - 1;
+    if (index >= total) index = 0;
 
-    if (currentIndex < 0) currentIndex = totalSlides - 1;
-    if (currentIndex >= totalSlides) currentIndex = 0;
-
-    wrapper.style.transform = `translateX(-${currentIndex * 100}%)`;
+    wrapper.style.transform = `translateX(-${index * 100}%)`;
     }
 </script>
 
