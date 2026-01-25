@@ -3,11 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EasyRice - ระบบจองต้นกล้าและบริการปักดำข้าว</title>
+    <title>EasyRice - ระบบซื้อขายต้นกล้าและบริการปักดำข้าว</title>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;700&display=swap" rel="stylesheet">
-    
     <link rel="stylesheet" href="style.css"> 
 </head>
 
@@ -31,16 +30,17 @@
     <main>
         <section class="hero">
             <div class="hero-content">
-                <h1>ระบบจองต้นกล้าและบริการปักดำข้าว</h1>
+                <h1>ยินดีต้อนรับสู่ EasyRice</h1>
+                <h1>ระบบซื้อขายต้นกล้าและบริการปักดำข้าว</h1>
                 <p>สะดวก รวดเร็ว มั่นใจได้ในคุณภาพ ต้นกล้าแข็งแรงพร้อมลงนา</p>
                 <div class="hero-buttons">
-                    <a href="product.html" class="btn-primary">จองต้นกล้าทันที</a>
+                    <a href="product.html" class="btn-primary">ซื้อต้นกล้าทันที</a>
                     <a href="contact.html" class="btn-secondary">ติดต่อบริการรถดำนา</a>
                 </div>
             </div>
         </section>
         
-        <section class="how-it-works">
+        <section class="how-it-works" style="background-color: var(--light-color);">
             <div class="container">
                 <h2>ขั้นตอนการสั่งซื้อสินค้า</h2>
                 <div class="steps-grid">
@@ -52,20 +52,20 @@
                     <div class="step-card">
                         <i class="fas fa-clipboard-list step-icon"></i>
                         <h3>2. ระบุรายละเอียด</h3>
-                        <p>กด "จองเลย" ระบุจำนวนถาดที่ต้องการ และวันที่สะดวกรับสินค้า หรือใช้บริการรถดำ</p>
+                        <p>กด "ซื้อเลย" ระบุจำนวนถาดที่ต้องการ และวันที่สะดวกรับสินค้า หรือใช้บริการรถดำ</p>
                     </div>
                     <div class="step-card">
                         <i class="fas fa-check-circle step-icon"></i>
                         <h3>3. ยืนยันและรอรับ</h3>
-                        <p>ตรวจสอบข้อมูล ยืนยันการจอง และรอรับต้นกล้าคุณภาพถึงมือคุณตามนัดหมาย</p>
+                        <p>ตรวจสอบข้อมูล ยืนยันการซื้อ และรอรับต้นกล้าคุณภาพถึงมือคุณตามนัดหมาย</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section id="seedlings">
+        <section id="seedlings" style="background-color: var(--light-color);">
             <div class="container">
-                <h2>จองต้นกล้าข้าวพันธุ์ดี</h2>
+                <h2>ซื้อต้นกล้าข้าวพันธุ์ดี</h2>
                 <div class="seedling-grid" id="productContainer">
                     <p style="text-align:center; width:100%;">กำลังโหลดข้อมูลสินค้า...</p>
                 </div>
@@ -82,7 +82,7 @@
                 <div class="news-grid">
                     <div class="news-card">
                         <div class="news-img-wrapper">
-                            <img src="https://images.unsplash.com/photo-1599940778173-e276d4acb2be?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="ต้นกล้า">
+                            <img src="../project/images/tonka.jpg" alt="ต้นกล้า">
                         </div>
                         <div class="news-content">
                             <div class="news-date"><i class="far fa-calendar-alt"></i> 10 ม.ค. 2567</div>
@@ -93,7 +93,7 @@
                     </div>
                     <div class="news-card">
                         <div class="news-img-wrapper">
-                            <img src="https://images.unsplash.com/photo-1536304929831-d703779e583c?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="ทุ่งนา">
+                            <img src="../project/images/NA.png" alt="ทุ่งนา">
                         </div>
                         <div class="news-content">
                             <div class="news-date"><i class="far fa-calendar-alt"></i> 12 ม.ค. 2567</div>
@@ -104,7 +104,7 @@
                     </div>
                     <div class="news-card">
                         <div class="news-img-wrapper">
-                            <img src="https://plus.unsplash.com/premium_photo-1661962643569-8d7602f23b27?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="รถดำนา">
+                            <img src="../project/images/DUM.jpeg" alt="รถดำนา">
                         </div>
                         <div class="news-content">
                             <div class="news-date"><i class="far fa-calendar-alt"></i> 15 ม.ค. 2567</div>
@@ -117,12 +117,12 @@
             </div>
         </section>
        
-        <section class="faq-section">
+        <section class="faq-section" style="background-color: var(--light-color);">
             <div class="container">
                 <div class="faq-slider">
                     <button class="arrow left" onclick="slideFAQ(-1)"><i class="fas fa-chevron-left"></i></button>
                     <div class="faq-wrapper" id="faqWrapper">
-                        <div class="faq-slide">
+                        <div class="faq-slide" style="background-color: var(--white-color);">
                             <h2><i class="fas fa-shipping-fast"></i> วิธีการจัดส่งและแพ็คต้นกล้า</h2>
                             <ul>
                                 <li><i class="fas fa-check" style="color:var(--primary-color);"></i> คัดเลือกต้นกล้าแข็งแรง อายุ 20–30 วัน</li>
@@ -194,7 +194,7 @@
                             <div class="stock-info">
                                 <span class="stock-status ${stockClass}">${stockText}</span>
                             </div>
-                            <a href="checkout.html" class="btn-reserve" style="width:100%; text-decoration:none; ${btnStyle}">จองเลย</a>
+                            <a href="checkout.html" class="btn-reserve" style="width:100%; text-decoration:none; ${btnStyle}">ซื้อเลย</a>
                         </div>
                     </div>
                 `;

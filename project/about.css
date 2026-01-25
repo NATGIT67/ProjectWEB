@@ -22,6 +22,7 @@
 }
 
 .about-section {
+    background: var(--light-color);
     padding: 60px 0;
 }
 
@@ -71,7 +72,7 @@
 }
 
 .about-cta {
-    background: #2e7d32;
+    background-color: var(--dark-color);
     color: #fff;
     padding: 60px 20px;
     text-align: center;

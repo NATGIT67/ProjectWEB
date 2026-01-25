@@ -12,10 +12,25 @@
 
     <style>
         /* CSS หลัก (ใส่ไว้ให้แสดงผลได้ทันที) */
-        :root { --primary: #4CAF50; --dark: #333; --light: #f9f9f9; }
-        body { font-family: 'Kanit', sans-serif; margin: 0; background-color: var(--light); color: var(--dark); }
-        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
-        a { text-decoration: none; }
+        :root { 
+            --primary: #4CAF50; 
+            --dark: #333; 
+            --light: #f9f9f9; 
+        }
+        body { 
+            font-family: 'Kanit', sans-serif; 
+            margin: 0; 
+            background-image: url('../project/images/background.png'); 
+           color: var(--dark); 
+         }
+        .container { 
+            max-width: 1200px; 
+            margin: 0 auto; 
+            padding: 0 20px; 
+        }
+        a { 
+            text-decoration: none; 
+        }
 
         /* Navbar */
         .navbar { background: #fff; padding: 15px 0; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
@@ -27,7 +42,12 @@
         .btn-signin { background: var(--primary); color: white; padding: 8px 15px; border-radius: 5px; }
 
         /* Page Header */
-        .page-header { background: #e8f5e9; padding: 40px 0; text-align: center; margin-bottom: 40px; }
+        .page-header { 
+            background: #e8f5e9; 
+            padding: 40px 0; 
+            text-align: center; 
+            margin-bottom: 40px; 
+        }
         .page-header h1 { margin: 0 0 10px 0; color: #2e7d32; }
         .page-header p { color: #555; margin: 0; }
 
@@ -59,7 +79,12 @@
         .btn-reserve:hover { background: #43a047; }
         .btn-reserve.disabled { background: #ccc; pointer-events: none; }
 
-        footer { background: #333; color: white; text-align: center; padding: 20px 0; }
+        footer {
+            background-color: var(--dark-color);
+            color: var(--light-color);
+            text-align: center;
+            padding: 2rem 0;
+        }
     </style>
 </head>
 
@@ -86,7 +111,7 @@
         <section class="page-header">
             <div class="container">
                 <h1>เลือกพันธุ์ต้นกล้าข้าว</h1>
-                <p>ระบบแสดงรายการต้นกล้าข้าวพันธุ์ดีเพื่อให้เกษตรกรสามารถเลือกและจองได้</p>
+                <p>ระบบแสดงรายการต้นกล้าข้าวพันธุ์ดีเพื่อให้เกษตรกรสามารถเลือกและซื้อได้</p>
             </div>
         </section>
 
@@ -98,9 +123,11 @@
 
     </main>
 
-    <footer>
+     <footer>
         <div class="container">
-            <p>&copy; 2024 EasyRice. All Rights Reserved.</p>
+            <h3>EasyRice Seedling Hub</h3>
+            <p>แหล่งรวมพันธุกรรมข้าวคุณภาพ เพื่อเกษตรกรไทย</p>
+            <p style="font-size: 0.8rem; margin-top: 20px; color: #aaa;">&copy; 2024 EasyRice. All Rights Reserved.</p>
         </div>
     </footer>
 

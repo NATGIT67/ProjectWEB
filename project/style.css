@@ -45,11 +45,13 @@ body {
     background-color: var(--white-color);
     /* พื้นหลังเริ่มต้นสำหรับหน้าทั่วไป */
     background-image: url('../project/images/background.png');
-    background-size: cover;
-    background-position: center;
+    background-size: 150% auto;
+    background-position: top;
     background-repeat: no-repeat;
     background-attachment: fixed;
 }
+
+
 
 h1, h2, h3 {
     font-weight: 700;
@@ -74,13 +76,13 @@ ul { list-style: none; }
 }
 
 .btn-primary {
-    background-color: var(--primary-color);
-    color: var(--white-color);
+    background-color: var(--accent-color);
+    color: var(--dark-color);
 }
 .btn-primary:hover {
-    background-color: #1b5e20;
+    background-color: #e1ac17;
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(46, 125, 50, 0.3);
+    box-shadow: 0 4px 12px rgba(77, 87, 19, 0.3);
 }
 
 .btn-secondary {
@@ -193,7 +195,7 @@ footer {
     padding: 0 20px;
 }
 section { padding: 4rem 0; }
-h2 { text-align: center; margin-bottom: 2rem; font-size: 2.5rem; color: var(--dark-color); }
+h2 { text-align: center; margin-bottom: 2rem; font-size: 2.5rem; color: rgb(0, 0, 0); }
 
 /* Hero Section */
 .hero {
@@ -210,7 +212,12 @@ h2 { text-align: center; margin-bottom: 2rem; font-size: 2.5rem; color: var(--da
 
 /* How it Works */
 .steps-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; text-align: center; }
-.step-card { background: var(--white-color); padding: 2rem; border-radius: var(--border-radius); box-shadow: var(--shadow); }
+.step-card { 
+    background: var(--white-color); 
+    padding: 2rem; 
+    border-radius: var(--border-radius); 
+    box-shadow: var(--shadow); 
+}
 .step-icon { font-size: 3rem; margin-bottom: 1rem; color: var(--primary-color); }
 
 /* FAQ Slider */
@@ -260,7 +267,11 @@ h2 { text-align: center; margin-bottom: 2rem; font-size: 2.5rem; color: var(--da
    หน้าที่: Grid แสดงสินค้า, การ์ดสินค้า, ป้ายสถานะ
 ============================================================ */
 
-.seedling-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; }
+.seedling-grid { 
+    display: grid; 
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+    gap: 2rem; 
+}
 .card {
     background: var(--white-color);
     border: 1px solid #ddd;
@@ -270,17 +281,51 @@ h2 { text-align: center; margin-bottom: 2rem; font-size: 2.5rem; color: var(--da
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     display: flex; flex-direction: column;
 }
-.card:hover { transform: translateY(-5px); box-shadow: 0 8px 20px rgba(0,0,0,0.12); }
-.card img { width: 100%; height: 200px; object-fit: cover; }
-.card-content { padding: 1.5rem; display: flex; flex-direction: column; flex-grow: 1; }
-.card-content h3 { margin-bottom: 0.5rem; font-size: 1.5rem; color: var(--primary-color); }
-.price { font-size: 1.25rem; font-weight: 700; color: var(--accent-color); margin-bottom: 1rem; }
+.card:hover { transform: translateY(-5px); 
+    box-shadow: 0 8px 20px rgba(0,0,0,0.12); 
+}
+.card img { 
+    width: 100%; 
+    height: 200px; 
+    object-fit: cover; 
+}
+.card-content { 
+    padding: 1.5rem;
+    display: flex; 
+    flex-direction: column; 
+    flex-grow: 1; 
+}
+.card-content h3 {
+     margin-bottom: 0.5rem; 
+     font-size: 1.5rem; 
+     color: var(--primary-color); 
+}
+.price { 
+    font-size: 1.25rem; 
+    font-weight: 700; 
+    color: var(--accent-color); 
+    margin-bottom: 1rem; 
+}
 
 /* Stock Status */
-.stock-status { padding: 3px 10px; border-radius: 12px; font-weight: 500; font-size: 0.85rem; }
-.stock-status.available { background-color: #e8f5e9; color: #2e7d32; }
-.stock-status.low-stock { background-color: #fff3e0; color: #f57c00; }
-.stock-status.out-of-stock { background-color: #ffebee; color: #c62828; }
+.stock-status { 
+    padding: 3px 10px; 
+    border-radius: 12px; 
+    font-weight: 500; 
+    font-size: 0.85rem; 
+}
+.stock-status.available { 
+    background-color: #e8f5e9; 
+    color: #2e7d32; 
+}
+.stock-status.low-stock { 
+    background-color: #fff3e0; 
+    color: #f57c00; 
+}
+.stock-status.out-of-stock { 
+    background-color: #ffebee; 
+    color: #c62828; 
+}
 
 
 /* ============================================================
@@ -290,7 +335,7 @@ h2 { text-align: center; margin-bottom: 2rem; font-size: 2.5rem; color: var(--da
 ============================================================ */
 
 .login-page-body {
-    background: linear-gradient(135deg, rgba(232, 245, 233, 0.9) 0%, rgba(255, 253, 231, 0.9) 100%), url('../project/images/background.png');
+    background-image: url('../project/images/background.png');
     background-size: cover;
     background-attachment: fixed;
     min-height: 100vh;
@@ -380,7 +425,7 @@ h2 { text-align: center; margin-bottom: 2rem; font-size: 2.5rem; color: var(--da
     box-shadow: 0 15px 35px rgba(0,0,0,0.2);
 }
 .contact-sidebar {
-    background: rgba(46, 125, 50, 0.9); /* Dark Green Tint */
+    background: rgba(66, 66, 66, 0.9); /* Dark Green Tint */
     backdrop-filter: blur(10px);
     padding: 50px 40px;
     color: var(--white-color);
@@ -513,3 +558,4 @@ h2 { text-align: center; margin-bottom: 2rem; font-size: 2.5rem; color: var(--da
     .sidebar-header { display: none; }
     .menu-item { white-space: nowrap; padding: 8px 15px; font-size: 0.9rem; }
 }
+
