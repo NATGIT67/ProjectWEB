@@ -121,8 +121,7 @@
         <section class="faq-section">
             <div class="faq-slider">
             <div class="faq-wrapper" id="faqWrapper">
-
-                 <div class="faq-slide">
+                <div class="faq-slide">
                     <h2>คำถามที่พบบ่อย → วิธีการจัดส่งอย่างไร</h2>
                         <ul>
                           <li>เลือกต้นกล้าแข็งแรง อายุ 20–30 วัน</li>
@@ -131,7 +130,8 @@
                           <li>ใส่กล่องที่ระบายอากาศได้</li>
                           <li>จัดส่งช่วงเช้าหรือเย็น</li>
                        </ul>
-                 </div>
+                </div>
+
 
             <div class="faq-slide">
                    <h2>คำถามที่พบบ่อย → จะเลือกพันธุ์อย่างไร</h2>
@@ -146,6 +146,7 @@
 
             </div>
         </div>
+                
 
     <button onclick="slideFAQ(-1)">◀</button>
     <button onclick="slideFAQ(1)">▶</button>
@@ -188,17 +189,19 @@
 
     let faqIndex = 0;
 
-    function slideFAQ(direction) {
-        const wrapper = document.getElementById("faqWrapper");
-        const slides = document.querySelectorAll(".faq-slide");
+function slideFAQ(direction) {
+    const wrapper = document.getElementById("faqWrapper");
+    const slides = document.querySelectorAll(".faq-slide");
 
-        faqIndex += direction;
+    faqIndex += direction;
 
-        if (faqIndex < 0) faqIndex = slides.length - 1;
-        if (faqIndex >= slides.length) faqIndex = 0;
+    if (faqIndex < 0) faqIndex = slides.length - 1;
+    if (faqIndex >= slides.length) faqIndex = 0;
 
-        wrapper.style.transform = `translateX(-${faqIndex * 100}%)`;
-    }
+    wrapper.style.transform = `translateX(-${faqIndex * 100}%)`;
+}
+
+    
 </script>
 
 </body>

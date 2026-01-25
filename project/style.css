@@ -791,4 +791,15 @@ footer { background-color: var(--dark-color); color: var(--light-color); text-al
 .arrow:hover {
     background: rgba(0,0,0,0.75);
 }
+/* ตัวห่อสไลด์ (ต้องมี!) */
+.faq-wrapper {
+    display: flex;
+    transition: transform 0.5s ease;
+}
+
+/* ให้แต่ละสไลด์กว้างเต็ม 1 หน้า */
+.faq-slide {
+    min-width: 100%;
+}
+
 
