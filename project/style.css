@@ -736,84 +736,71 @@ footer { background-color: var(--dark-color); color: var(--light-color); text-al
 
 
 /*บังอร*/
+/* ===== ตัวครอบสไลด์ ===== */
 .faq-slider {
-    max-width: 700px;
-    margin: 40px auto;
-    position: relative;
-    overflow: hidden;
+  max-width: 700px;
+  margin: 40px auto;
+  position: relative;
+  overflow: hidden;
 }
 
-/* กล่องแต่ละสไลด์ 
+/* แถบเลื่อน */
+.faq-wrapper {
+  display: flex;
+  transition: transform 0.5s ease;
+}
+
+/* กล่องแต่ละสไลด์ */
 .faq-slide {
-    background: rgba(158,158,158,0.9); /* ดูโปรขึ้น */
-    padding: 20px 28px;   /* 🔻 ลด padding */
-    border-radius: 16px;
-    box-sizing: border-box;
-    min-width: 100%;      /* สำคัญสำหรับ slider */
+  min-width: 100%;        /* 1 หน้า */
+  flex-shrink: 0;
+  box-sizing: border-box;
+  background: #b3b3b3;
+  padding: 30px 40px;
+  border-radius: 20px;
 }
-
-
 
 /* หัวข้อ */
 .faq-slide h2 {
-    font-size: 1.2rem;   /* 🔻 เล็กลง */
-    margin-bottom: 10px;
-    text-align: center;
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+  text-align: center;
 }
-
 
 /* รายการ */
 .faq-slide ul {
-    font-size: 0.95rem;
-    line-height: 1.5;
-    padding-left: 18px;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  padding-left: 18px;
 }
 
 .faq-slide ul li {
-    margin-bottom: 4px;
+  margin-bottom: 4px;
 }
 
-
-/* ===== ลูกศรซ้ายขวา ===== */
+/* ===== ลูกศร ===== */
 .arrow {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  background: none;      /* ❌ ไม่เอาวงกลม */
+  background: none;
   border: none;
   font-size: 36px;
   color: #fff;
   cursor: pointer;
   z-index: 10;
-    
 }
 
-.arrow.left { left: -50px; }
+.arrow.left  { left: -50px; }
 .arrow.right { right: -50px; }
 
 .arrow:hover {
-    transform: translateY(-50%) scale(1.2);
-    color: #f1f1f1;
-}
-/* ตัวห่อสไลด์ (ต้องมี!) */
-.faq-slider {
-  max-width: 700px;
-  margin: 40px auto;
-  position: relative;
-  overflow: hidden;   /* กันไม่ให้สไลด์ล้น */
+  transform: translateY(-50%) scale(1.2);
+  color: #f1f1f1;
 }
 
-.faq-wrapper {
-  display: flex;              /* ทำให้เรียงแนวนอน */
-  transition: transform 0.5s ease;
-}
-.faq-slide {
-  min-width: 100%;            /* 1 สไลด์ = 1 หน้า */
-  box-sizing: border-box;
-}
-html, body {
-  overflow-y: auto;
-}
+
+
 
 
 <<<<<<< HEAD
@@ -1253,158 +1240,4 @@ body { margin: 0; font-family: 'Kanit', sans-serif; overflow: hidden; }
 <<<<<<< HEAD
 
 
-/* --- css/about.css --- */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: "Segoe UI", sans-serif;
-}
 
-body {
-  color: #333;
-}
-
-/* Navbar */
-.navbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 16px 40px;
-  background: #fff8ef;
-}
-
-.logo {
-  font-weight: bold;
-  font-size: 22px;
-  color: #2e7d32;
-}
-
-nav a {
-  margin: 0 12px;
-  text-decoration: none;
-  color: #444;
-}
-
-nav a.active {
-  color: #2e7d32;
-  font-weight: bold;
-}
-
-.login-btn {
-  border: 2px solid #2e7d32;
-  background: none;
-  padding: 8px 16px;
-  border-radius: 20px;
-  color: #2e7d32;
-  cursor: pointer;
-}
-
-/* Hero */
-.hero {
-  height: 70vh;
-  background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)),
-    url("rice-field.jpg") center/cover no-repeat;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-}
-
-.hero-content {
-  color: #fff;
-  max-width: 700px;
-}
-
-.hero h1 {
-  font-size: 48px;
-  margin-bottom: 16px;
-}
-
-.subtitle {
-  font-size: 22px;
-  margin-bottom: 12px;
-}
-
-.desc {
-  font-size: 18px;
-}
-
-/* Sections */
-.section {
-  padding: 60px 10%;
-  text-align: center;
-}
-
-.section h2 {
-  font-size: 32px;
-  margin-bottom: 20px;
-  color: #2e7d32;
-}
-
-.section p {
-  font-size: 18px;
-  line-height: 1.7;
-}
-
-.gray {
-  background: #f7f7f7;
-}
-
-/* Grid */
-.grid-2 {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 30px;
-}
-
-.grid-3 {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 30px;
-}
-
-/* Card */
-.card {
-  background: #fff;
-  padding: 30px;
-  border-radius: 12px;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-  text-align: left;
-}
-
-.card h3 {
-  margin-bottom: 12px;
-  color: #2e7d32;
-}
-
-.card ul {
-  padding-left: 20px;
-}
-
-/* CTA */
-.cta {
-  background: #2e7d32;
-  color: #fff;
-  padding: 60px 20px;
-  text-align: center;
-}
-
-.cta h2 {
-  font-size: 32px;
-  margin-bottom: 12px;
-}
-
-.cta button {
-  margin-top: 20px;
-  padding: 12px 28px;
-  border: none;
-  border-radius: 30px;
-  font-size: 16px;
-  background: #fff;
-  color: #2e7d32;
-  cursor: pointer;
-}
-=======
->>>>>>> 67d7315dfac5eb297885e81c7d23a22faca664f6
->>>>>>> 6e61e378f909d3147c4455c738e9aaf059936983
