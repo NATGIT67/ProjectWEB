@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EasyRice - ประวัติการสั่งซื้อ</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="login-page-body">
+
+    <header class="navbar">
+        <div class="container">
+            <a href="index.html" class="logo">🌾 EasyRice</a>
+            <nav>
+                <ul>
+                    <li><a href="index.html">หน้าแรก</a></li>
+                    <li><a href="product.html">สินค้า</a></li>
+                    <li><a href="history.html" class="active">ประวัติการสั่งซื้อ</a></li>
+                    <li><a href="contact.html">ติดต่อเรา</a></li>
+                </ul>
+            </nav>
+            <div class="user-profile">
+                <span>สวัสดี, คุณสมชาย</span>
+                <a href="sign-in.html" class="btn-signin" style="margin-left:10px;">ออกจากระบบ</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container" style="margin-top: 50px; margin-bottom: 50px;">
+        <div class="login-card" style="max-width: 1000px; width: 100%;">
+            <div class="login-header" style="text-align: left; border-bottom: 2px solid var(--primary-color); padding-bottom: 15px;">
+                <h2><i class="fas fa-history"></i> ประวัติการสั่งซื้อ</h2>
+                <p>ตรวจสอบสถานะต้นกล้าและบริการปักดำของคุณ</p>
+            </div>
+
+            <div class="order-history-table" style="margin-top: 25px; overflow-x: auto;">
+                <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                    <thead>
+                        <tr style="background: var(--light-color); color: var(--dark-color);">
+                            <th style="padding: 15px;">เลขที่คำสั่งซื้อ</th>
+                            <th style="padding: 15px;">วันที่สั่ง</th>
+                            <th style="padding: 15px;">รายการสินค้า/บริการ</th>
+                            <th style="padding: 15px;">ยอดรวม</th>
+                            <th style="padding: 15px;">มัดจำ (50%)</th>
+                            <th style="padding: 15px;">สถานะ</th>
+                            <th style="padding: 15px;">จัดการ</th>
+                        </tr>
+                    </thead>
+                    <tbody id="historyBody">
+                        <tr style="border-bottom: 1px solid #eee;">
+                            <td style="padding: 15px;">#ER-2025001</td>
+                            <td style="padding: 15px;">20 ธ.ค. 2025</td>
+                            <td style="padding: 15px;">
+                                <strong>ข้าวหอมมะลิ 105</strong><br>
+                                <small>จำนวน 50 ถาด (รับเอง)</small>
+                            </td>
+                            <td style="padding: 15px;">฿650</td>
+                            <td style="padding: 15px;">฿325</td>
+                            <td style="padding: 15px;">
+                                <span class="status-badge status-pending">รอตรวจสอบสลิป</span>
+                            </td>
+                            <td style="padding: 15px;">
+                                <button class="btn-view"><i class="fas fa-search"></i> ดูรายละเอียด</button>
+                            </td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #eee;">
+                            <td style="padding: 15px;">#ER-2025002</td>
+                            <td style="padding: 15px;">15 ธ.ค. 2025</td>
+                            <td style="padding: 15px;">
+                                <strong>บริการปักดำข้าว (รวมกล้า)</strong><br>
+                                <small>พื้นที่ 5 ไร่ (จัดส่ง)</small>
+                            </td>
+                            <td style="padding: 15px;">฿9,000</td>
+                            <td style="padding: 15px;">฿4,500</td>
+                            <td style="padding: 15px;">
+                                <span class="status-badge status-success">ชำระเงินแล้ว</span>
+                            </td>
+                            <td style="padding: 15px;">
+                                <button class="btn-view"><i class="fas fa-search"></i> ดูรายละเอียด</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+
+
+</body>
+</html>
