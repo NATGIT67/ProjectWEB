@@ -44,7 +44,7 @@ body {
     color: var(--dark-color);
     background-color: var(--white-color);
     /* พื้นหลังเริ่มต้นสำหรับหน้าทั่วไป */
-    background-image: url('../project/images/background.png');
+    background-image: url('images/background.png');
     background-size: 150% auto;
     background-position: top;
     background-repeat: no-repeat;
@@ -335,7 +335,7 @@ h2 { text-align: center; margin-bottom: 2rem; font-size: 2.5rem; color: rgb(0, 0
 ============================================================ */
 
 .login-page-body {
-    background-image: url('../project/images/background.png');
+    background-image: url('images/background.png');
     background-size: cover;
     background-attachment: fixed;
     min-height: 100vh;
