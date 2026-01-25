@@ -15,6 +15,7 @@
 
     <!-- Header -->
     <header class="navbar">
+        
         <div class="container">
             <a href="#" class="logo">🌾 EasyRice</a>
             <nav>
@@ -118,6 +119,7 @@
         </section>
        
         <!-- FAQ SLIDER -->
+
        <section class="faq-section">
   <div class="faq-slider">
 
@@ -151,6 +153,7 @@
 
   </div>
 </section>
+
 
 
 
@@ -190,19 +193,19 @@
 
     let faqIndex = 0;
 
-function slideFAQ(direction) {
+    let currentIndex = 0;
+
+    function slideFAQ(direction) {
     const wrapper = document.getElementById("faqWrapper");
-    const slides = document.querySelectorAll(".faq-slide");
+    const totalSlides = document.querySelectorAll(".faq-slide").length;
 
-    faqIndex += direction;
+    currentIndex += direction;
 
-    if (faqIndex < 0) faqIndex = slides.length - 1;
-    if (faqIndex >= slides.length) faqIndex = 0;
+    if (currentIndex < 0) currentIndex = totalSlides - 1;
+    if (currentIndex >= totalSlides) currentIndex = 0;
 
-    wrapper.style.transform = `translateX(-${faqIndex * 100}%)`;
-}
-
-    
+    wrapper.style.transform = `translateX(-${currentIndex * 100}%)`;
+    }
 </script>
 
 </body>
