@@ -56,6 +56,13 @@
 
                 <button type="submit" class="btn-primary full-width">เข้าสู่ระบบ</button>
             </form>
+            
+            <div class="sign-in-link" style="text-align:center; margin-top:15px;">
+    <span>ยังไม่มีบัญชี?</span>
+    <a href="sign-up.html" style="color:#2e7d32; font-weight:500;">
+        สมัครสมาชิก
+    </a>
+</div>
 
             <div class="divider"><span>หรือ</span></div>
 
@@ -67,26 +74,21 @@
     </main>
 
     <script>
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            alert('เข้าสู่ระบบสำเร็จ!');
-            // ในอนาคต คุณอาจจะ redirect ไปยังหน้าผู้ใช้หรือแอดมิน
-            // window.location.href = 'index.html'; 
-        });
-            document.getElementById('loginForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        const username = document.getElementById('username').value;
-        const password = document.getElementById('password').value;
+document.getElementById('loginForm').addEventListener('submit', function(e) {
+    e.preventDefault();
 
-        // กำหนด Username และ Password สำหรับ Admin
-        if (username === "admin" && password === "1234") {
-            alert('ยินดีต้อนรับผู้ดูแลระบบ');
-            window.location.href = 'admin.html'; // ไปหน้า Admin
-        } else {
-            alert('เข้าสู่ระบบสำเร็จ (ผู้ใช้งานทั่วไป)');
-            window.location.href = 'index.html'; // ไปหน้าแรกปกติ
-        }
-    });
-    </script>
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+
+    if (username === "admin" && password === "1234") {
+        alert('ยินดีต้อนรับผู้ดูแลระบบ');
+        window.location.href = 'admin.html';
+    } else {
+        alert('เข้าสู่ระบบสำเร็จ');
+        window.location.href = 'index.html';
+    }
+});
+</script>
+
 </body>
 </html>

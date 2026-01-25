@@ -77,7 +77,7 @@ section { padding: 4rem 0; }
 
 /* --- Hero Section --- */
 .hero {
-    background-image: url('../images/background.png');
+    background-image: url('../project/images/background.png');
     background-size: cover;
     background-position:cover;
     height: 90vh;
