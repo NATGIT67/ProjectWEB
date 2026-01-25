@@ -9,7 +9,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;700&display=swap" rel="stylesheet">
 </head>
-<body>
+
+<body> 
+    
 
     <!-- Header -->
     <header class="navbar">
@@ -114,76 +116,57 @@
                 </div>
             </div>
         </section>
-       <section class="page faq" id="page2">
-            <div class="content-box">
-                <h2>คำถามที่พบบ่อย</h2>
-                    <ul>
-                        <li>เลือกพันธุ์เหมาะกับพื้นที่</li>
-                        <li>ตรงฤดูกาล</li>
-                        <li>ต้านทานโรค</li>
-                        <li>ผลผลิตสูง</li>
-                        <li>เมล็ดพันธุ์คุณภาพ</li>
-                    </ul>
-            </div>
-        </section>
+       
         <!-- FAQ SLIDER -->
-        <section class="faq-slider">
-            <button class="arrow left" onclick="slideFAQ(-1)">&#10094;</button>
-
+        <section class="faq-section">
+            <div class="faq-slider">
             <div class="faq-wrapper" id="faqWrapper">
+                <div class="faq-slide">
+                    <h2>คำถามที่พบบ่อย → วิธีการจัดส่งอย่างไร</h2>
+                        <ul>
+                          <li>เลือกต้นกล้าแข็งแรง อายุ 20–30 วัน</li>
+                          <li>มัดเป็นกำเล็ก ๆ</li>
+                          <li>ห่อด้วยผ้าชุบน้ำ</li>
+                          <li>ใส่กล่องที่ระบายอากาศได้</li>
+                          <li>จัดส่งช่วงเช้าหรือเย็น</li>
+                       </ul>
+                </div>
 
-         <!-- Slide 1 -->
+
             <div class="faq-slide">
-                <h2>คำถามที่พบบ่อย → วิธีการจัดส่งอย่างไร</h2>
-                    <ul>
-                        <li>เลือกต้นกล้าแข็งแรง อายุ 20–30 วัน</li>
-                        <li>มัดเป็นกำเล็ก ๆ</li>
-                        <li>ห่อด้วยผ้าชุบน้ำ</li>
-                        <li>ใส่กล่องที่ระบายอากาศได้</li>
-                        <li>จัดส่งช่วงเช้าหรือเย็น</li>
-                    </ul>
-            </div>
-
-        <!-- Slide 2 -->
-            <div class="faq-slide">
-                <h2>คำถามที่พบบ่อย → จะเลือกพันธุ์อย่างไร</h2>
-                    <ul>
-                        <li>เลือกให้เหมาะกับพื้นที่</li>
-                        <li>ดูฤดูกาลเพาะปลูก</li>
-                        <li>ต้านทานโรค</li>
-                        <li>ให้ผลผลิตสูง</li>
-                        <li>เมล็ดพันธุ์คุณภาพ</li>
-                    </ul>
-            </div>
-
-         <!-- Slide 3 -->
-            <div class="faq-slide">
-                <h2>คำถามที่พบบ่อย → ปลูกเดือนไหนดีที่สุด</h2>
-                    <ul>
-                         <li>ฤดูฝน: พ.ค.–ต.ค.</li>
-                        <li>นอกฤดูฝน: พ.ย.–เม.ย.</li>
-                        <li>ต้องมีน้ำชลประทาน</li>
-                    </ul>
-            </div>
+                   <h2>คำถามที่พบบ่อย → จะเลือกพันธุ์อย่างไร</h2>
+                        <ul>
+                            <li>เลือกให้เหมาะกับพื้นที่</li>
+                            <li>ดูฤดูกาลเพาะปลูก</li>
+                            <li>ต้านทานโรค</li>
+                            <li>ให้ผลผลิตสูง</li>
+                            <li>เมล็ดพันธุ์คุณภาพ</li>
+                        </ul>
+                 </div>
 
             </div>
+        </div>
+                
 
-            <button class="arrow right" onclick="slideFAQ(1)">&#10095;</button>
-        </section>
+    <button onclick="slideFAQ(-1)">◀</button>
+    <button onclick="slideFAQ(1)">▶</button>
+</section>
+
 
     <!-- Footer -->
     <footer>
-        <div class="container">
-            <p>&copy; 2024 SeedlingHub. All Rights Reserved.</p>
-        </div>
+    <div class="container">
+        <p>&copy; 2024 SeedlingHub. All Rights Reserved.</p>
+    </div>
     </footer>
 
-     <script>   function displayProducts() {
+<script>
+    function displayProducts() {
         const products = JSON.parse(localStorage.getItem('easyrice_products'));
-        const grid = document.querySelector('.seedling-grid'); // คลาสที่ครอบการ์ดสินค้า
-        
-        if(products && grid) {
-            grid.innerHTML = ''; // ล้างค่าเก่า
+        const grid = document.querySelector('.seedling-grid');
+
+        if (products && grid) {
+            grid.innerHTML = '';
             products.forEach(p => {
                 grid.innerHTML += `
                     <div class="card">
@@ -199,8 +182,27 @@
             });
         }
     }
-    window.onload = displayProducts;
-    </script>
-    testtttttttttttttttttttttttttttttttttttttttttttttttt
+
+    window.onload = function () {
+        displayProducts();
+    };
+
+    let faqIndex = 0;
+
+function slideFAQ(direction) {
+    const wrapper = document.getElementById("faqWrapper");
+    const slides = document.querySelectorAll(".faq-slide");
+
+    faqIndex += direction;
+
+    if (faqIndex < 0) faqIndex = slides.length - 1;
+    if (faqIndex >= slides.length) faqIndex = 0;
+
+    wrapper.style.transform = `translateX(-${faqIndex * 100}%)`;
+}
+
+    
+</script>
+
 </body>
 </html>
