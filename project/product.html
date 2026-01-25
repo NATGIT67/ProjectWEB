@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EasyRice - เลือกต้นกล้า</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="navbar">
+        <div class="container">
+            <a href="index.html" class="logo">🌾 EasyRice</a>
+            <nav>
+                <ul>
+                    <li><a href="index.html">หน้าแรก</a></li>
+                    <li><a href="product.html" class="active">สินค้า</a></li>
+                    <li><a href="index.html#service">เกี่ยวกับเรา </a></li>
+                    <li><a href="#">ข่าวสาร</a></li>
+                    <li><a href="#">ติดต่อ</a></li>
+                </ul>
+            </nav>
+            <a href="#" class="btn-signin">เข้าสู่ระบบ</a>
+        </div>
+    </header>
+
+    <main>
+        <!-- Page Header -->
+        <section class="page-header">
+            <div class="container">
+                <h1>เลือกพันธุ์ต้นกล้าของคุณ</h1>
+                <p>เรามีต้นกล้าข้าวพันธุ์ดีหลากหลายชนิดให้คุณเลือก</p>
+            </div>
+        </section>
+
+        <!-- Product Grid Section -->
+        <section class="container">
+            <div class="seedling-grid">
+                <!-- Product Card 1 -->
+                <div class="card">
+                    <img src="https://via.placeholder.com/300x200.png?text=ข้าวหอมมะลิ" alt="ข้าวหอมมะลิ">
+                    <div class="card-content">
+                        <h3>ข้าวหอมมะลิ 105</h3>
+                        <p>ต้นกล้าข้าวหอมมะลิพันธุ์ดี มีกลิ่นหอม ข้าวสุกนุ่ม</p>
+                        <div class="price">฿35 / ถาด</div>
+                        <div class="stock-info">
+                            <span class="stock-status available">✅ มีสินค้า</span>
+                            <span class="stock-quantity">เหลือ 150 ถาด</span>
+                        </div>
+                        <a href="checkout.html" class="btn-reserve">เลือกสินค้า</a>
+                    </div>
+                </div>
+                <!-- Product Card 2 -->
+                <div class="card">
+                    <img src="https://via.placeholder.com/300x200.png?text=ข้าวไรซ์เบอร์รี่" alt="ข้าวไรซ์เบอร์รี่">
+                    <div class="card-content">
+                        <h3>ข้าวไรซ์เบอร์รี่</h3>
+                        <p>ข้าวพันธุ์ใหม่ อุดมด้วยสารต้านอนุมูลอิสระ</p>
+                        <div class="price">฿45 / ถาด</div>
+                        <div class="stock-info">
+                            <span class="stock-status low-stock">⚠️ เหลือน้อย</span>
+                            <span class="stock-quantity">เหลือ 25 ถาด</span>
+                        </div>
+                        <a href="checkout.html" class="btn-reserve">เลือกสินค้า</a>
+                    </div>
+                </div>
+                <!-- Product Card 3 -->
+                <div class="card">
+                    <img src="https://via.placeholder.com/300x200.png?text=ข้าว RD43" alt="ข้าว RD43">
+                    <div class="card-content">
+                        <h3>ข้าว RD43</h3>
+                        <p>พันธุ์ข้าวทนโรค ให้ผลผลิตสูง เหมาะสำหรับการปลูกเชิงพาณิชย์</p>
+                        <div class="price">฿30 / ถาด</div>
+                        <div class="stock-info">
+                            <span class="stock-status available">✅ มีสินค้า</span>
+                            <span class="stock-quantity">เหลือ 200 ถาด</span>
+                        </div>
+                        <a href="checkout.html" class="btn-reserve">เลือกสินค้า</a>
+                    </div>
+                </div>
+                <!-- Product Card 4 -->
+                <div class="card">
+                    <img src="https://via.placeholder.com/300x200.png?text=ข้าวปทุมธานี 1" alt="ข้าวปทุมธานี 1">
+                    <div class="card-content">
+                        <h3>ข้าวปทุมธานี 1</h3>
+                        <p>พันธุ์ข้าวที่มีอายุสั้น แต่ให้ผลผลิตดี ข้าวสุกขาวนวล</p>
+                        <div class="price">฿32 / ถาด</div>
+                        <div class="stock-info">
+                            <span class="stock-status available">✅ มีสินค้า</span>
+                            <span class="stock-quantity">เหลือ 120 ถาด</span>
+                        </div>
+                        <a href="checkout.html" class="btn-reserve">เลือกสินค้า</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 SeedlingHub. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script>   function displayProducts() {
+        const products = JSON.parse(localStorage.getItem('easyrice_products'));
+        const grid = document.querySelector('.seedling-grid'); // คลาสที่ครอบการ์ดสินค้า
+        
+        if(products && grid) {
+            grid.innerHTML = ''; // ล้างค่าเก่า
+            products.forEach(p => {
+                grid.innerHTML += `
+                    <div class="card">
+                        <img src="${p.img}" alt="${p.name}">
+                        <div class="card-content">
+                            <h3>${p.name}</h3>
+                            <p>เวลาเจริญเติบโต: ${p.time} วัน</p>
+                            <div class="price">฿${p.price} / ถาด</div>
+                            <a href="checkout.html" class="btn-reserve">จองเลย</a>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+    }
+    window.onload = displayProducts;</script>
+    
+</body>
+</html>

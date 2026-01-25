@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EasyRice - ระบบจองต้นกล้าและบริการปักดำข้าว</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="navbar">
+        <div class="container">
+            <a href="#" class="logo">🌾 EasyRice</a>
+            <nav>
+                <ul>
+                    <li><a href="index.html" class="active">หน้าแรก</a></li>
+                    <li><a href="product.html">สินค้า</a></li>
+                    <li><a href="#service">เกี่ยวกับเรา</a></li>
+                    <li><a href="#">ข่าวสาร</a></li>
+                    <li><a href="contact.html">ติดต่อ</a></li>
+                    <li id="adminMenu" style="display:none;"><a href="admin.html" style="color: red;">จัดการระบบ</a></li>
+                </ul>
+            </nav>
+            <a href="sign-in.html" class="btn-signin">เข้าสู่ระบบ</a>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-content">
+                <h1>ยินดีต้อนรับสู่ EasyRice</h1>
+                <h1>ระบบจองต้นกล้าและบริการปักดำข้าวออนไลน์</h1>
+                <p>สะดวก รวดเร็ว มั่นใจได้ในคุณภาพสำหรับนาของคุณ</p>
+                <div class="hero-buttons">
+                    <a href="product.html" class="btn-primary">จองต้นกล้า</a>
+                    <a href="#service" class="btn-secondary">จองบริการปักดำ</a>
+                </div>
+            </div>
+            
+        </section>
+        
+        <!-- How it Works Section -->
+        <section class="container how-it-works">
+            <h2>วิธีการใช้งานระบบ</h2>
+            <div class="steps-grid">
+                <div class="step-card">
+                    <div class="step-icon">1️⃣</div>
+                    <h3>เลือกพันธุ์และบริการ</h3>
+                    <p>เลือกพันธุ์ข้าว หรือบริการปักดำที่ต้องการ</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-icon">2️⃣</div>
+                    <h3>กรอกข้อมูลการจอง</h3>
+                    <p>ระบุจำนวน วันที่ และสถานที่</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-icon">3️⃣</div>
+                    <h3>ยืนยันและชำระเงิน</h3>
+                    <p>ยืนยันการจองและชำระเงินผ่านระบบ</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Seedling Reservation Section -->
+        <section id="seedlings" class="container">
+            <h2>จองต้นกล้าข้าวพันธุ์ดี</h2>
+            <div class="seedling-grid">
+                <!-- Product Card 1 -->
+                <div class="card">
+                    <img src="https://via.placeholder.com/300x200.png?text=ข้าวหอมมะลิ" alt="ข้าวหอมมะลิ">
+                    <div class="card-content">
+                        <h3>ข้าวหอมมะลิ 105</h3>
+                        <p>ต้นกล้าข้าวหอมมะลิพันธุ์ดี มีกลิ่นหอม ข้าวสุกนุ่ม</p>
+                        <div class="price">฿35 / ถาด</div>
+                        <div class="stock-info">
+                            <span class="stock-status available">✅ มีสินค้า</span>
+                            <span class="stock-quantity">เหลือ 150 ถาด</span>
+                        </div>
+                        <a href="product.html" class="btn-reserve">จองเลย</a>
+                    </div>
+                </div>
+                <!-- Product Card 2 -->
+                <div class="card">
+                    <img src="https://via.placeholder.com/300x200.png?text=ข้าวไรซ์เบอร์รี่" alt="ข้าวไรซ์เบอร์รี่">
+                    <div class="card-content">
+                        <h3>ข้าวไรซ์เบอร์รี่</h3>
+                        <p>ข้าวพันธุ์ใหม่ อุดมด้วยสารต้านอนุมูลอิสระ</p>
+                        <div class="price">฿45 / ถาด</div>
+                        <div class="stock-info">
+                            <span class="stock-status low-stock">⚠️ เหลือน้อย</span>
+                            <span class="stock-quantity">เหลือ 25 ถาด</span>
+                        </div>
+                        <a href="product.html" class="btn-reserve">จองเลย</a>
+                    </div>
+                </div>
+                <!-- Product Card 3 -->
+                <div class="card">
+                    <img src="https://via.placeholder.com/300x200.png?text=ข้าว RD43" alt="ข้าว RD43">
+                    <div class="card-content">
+                        <h3>ข้าว RD43</h3>
+                        <p>พันธุ์ข้าวทนโรค ให้ผลผลิตสูง เหมาะสำหรับการปลูกเชิงพาณิชย์</p>
+                        <div class="price">฿30 / ถาด</div>
+                        <div class="stock-info">
+                            <span class="stock-status out-of-stock">❌ หมดสต็อก</span>
+                            <span class="stock-quantity">เหลือ 0 ถาด</span>
+                        </div>
+                        <a href="#" class="btn-reserve disabled" disabled>หมดสต็อก</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- FAQ Section -->
+        <section class="container faq">
+            <h2>คำถามที่พบบ่อย</h2>
+
+            <div class="faq-item">
+                <button class="faq-question">
+                     วิธีการจัดส่งกล้าข้าว
+                    <span class="icon">+</span>
+                </button>
+            <div class="faq-answer">
+                <ul>
+                    <li>เลือกต้นกล้าแข็งแรง อายุ 20–30 วัน</li>
+                    <li>ห่อรากด้วยผ้าหรือกระดาษชุบน้ำให้ชื้น</li>
+                    <li>ใส่กล่องหรือตะกร้าที่มีรูระบายอากาศ ไม่อัดกัน</li>
+                </ul>
+            </div>
+        <section
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 SeedlingHub. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+     <script>   function displayProducts() {
+        const products = JSON.parse(localStorage.getItem('easyrice_products'));
+        const grid = document.querySelector('.seedling-grid'); // คลาสที่ครอบการ์ดสินค้า
+        
+        if(products && grid) {
+            grid.innerHTML = ''; // ล้างค่าเก่า
+            products.forEach(p => {
+                grid.innerHTML += `
+                    <div class="card">
+                        <img src="${p.img}" alt="${p.name}">
+                        <div class="card-content">
+                            <h3>${p.name}</h3>
+                            <p>เวลาเจริญเติบโต: ${p.time} วัน</p>
+                            <div class="price">฿${p.price} / ถาด</div>
+                            <a href="checkout.html" class="btn-reserve">จองเลย</a>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+    }
+    window.onload = displayProducts;
+    </script>
+    testtttttttttttttttttttttttttttttttttttttttttttttttt
+</body>
+</html>

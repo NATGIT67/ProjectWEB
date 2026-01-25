@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EasyRice - สั่งซื้อสินค้า</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="login-page-body">
+
+       <header class="navbar">
+        <div class="container">
+            <a href="#" class="logo">🌾 EasyRice</a>
+            <nav>
+                <ul>
+                    <li><a href="index.html" class="active">หน้าแรก</a></li>
+                    <li><a href="product.html">สินค้า</a></li>
+                    <li><a href="#service">เกี่ยวกับเรา</a></li>
+                    <li><a href="#">ข่าวสาร</a></li>
+                    <li><a href="#">ติดต่อ</a></li>
+                </ul>
+            </nav>
+            <a href="sign-in.html" class="btn-signin">เข้าสู่ระบบ</a>
+        </div>
+    </header>
+
+    <main class="container" style="margin-top: 50px; margin-bottom: 50px;">
+        <div class="unified-contact-card" style="grid-template-columns: 1fr 1.5fr;">
+            
+            <div class="contact-sidebar">
+                <h2>ข้อมูลพันธุ์ข้าว</h2>
+                <div class="product-preview">
+                    <img src="https://scontent.fcnx4-1.fna.fbcdn.net/v/t1.6435-9/68727995_2046961368782899_8682895568529260544_n.jpg?stp=dst-jpg_s960x960_tt6&_nc_cat=111&ccb=1-7&_nc_sid=833d8c&_nc_ohc=p9HxK_UD8BoQ7kNvwF-oPOs&_nc_oc=Adnj5bJfS0DAAwsuEgoZMJhE1Hf_61xQ2WPBrH3JSKboDI7oYvs3Kjlcfmhdkw183wc&_nc_zt=23&_nc_ht=scontent.fcnx4-1.fna&_nc_gid=TVRKscVPOLc4sI2N2jJfkQ&oh=00_Afkqhl75FWE5brb8trs3m0YcscvbAhr8Xxop2IP4Y1zriw&oe=696CF188" alt="ข้าวหอมมะลิ 105" class="order-image">
+                    <div class="product-info-text">
+                        <strong>พันธุ์ข้าว: ข้าวหอมมะลิ 105</strong>
+                        <p><i class="fas fa-seedling"></i> เวลาเจริญเติบโต: 120 วัน</p>
+                        <p><i class="fas fa-tag"></i> ราคาต้นกล้า: 13 บาท / ถาด</p>
+                        <p><i class="fas fa-tractor"></i> บริการปักดำ: 1,800 บาท / ไร่ (รวมกล้าแล้ว)</p>
+                    </div>
+                </div>
+                
+                <div class="order-notice" style="margin-top: 30px; padding: 15px; background: rgba(255,183,77,0.2); border-radius: 10px;">
+                    <p style="color: var(--accent-color); font-weight: bold;">
+                        <i class="fas fa-exclamation-triangle"></i> หมายเหตุ:
+                    </p>
+                    <p>ต้องชำระมัดจำ 50% ของยอดสั่งซื้อทั้งหมดเพื่อยืนยันการจอง หากไม่ทำการแนบหลักฐานการชำระเงินจะไม่สามารถดำเนินการสั่งซื้อได้</p>
+                </div>
+            </div>
+
+            <div class="contact-form-body">
+                <h3>รายละเอียดการสั่งซื้อ</h3>
+                <form id="orderForm">
+                    <div class="checkout-grid-form" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <div class="form-group">
+                            <label>ชื่อ-นามสกุล</label>
+                            <input type="text" class="form-control" placeholder="กรอกชื่อของคุณ" required>
+                        </div>
+                        <div class="form-group">
+                            <label>หมายเลขโทรศัพท์</label>
+                            <input type="tel" class="form-control" placeholder="08X-XXX-XXXX" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>อีเมล</label>
+                        <input type="email" class="form-control" placeholder="example@gmail.com" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>ที่อยู่การจัดส่ง</label>
+                        <textarea class="form-control" rows="2" placeholder="กรอกที่อยู่โดยละเอียด" required></textarea>
+                    </div>
+
+                    <div class="checkout-grid-form" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <div class="form-group">
+                            <label>วันที่รับสินค้า/รับบริการ</label>
+                            <input type="date" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label>วิธีการรับสินค้า</label>
+                            <select id="deliveryMethod" class="form-control">
+                                <option value="self">รับเองที่ศูนย์</option>
+                                <option value="delivery">จัดส่งถึงที่</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="background: #f9f9f9; padding: 15px; border-radius: 10px; border: 1px dashed var(--primary-color);">
+                        <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
+                            <input type="checkbox" id="plantingService" style="width: 20px; height: 20px;">
+                            <span>ต้องการบริการปักดำ (1,800 บาท/ไร่ รวมกล้าแล้ว)</span>
+                        </label>
+                    </div>
+
+                    <div class="form-group" id="quantityArea">
+                        <label id="quantityLabel">จำนวน (ถาด)</label>
+                        <input type="number" id="quantity" class="form-control" value="1" min="1">
+                    </div>
+
+                    <div class="order-summary-box" style="background: #3D4828; color: #fff; padding: 20px; border-radius: 10px; margin-top: 20px;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                            <span>ราคารวมทั้งหมด:</span>
+                            <strong id="totalPrice">฿0</strong>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; color: var(--accent-color); font-size: 1.2rem; font-weight: bold;">
+                            <span>ยอดมัดจำ (50%):</span>
+                            <strong id="depositPrice">฿0</strong>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-primary full-width" style="margin-top: 20px; height: 55px; font-size: 1.2rem;">ยืนยันการสั่งซื้อ</button>
+                </form>
+            </div>
+            
+        </div>
+    </main>
+
+    <div id="orderModal" class="modal-overlay" style="display: none;">
+    <div class="login-card modal-content" style="max-width: 600px; padding: 30px;">
+        <div class="login-header">
+            <i class="fas fa-check-circle" style="font-size: 3rem; color: var(--primary-color);"></i>
+            <h2>สรุปรายละเอียดการสั่งซื้อ</h2>
+            <p id="orderDateDisplay"></p>
+        </div>
+
+        <div class="summary-details" style="text-align: left; margin-bottom: 20px; color: var(--dark-color);">
+            <div style="background: rgba(0,0,0,0.05); padding: 15px; border-radius: 10px;">
+                <p><strong>ผู้สั่งซื้อ:</strong> <span id="resName"></span></p>
+                <p><strong>เบอร์โทรศัพท์:</strong> <span id="resPhone"></span></p>
+                <p><strong>รายละเอียดเพิ่มเติม:</strong> <span id="resDetails"></span></p>
+                <p><strong>สินค้า:</strong> <span id="resProduct">ข้าวหอมมะลิ 105</span></p>
+                <p id="resQuantity"></p>
+                <hr style="margin: 10px 0; border: 0; border-top: 1px solid #ccc;">
+                <p style="font-size: 1.2rem;"><strong>ราคาทั้งหมด:</strong> <span id="resTotal" style="color: var(--primary-color);"></span></p>
+                <p style="font-size: 1.3rem; color: #c62828;"><strong>ยอดมัดจำที่ต้องชำระ (50%):</strong> <span id="resDeposit"></span></p>
+            </div>
+        </div>
+
+        <div class="payment-section" style="border: 2px dashed var(--accent-color); padding: 15px; border-radius: 10px; margin-bottom: 20px;">
+            <h3><i class="fas fa-university"></i> ช่องทางการชำระเงิน</h3>
+            <p>ธนาคารกสิกรไทย (K-Bank)</p>
+            <p style="font-size: 1.2rem; font-weight: bold; letter-spacing: 1px;">เลขบัญชี: xxx-x-xxxx-xxx</p>
+            <p>ชื่อบัญชี: บจก. อีซี่ไรซ์ (EasyRice Co., Ltd.)</p>
+            <div style="margin-top: 10px;">
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=EasyRicePayment" alt="QR Payment" style="width: 120px; border: 5px solid #fff;">
+                <p style="font-size: 0.8rem; color: #666;">สแกนเพื่อชำระมัดจำ</p>
+            </div>
+        </div>
+
+        <form id="paymentUploadForm">
+            <div class="form-group" style="text-align: left;">
+                <label><i class="fas fa-file-import"></i> แนบหลักฐานการโอนเงิน (สลิป)</label>
+                <input type="file" id="slipFile" class="form-control" accept="image/*" required>
+            </div>
+                <button type="button" onclick="finalizeOrder()" class="btn-primary full-width">แจ้งชำระเงินและเสร็จสิ้น</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label><i class="fas fa-edit"></i> รายละเอียดเพิ่มเติม</label>
+        <textarea id="additionalDetails" class="form-control" rows="3" placeholder="ระบุรายละเอียดเพิ่มเติม เช่น สายพันธุ์ข้าวที่ต้องการ หรือหมายเหตุสำหรับทีมงาน..."></textarea>
+    </div>
+
+    <script>
+        const quantityInput = document.getElementById('quantity');
+        const plantingCheck = document.getElementById('plantingService');
+        const totalPriceEl = document.getElementById('totalPrice');
+        const depositPriceEl = document.getElementById('depositPrice');
+        const quantityLabel = document.getElementById('quantityLabel');
+
+        function calculatePrice() {
+            let total = 0;
+            const qty = parseInt(quantityInput.value) || 0;
+
+            if (plantingCheck.checked) {
+                quantityLabel.innerText = "จำนวนพื้นที่ (ไร่)";
+                total = qty * 1800;
+            } else {
+                quantityLabel.innerText = "จำนวน (ถาด)";
+                total = qty * 13;
+            }
+
+            const deposit = total * 0.5;
+
+            totalPriceEl.innerText = `฿${total.toLocaleString()}`;
+            depositPriceEl.innerText = `฿${deposit.toLocaleString()}`;
+        }
+
+        quantityInput.addEventListener('input', calculatePrice);
+        plantingCheck.addEventListener('change', calculatePrice);
+        
+        // Initial Calculation
+        calculatePrice();
+
+        document.getElementById('orderForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('บันทึกคำสั่งซื้อสำเร็จ! กรุณาชำระยอดมัดจำเพื่อดำเนินการต่อ');
+        });
+
+        // เพิ่มบรรทัดนี้ในส่วนที่กดยืนยันการสั่งซื้อ (Event Listener ของ orderForm)
+        const detailsValue = document.getElementById('additionalDetails').value;
+        const resDetails = document.getElementById('resDetails');
+
+        // แสดงข้อมูลใน Modal สรุปผล
+        document.getElementById('resDetails').innerText = detailsValue ? detailsValue : "ไม่มีระบุ";
+    </script>
+
+    
+</body>
+</html>

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EasyRice - ติดต่อเรา</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="login-page-body">
+
+    <header class="navbar">
+        <div class="container">
+            <a href="index.html" class="logo">🌾 EasyRice</a>
+            <nav>
+                <ul>
+                    <li><a href="index.html">หน้าแรก</a></li>
+                    <li><a href="products.html">สินค้า</a></li>
+                    <li><a href="#">จองบริการ</a></li>
+                    <li><a href="contact.html" class="active">ติดต่อ</a></li>
+                </ul>
+            </nav>
+            <a href="sign-in.html" class="btn-signin">เข้าสู่ระบบ</a>
+        </div>
+    </header>
+
+    <main class="container" style="margin-top: 50px; margin-bottom: 50px;">
+        <div class="unified-contact-card">
+            
+            <div class="contact-sidebar">
+                <h2>ติดต่อสอบถาม</h2>
+                <p>เจ้าหน้าที่พร้อมดูแลและให้คำปรึกษาแก่เกษตรกรทุกท่าน ในวันและเวลาทำการ</p>
+                
+                <div class="contact-methods-list">
+                    <div class="method-row">
+                        <i class="fas fa-phone-alt"></i>
+                        <div>
+                            <strong>เบอร์โทรศัพท์</strong>
+                            <p>088-888-8888 (เจ้าของ)</p>
+                            <p>087-888-8888 (พนักงาน)</p>
+                        </div>
+                    </div>
+                    <div class="method-row">
+                        <i class="fas fa-envelope"></i>
+                        <div>
+                            <strong>อีเมล</strong>
+                            <p>easyrice@gmail.com</p>
+                        </div>
+                    </div>
+                    <div class="method-row">
+                        <i class="fas fa-clock"></i>
+                        <div>
+                            <strong>เวลาทำการ</strong>
+                            <p>จันทร์-ศุกร์: 08.30 - 17.30 น.</p>
+                            <p>เสาร์-อาทิตย์: 09.00 - 16.00 น.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-line"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+
+            <div class="contact-form-body">
+                <h3>ส่งข้อความหาเรา</h3>
+                <form id="contactForm">
+                    <div class="form-group">
+                        <label>ชื่อ-นามสกุล</label>
+                        <input type="text" class="form-control" placeholder="กรอกชื่อของคุณ" required>
+                    </div>
+                    <div class="form-group">
+                        <label>อีเมล หรือ เบอร์โทรศัพท์</label>
+                        <input type="text" class="form-control" placeholder="เพื่อให้เราติดต่อกลับ" required>
+                    </div>
+                    <div class="form-group">
+                        <label>หัวข้อติดต่อ</label>
+                        <select class="form-control">
+                            <option>สอบถามเรื่องต้นกล้า</option>
+                            <option>จองคิวรถดำนา</option>
+                            <option>ปัญหาการใช้งานเว็บไซต์</option>
+                            <option>อื่นๆ</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>ข้อความของคุณ</label>
+                        <textarea class="form-control" rows="4" placeholder="ระบุรายละเอียดที่ต้องการสอบถาม"></textarea>
+                    </div>
+                    <button type="submit" class="btn-primary full-width">ส่งข้อความ</button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 EasyRice - ระบบจองต้นกล้าและบริการปักดำออนไลน์</p>
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('ขอบคุณที่ติดต่อเรา! ทีมงานได้รับข้อความของคุณแล้วและจะติดต่อกลับโดยเร็วที่สุด');
+            this.reset();
+        });
+    </script>
+</body>
+</html>
