@@ -9,16 +9,39 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/style.css">
 
     <style>
         /* CSS หลัก (ใส่ไว้ให้แสดงผลได้ทันที) */
-        :root { --primary: #4CAF50; --dark: #333; --light: #f9f9f9; }
-        body { font-family: 'Kanit', sans-serif; margin: 0; background-color: var(--light); color: var(--dark); }
-        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
-        a { text-decoration: none; }
-
-        /* Navbar */
-        .navbar { background: #fff; padding: 15px 0; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        :root { 
+            --primary: #4CAF50; 
+            --dark: #333; 
+            --light: #f9f9f9; 
+            --dark-color: #212121;
+            --light-color: #F5F5F5;
+        }
+        body { 
+            font-family: 'Kanit', sans-serif; 
+            margin: 0; 
+            background-image: url('../images/background.png');
+           color: var(--dark); 
+         }
+        .container { 
+            max-width: 1200px; 
+            margin: 0 auto; 
+            padding: 0 20px; 
+        }
+        a { 
+            text-decoration: none; 
+        }
+        .navbar .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 20px;
+        }
         .navbar .container { display: flex; justify-content: space-between; align-items: center; }
         .logo { font-size: 1.5rem; font-weight: bold; color: var(--primary); }
         nav ul { list-style: none; display: flex; gap: 20px; padding: 0; margin: 0; }
@@ -26,8 +49,14 @@
         nav a.active { color: var(--primary); font-weight: 500; }
         .btn-signin { background: var(--primary); color: white; padding: 8px 15px; border-radius: 5px; }
 
+
         /* Page Header */
-        .page-header { background: #e8f5e9; padding: 40px 0; text-align: center; margin-bottom: 40px; }
+        .page-header { 
+            background: #e8f5e9; 
+            padding: 40px 0; 
+            text-align: center; 
+            margin-bottom: 40px; 
+        }
         .page-header h1 { margin: 0 0 10px 0; color: #2e7d32; }
         .page-header p { color: #555; margin: 0; }
 
@@ -59,24 +88,28 @@
         .btn-reserve:hover { background: #43a047; }
         .btn-reserve.disabled { background: #ccc; pointer-events: none; }
 
-        footer { background: #333; color: white; text-align: center; padding: 20px 0; }
+        footer {
+            background-color: var(--dark-color);
+            color: var(--light-color);
+            text-align: center;
+            padding: 2rem 0;
+        }
     </style>
 </head>
 
 <body>
 
-    <header class="navbar">
+   <header class="navbar">
         <div class="container">
             <a href="index.html" class="logo">🌾 EasyRice</a>
             <nav>
-                <ul>
-                    <li><a href="index.html">หน้าแรก</a></li>
-                    <li><a href="product.html" class="active">สินค้า</a></li>
-                    <li><a href="about.html">เกี่ยวกับเรา</a></li>
-                    <li><a href="#">ข่าวสาร</a></li>
-                    <li><a href="contact.html">ติดต่อ</a></li>
-                </ul>
-            </nav>
+            <ul>
+                <li><a href="index.html" class=>หน้าแรก</a></li>
+                <li><a href="product.html" class="active">สินค้า</a></li>
+                <li><a href="about.html">ข่าวสาร</a></li>
+                <li><a href="contact.html">ติดต่อ</a></li>
+            </ul>
+        </nav>
             <a href="sign-in.html" class="btn-signin">เข้าสู่ระบบ</a>
         </div>
     </header>
@@ -86,7 +119,7 @@
         <section class="page-header">
             <div class="container">
                 <h1>เลือกพันธุ์ต้นกล้าข้าว</h1>
-                <p>ระบบแสดงรายการต้นกล้าข้าวพันธุ์ดีเพื่อให้เกษตรกรสามารถเลือกและจองได้</p>
+                <p>ระบบแสดงรายการต้นกล้าข้าวพันธุ์ดีเพื่อให้เกษตรกรสามารถเลือกและซื้อได้</p>
             </div>
         </section>
 
@@ -98,9 +131,11 @@
 
     </main>
 
-    <footer>
+     <footer>
         <div class="container">
-            <p>&copy; 2024 EasyRice. All Rights Reserved.</p>
+            <h3>EasyRice Seedling Hub</h3>
+            <p>แหล่งรวมพันธุกรรมข้าวคุณภาพ เพื่อเกษตรกรไทย</p>
+            <p style="font-size: 0.8rem; margin-top: 20px; color: #aaa;">&copy; 2024 EasyRice. All Rights Reserved.</p>
         </div>
     </footer>
 
@@ -116,10 +151,10 @@
             // 2. ถ้าไม่มีข้อมูล ให้สร้างข้อมูลเริ่มต้น (รวมตัวใหม่ ปทุมธานี 1)
             if (!products || products.length === 0) {
                 products = [
-                    { id: 1, name: 'ข้าวหอมมะลิ 105', desc: 'ต้นกล้าข้าวคุณภาพดี มีกลิ่นหอม ให้ผลผลิตข้าวนุ่ม', age: 25, feature: 'กลิ่นหอม', price: 35, stock: 150, img: 'https://images.unsplash.com/photo-1586201375761-83865001e31c?auto=format&fit=crop&w=500&q=80' },
-                    { id: 2, name: 'ข้าวไรซ์เบอร์รี่', desc: 'ข้าวเพื่อสุขภาพ อุดมด้วยสารต้านอนุมูลอิสระ', age: 30, feature: 'คุณค่าทางโภชนาการสูง', price: 45, stock: 25, img: 'https://images.unsplash.com/photo-1620027727192-3c824c641269?auto=format&fit=crop&w=500&q=80' },
-                    { id: 3, name: 'ข้าว RD43', desc: 'พันธุ์ข้าวทนโรค ให้ผลผลิตสูง เหมาะสำหรับการปลูกเชิงพาณิชย์', age: 20, feature: 'ทนโรค ผลผลิตสูง', price: 30, stock: 200, img: 'https://images.unsplash.com/photo-1536304929831-d703779e583c?auto=format&fit=crop&w=500&q=80' },
-                    { id: 4, name: 'ข้าวปทุมธานี 1', desc: 'พันธุ์ข้าวอายุสั้น ให้ผลผลิตดี ข้าวสุกขาวนวล', age: 22, feature: 'อายุสั้น', price: 32, stock: 120, img: 'https://cdn.pixabay.com/photo/2013/08/06/19/13/rice-field-170327_1280.jpg' }
+                    { id: 1, name: 'ข้าวหอมมะลิ 105', desc: 'ต้นกล้าข้าวคุณภาพดี มีกลิ่นหอม ให้ผลผลิตข้าวนุ่ม', age: 25, feature: 'กลิ่นหอม', price: 35, stock: 150, img: '../images/jasmine105.png' },
+                    { id: 2, name: 'ข้าวไรซ์เบอร์รี่', desc: 'ข้าวเพื่อสุขภาพ อุดมด้วยสารต้านอนุมูลอิสระ', age: 30, feature: 'คุณค่าทางโภชนาการสูง', price: 45, stock: 25, img: '../images/riceberry.png' },
+                    { id: 3, name: 'ข้าว RD43', desc: 'พันธุ์ข้าวทนโรค ให้ผลผลิตสูง เหมาะสำหรับการปลูกเชิงพาณิชย์', age: 20, feature: 'ทนโรค ผลผลิตสูง', price: 30, stock: 200, img: '../images/rd43.png' },
+                    { id: 4, name: 'ข้าวปทุมธานี 1', desc: 'พันธุ์ข้าวอายุสั้น ให้ผลผลิตดี ข้าวสุกขาวนวล', age: 22, feature: 'อายุสั้น', price: 32, stock: 120, img: '../images/pathum1.png' }
                 ];
                 localStorage.setItem('easyrice_db', JSON.stringify(products));
             }

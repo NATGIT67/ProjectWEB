@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .status-badge {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        .status-pending {
+            background-color: #fff3e0;
+            color: #ef6c00;
+        }
+        .status-success {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+        }
+        .status-error {
+            background-color: #ffebee;
+            color: #c62828;
+        }
+        .btn-view {
+            background: #2196F3;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+        .btn-view:hover {
+            background: #1976D2;
+        }
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+    </style>
+</head>
+<body class="login-page-body">
+
+    <header class="navbar">
+        <div class="container">
+            <a href="index.html" class="logo">🌾 EasyRice</a>
+            <nav>
+            <ul>
+                <li><a href="index.html">หน้าแรก</a></li>
+                <li><a href="product.html">สินค้า</a></li>
+                <li><a href="about.html">ข่าวสาร</a></li>
+                <li><a href="contact.html">ติดต่อ</a></li>
+                <li><a href="history.html" class="active">ประวัติการสั่งซื้อ</a></li>
+            </ul>
+        </nav>
+            <div class="user-profile">
+                <span>สวัสดี, คุณสมชาย</span>
+                <a href="sign-in.html" class="btn-signin" style="margin-left:10px;">ออกจากระบบ</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container" style="margin-top: 50px; margin-bottom: 50px;">
+        <div class="login-card" style="max-width: 1000px; width: 100%;">
+            <div class="login-header" style="text-align: left; border-bottom: 2px solid var(--primary-color); padding-bottom: 15px;">
+                <h2><i class="fas fa-history"></i> ประวัติการสั่งซื้อ</h2>
+                <p>ตรวจสอบสถานะต้นกล้าและบริการปักดำของคุณ</p>
+            </div>
+
+            <div class="order-history-table" style="margin-top: 25px; overflow-x: auto;">
+                <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                    <thead>
+                        <tr style="background: var(--light-color); color: var(--dark-color);">
+                            <th style="padding: 15px;">เลขที่คำสั่งซื้อ</th>
+                            <th style="padding: 15px;">วันที่สั่ง</th>
+                            <th style="padding: 15px;">รายการสินค้า/บริการ</th>
+                            <th style="padding: 15px;">ยอดรวม</th>
+                            <th style="padding: 15px;">มัดจำ (50%)</th>
+                            <th style="padding: 15px;">สถานะ</th>
+                            <th style="padding: 15px;">จัดการ</th>
+                        </tr>
+                    </thead>
+                    <tbody id="historyBody">
+                        <tr style="border-bottom: 1px solid #eee;">
+                            <td style="padding: 15px;">#ER-2025001</td>
+                            <td style="padding: 15px;">20 ธ.ค. 2025</td>
+                            <td style="padding: 15px;">
+                                <strong>ข้าวหอมมะลิ 105</strong><br>
+                                <small>จำนวน 50 ถาด (รับเอง)</small>
+                            </td>
+                            <td style="padding: 15px;">฿650</td>
+                            <td style="padding: 15px;">฿325</td>
+                            <td style="padding: 15px;">
+                                <span class="status-badge status-pending">รอตรวจสอบสลิป</span>
+                            </td>
+                            <td style="padding: 15px;">
+                                <button class="btn-view"><i class="fas fa-search"></i> ดูรายละเอียด</button>
+                            </td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #eee;">
+                            <td style="padding: 15px;">#ER-2025002</td>
+                            <td style="padding: 15px;">15 ธ.ค. 2025</td>
+                            <td style="padding: 15px;">
+                                <strong>บริการปักดำข้าว (รวมกล้า)</strong><br>
+                                <small>พื้นที่ 5 ไร่ (จัดส่ง)</small>
+                            </td>
+                            <td style="padding: 15px;">฿9,000</td>
+                            <td style="padding: 15px;">฿4,500</td>
+                            <td style="padding: 15px;">
+                                <span class="status-badge status-success">ชำระเงินแล้ว</span>
+                            </td>
+                            <td style="padding: 15px;">
+                                <button class="btn-view"><i class="fas fa-search"></i> ดูรายละเอียด</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    <script>
+document.addEventListener('DOMContentLoaded', function() {
+    loadOrderHistory();
+});
+
+function loadOrderHistory() {
+    // Get orders from localStorage (in real app, this would come from server)
+    let orders = JSON.parse(localStorage.getItem('easyrice_orders')) || [];
+
+    // If no orders, create sample data
+    if (orders.length === 0) {
+        orders = [
+            {
+                id: 'ER-2025001',
+                date: '20 ธ.ค. 2025',
+                product: 'ข้าวหอมมะลิ 105',
+                details: 'จำนวน 50 ถาด (รับเอง)',
+                total: 650,
+                deposit: 325,
+                status: 'pending',
+                type: 'seedling'
+            },
+            {
+                id: 'ER-2025002',
+                date: '15 ธ.ค. 2025',
+                product: 'บริการปักดำข้าว (รวมกล้า)',
+                details: 'พื้นที่ 5 ไร่ (จัดส่ง)',
+                total: 9000,
+                deposit: 4500,
+                status: 'paid',
+                type: 'service'
+            },
+            {
+                id: 'ER-2025003',
+                date: '10 ธ.ค. 2025',
+                product: 'ข้าวไรซ์เบอร์รี่',
+                details: 'จำนวน 25 ถาด (จัดส่ง)',
+                total: 1125,
+                deposit: 562.5,
+                status: 'completed',
+                type: 'seedling'
+            }
+        ];
+        localStorage.setItem('easyrice_orders', JSON.stringify(orders));
+    }
+
+    const tbody = document.getElementById('historyBody');
+    tbody.innerHTML = '';
+
+    orders.forEach(order => {
+        const statusClass = getStatusClass(order.status);
+        const statusText = getStatusText(order.status);
+
+        tbody.innerHTML += `
+            <tr style="border-bottom: 1px solid #eee;">
+                <td style="padding: 15px;">#${order.id}</td>
+                <td style="padding: 15px;">${order.date}</td>
+                <td style="padding: 15px;">
+                    <strong>${order.product}</strong><br>
+                    <small>${order.details}</small>
+                </td>
+                <td style="padding: 15px;">฿${order.total.toLocaleString()}</td>
+                <td style="padding: 15px;">฿${order.deposit.toLocaleString()}</td>
+                <td style="padding: 15px;">
+                    <span class="status-badge status-${order.status}">${statusText}</span>
+                </td>
+                <td style="padding: 15px;">
+                    <button class="btn-view" onclick="viewOrderDetails('${order.id}')">
+                        <i class="fas fa-search"></i> ดูรายละเอียด
+                    </button>
+                </td>
+            </tr>
+        `;
+    });
+}
+
+function getStatusClass(status) {
+    switch(status) {
+        case 'pending': return 'pending';
+        case 'paid': return 'success';
+        case 'completed': return 'success';
+        case 'cancelled': return 'error';
+        default: return 'pending';
+    }
+}
+
+function getStatusText(status) {
+    switch(status) {
+        case 'pending': return 'รอตรวจสอบสลิป';
+        case 'paid': return 'ชำระเงินแล้ว';
+        case 'completed': return 'เสร็จสิ้น';
+        case 'cancelled': return 'ยกเลิก';
+        default: return 'รอตรวจสอบสลิป';
+    }
+}
+
+function viewOrderDetails(orderId) {
+    const orders = JSON.parse(localStorage.getItem('easyrice_orders')) || [];
+    const order = orders.find(o => o.id === orderId);
+
+    if (order) {
+        const details = `
+            เลขที่คำสั่งซื้อ: #${order.id}
+            วันที่สั่ง: ${order.date}
+            สินค้า/บริการ: ${order.product}
+            รายละเอียด: ${order.details}
+            ยอดรวม: ฿${order.total.toLocaleString()}
+            มัดจำ (50%): ฿${order.deposit.toLocaleString()}
+            สถานะ: ${getStatusText(order.status)}
+        `;
+
+        alert(details);
+    }
+}
+
+// Logout functionality
+document.querySelector('.btn-signin').addEventListener('click', function(e) {
+    e.preventDefault();
+    if (confirm('ต้องการออกจากระบบหรือไม่?')) {
+        // In real app, clear session/token
+        window.location.href = 'sign-in.html';
+    }
+});
+</script>

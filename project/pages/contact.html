@@ -1,11 +1,10 @@
+
 <!DOCTYPE html>
 <html lang="th">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EasyRice - ติดต่อเรา</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="stylesheet" href="../css/style.css">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -18,9 +17,8 @@
             <nav>
                 <ul>
                     <li><a href="index.html">หน้าแรก</a></li>
-                    <li><a href="products.html">สินค้า</a></li>
-                    <li><a href="about.html">เกี่ยวกับเรา</a></li>
-                    <li><a href="#">ข่าวสาร</a></li>
+                    <li><a href="product.html">สินค้า</a></li>
+                    <li><a href="about.html">ข่าวสาร</a></li>
                     <li><a href="contact.html" class="active">ติดต่อ</a></li>
                 </ul>
             </nav>
@@ -96,11 +94,71 @@
                 </form>
             </div>
         </div>
-    </main>
+    <script>
+document.getElementById('contactForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const name = document.querySelector('input[placeholder="กรอกชื่อของคุณ"]').value.trim();
+    const contact = document.querySelector('input[placeholder="เพื่อให้เราติดต่อกลับ"]').value.trim();
+    const subject = document.querySelector('select').value;
+    const message = document.querySelector('textarea').value.trim();
+
+    // Validation
+    if (!name || !contact || !message) {
+        showMessage('กรุณากรอกข้อมูลให้ครบถ้วน', false);
+        return;
+    }
+
+    // Simulate sending message
+    const contactData = {
+        id: Date.now(),
+        name: name,
+        contact: contact,
+        subject: subject,
+        message: message,
+        timestamp: new Date().toISOString(),
+        status: 'unread'
+    };
+
+    // Store in localStorage (in real app, this would be sent to server)
+    const contacts = JSON.parse(localStorage.getItem('easyrice_contacts')) || [];
+    contacts.push(contactData);
+    localStorage.setItem('easyrice_contacts', JSON.stringify(contacts));
+
+    showMessage('ส่งข้อความสำเร็จ! เจ้าหน้าที่จะติดต่อกลับภายใน 24 ชั่วโมง', true);
+
+    // Reset form
+    this.reset();
+
+    // Hide message after 3 seconds
+    setTimeout(() => {
+        document.getElementById('contact-message').style.display = 'none';
+    }, 3000);
+});
+
+function showMessage(message, success) {
+    let msgDiv = document.getElementById('contact-message');
+    if (!msgDiv) {
+        msgDiv = document.createElement('div');
+        msgDiv.id = 'contact-message';
+        document.getElementById('contactForm').prepend(msgDiv);
+    }
+
+    msgDiv.style.display = 'block';
+    msgDiv.innerHTML = message;
+    msgDiv.style.background = success ? '#e8f5e9' : '#ffebee';
+    msgDiv.style.color = success ? '#2e7d32' : '#c62828';
+    msgDiv.style.border = success ? '1px solid #81c784' : '1px solid #e57373';
+    msgDiv.style.padding = '10px 15px';
+    msgDiv.style.borderRadius = '6px';
+    msgDiv.style.marginBottom = '15px';
+    msgDiv.style.textAlign = 'center';
+}
+</script>
 
     <footer>
         <div class="container">
-            <p>&copy; 2024 EasyRice - ระบบจองต้นกล้าและบริการปักดำออนไลน์</p>
+            <p>&copy; 2024 EasyRice - ระบบซื้อขายต้นกล้าและบริการปักดำออนไลน์</p>
         </div>
     </footer>
 
@@ -111,5 +169,6 @@
             this.reset();
         });
     </script>
+    <script src="/project/js/easyrice.js"></script>
 </body>
 </html>

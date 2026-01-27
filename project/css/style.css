@@ -1,0 +1,1006 @@
+/* ============================================================
+   1. GLOBAL / SHARED STYLES (ส่วนกลาง)
+   ไฟล์ที่ใช้: ทุกไฟล์ (*.html)
+   - style.css (Main file)
+   - about.html (ใช้ Layout กลาง)
+   หน้าที่: ธีมสี, ฟอนต์, ปุ่ม, ฟอร์ม, Navbar, Footer
+============================================================ */
+
+:root {
+    /* Color Palette - Main Theme */
+    --primary-color: #2e7d32;   /* เขียวเข้ม (Official) */
+    --secondary-color: #4CAF50; /* เขียวสด (Meadow) */
+    --accent-color: #fbc02d;    /* เหลืองทอง (Harvest) */
+    --light-yellow: #fff9c4;
+    
+    /* Neutrals */
+    --dark-color: #212121;
+    --text-grey: #666666;
+    --light-color: #F5F5F5;
+    --white-color: #FFFFFF;
+    --border-color: #ddd;
+
+    /* Admin Specific */
+    --admin-sidebar: #484b36;   /* Olive Green */
+    --admin-highlight: #dce775;
+
+    /* Settings */
+    --font-family: 'Kanit', sans-serif;
+    --border-radius: 8px;
+    --shadow: 0 4px 10px rgba(0,0,0,0.08);
+    --glass-bg: rgba(255, 255, 255, 0.8);
+    --glass-border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-family);
+    line-height: 1.6;
+    color: var(--dark-color);
+    background-color: var(--white-color);
+    /* พื้นหลังเริ่มต้นสำหรับหน้าทั่วไป */
+    background-image: url('../images/background.png');
+    background-size: 150% auto;
+    background-position: top;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+
+
+h1, h2, h3 {
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+a { text-decoration: none; color: inherit; }
+ul { list-style: none; }
+
+/* --- UI COMPONENTS (Components ใช้ได้ทุกหน้า) --- */
+.btn-primary, .btn-secondary, .btn-reserve, .btn-signin {
+    display: inline-block;
+    padding: 10px 25px;
+    border-radius: 25px;
+    font-weight: 500;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: none;
+    font-size: 1rem;
+    text-decoration: none;
+}
+
+.btn-primary {
+    background-color: var(--accent-color);
+    color: var(--dark-color);
+}
+.btn-primary:hover {
+    background-color: #e1ac17;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(77, 87, 19, 0.3);
+}
+
+.btn-secondary {
+    background-color: transparent;
+    color: var(--white-color);
+    border: 2px solid var(--white-color);
+}
+.btn-secondary:hover {
+    background-color: var(--white-color);
+    color: var(--dark-color);
+}
+
+.btn-signin {
+    background-color: transparent;
+    color: var(--primary-color);
+    border: 2px solid var(--primary-color);
+}
+.btn-signin:hover, .btn-signin.active {
+    background-color: var(--primary-color);
+    color: var(--white-color);
+}
+
+.full-width { width: 100%; }
+
+.form-group { margin-bottom: 1.5rem; }
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: var(--dark-color);
+}
+.form-control, 
+.form-group input, 
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    font-family: var(--font-family);
+    font-size: 1rem;
+    transition: 0.3s;
+    background: var(--white-color);
+}
+.form-control:focus, 
+.form-group input:focus, 
+.form-group select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.15);
+}
+
+/* --- NAVIGATION BAR (Header) --- */
+.navbar {
+    background: var(--glass-bg) !important;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: var(--glass-border);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.navbar .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 20px;
+}
+
+.navbar .logo {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    letter-spacing: 1px;
+}
+
+.navbar nav ul { display: flex; align-items: center; }
+.navbar nav ul li { margin-left: 20px; }
+.navbar nav ul li a {
+    font-weight: 500;
+    color: var(--dark-color);
+    transition: color 0.3s ease;
+}
+.navbar nav ul li a:hover, .navbar nav ul li a.active {
+    color: var(--primary-color);
+}
+
+/* --- FOOTER (Footer) --- */
+footer {
+    background-color: var(--dark-color);
+    color: var(--light-color);
+    text-align: center;
+    padding: 2rem 0;
+}
+
+
+.user-profile {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--dark-color);
+    font-weight: 500;
+}
+
+.alert {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 15px 20px;
+    border-radius: 5px;
+    color: white;
+    font-weight: 500;
+    z-index: 1000;
+    max-width: 400px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.alert button {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 0;
+    margin-left: 10px;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+section { padding: 4rem 0; }
+h2 { text-align: center; margin-bottom: 2rem; font-size: 2.5rem; color: rgb(0, 0, 0); }
+
+/* Hero Section */
+.hero {
+    height: 90vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: var(--white-color);
+    padding: 0 20px;
+}
+.hero-content h1 { 
+    font-size: 3.5rem; 
+    margin-bottom: 1rem; 
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5); 
+}
+.hero-content p { 
+    font-size: 1.2rem; 
+    margin-bottom: 2rem; 
+    font-weight: 300; 
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.5); 
+}
+
+/* How it Works */
+.steps-grid { 
+    display: grid; 
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); 
+    gap: 2rem; text-align: center; 
+}
+.step-card { 
+    background: var(--white-color); 
+    padding: 2rem; 
+    border-radius: var(--border-radius); 
+    box-shadow: var(--shadow); 
+}
+.step-icon { 
+    font-size: 3rem; 
+    margin-bottom: 1rem; 
+    color: var(--primary-color); 
+}
+
+/* FAQ Slider */
+.faq-slider { 
+    max-width: 800px; 
+    margin: 40px auto; 
+    position: relative; 
+    overflow: hidden; 
+}
+
+.faq-wrapper { 
+    display: flex; 
+    transition: transform 0.5s ease; 
+}
+.faq-slide {
+    min-width: 100%;
+    background: var(--light-color);
+    padding: 40px;
+    border-radius: 20px;
+    box-sizing: border-box;
+    text-align: left;
+    border-left: 5px solid var(--primary-color);
+}
+.faq-slide h2 { 
+    color: var(--primary-color); 
+    margin-bottom: 15px; 
+}
+
+.arrow {
+    position: absolute; 
+    top: 50%; transform: translateY(-50%);
+    background: var(--primary-color); 
+    color: #fff;
+    border: none; 
+    width: 40px; 
+    height: 40px; 
+    border-radius: 50%;
+    cursor: pointer; 
+    z-index: 10;
+    display: flex; 
+    justify-content: center; 
+    align-items: center;
+}
+.arrow.left { 
+    left: 10px; 
+}
+.arrow.right { 
+    right: 10px; 
+}
+
+/* News Section (ส่วนข่าวสาร หน้าแรก) */
+.news-grid { 
+    display: grid; 
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
+    gap: 25px; 
+}
+
+.news-card {
+    background: var(--white-color); 
+    border-radius: 12px; overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05); 
+    transition: 0.3s; 
+    border: 1px solid #eee;
+}
+
+.news-card:hover { 
+    transform: translateY(-5px); 
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1); 
+}
+
+.news-img-wrapper { 
+    height: 180px; 
+    overflow: hidden; 
+}
+
+.news-img-wrapper img { 
+    width: 100%; height: 100%; 
+    object-fit: cover; 
+    transition: transform 0.5s; 
+}
+
+.news-card:hover .news-img-wrapper img { 
+    transform: scale(1.1); 
+}
+
+.news-content { 
+    padding: 20px; 
+}
+
+.news-date { 
+    font-size: 0.8rem; 
+    color: #888; 
+    margin-bottom: 5px; 
+}
+
+.news-content h3 { 
+    font-size: 1.2rem; 
+    margin: 5px 0 10px 0; 
+    color: var(--dark-color); 
+    line-height: 1.4; 
+    font-weight: 600; 
+}
+
+.news-content p { 
+    font-size: 0.9rem; 
+    color: #666; 
+    line-height: 1.6; 
+    margin-bottom: 15px; 
+}
+
+.read-more-btn { 
+    color: var(--primary-color); 
+    font-weight: 500; 
+    font-size: 0.9rem;
+    display: inline-flex; 
+    align-items: center; 
+    gap: 5px; 
+    transition: color 0.3s; 
+}
+.read-more-btn:hover { 
+    color: var(--accent-color); 
+    text-decoration: underline; 
+}
+
+
+/* ============================================================
+   3. PRODUCTS & SHOP (หน้าสินค้า)
+   ไฟล์ที่ใช้: product.html และ index.html (ส่วนแสดงสินค้า)
+   หน้าที่: Grid แสดงสินค้า, การ์ดสินค้า, ป้ายสถานะ
+============================================================ */
+
+.seedling-grid { 
+    display: grid; 
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+    gap: 2rem; 
+}
+.card {
+    background: var(--white-color);
+    border: 1px solid #ddd;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex; flex-direction: column;
+}
+.card:hover { transform: translateY(-5px); 
+    box-shadow: 0 8px 20px rgba(0,0,0,0.12); 
+}
+.card img { 
+    width: 100%; 
+    height: 200px; 
+    object-fit: cover; 
+}
+.card-content { 
+    padding: 1.5rem;
+    display: flex; 
+    flex-direction: column; 
+    flex-grow: 1; 
+}
+.card-content h3 {
+     margin-bottom: 0.5rem; 
+     font-size: 1.5rem; 
+     color: var(--primary-color); 
+}
+.price { 
+    font-size: 1.25rem; 
+    font-weight: 700; 
+    color: var(--accent-color); 
+    margin-bottom: 1rem; 
+}
+
+/* Stock Status */
+.stock-status { 
+    padding: 3px 10px; 
+    border-radius: 12px; 
+    font-weight: 500; 
+    font-size: 0.85rem; 
+}
+.stock-status.available { 
+    background-color: #e8f5e9; 
+    color: #2e7d32; 
+}
+.stock-status.low-stock { 
+    background-color: #fff3e0; 
+    color: #f57c00; 
+}
+.stock-status.out-of-stock { 
+    background-color: #ffebee; 
+    color: #c62828; 
+}
+
+
+/* ============================================================
+   4. AUTHENTICATION (หน้าสมาชิก)
+   ไฟล์ที่ใช้: sign-in.html, sign-up.html, forgot-password.html
+   หน้าที่: พื้นหลังพิเศษ, กล่อง Login
+============================================================ */
+
+.login-page-body {
+    background-image: url('../images/background.png');
+    background-size: cover;
+    background-attachment: fixed;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.login-main {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 20px;
+}
+
+.login-card {
+    width: 100%;
+    max-width: 450px;
+    background: rgba(255, 255, 255, 0.85) !important;
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border-radius: 15px;
+    padding: 40px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1) !important;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-top: 5px solid var(--accent-color);
+    animation: fadeIn 0.6s ease-in-out;
+}
+
+.login-header { 
+    text-align: center; 
+    margin-bottom: 30px; 
+}
+
+.login-header h2 { 
+    color: var(--primary-color); 
+    font-size: 1.8rem; 
+}
+
+.social-login { 
+    display: flex; 
+    gap: 10px; 
+    margin-top: 20px; 
+}
+.social-btn {
+    flex: 1; 
+    padding: 10px;
+    border: 1px solid #ddd; 
+    border-radius: 8px;
+    background: var(--white-color); 
+    cursor: pointer;
+    display: flex; 
+    justify-content: center; 
+    align-items: center; gap: 8px;
+    transition: 0.3s;
+}
+.social-btn:hover { 
+    background: #f9f9f9; 
+    transform: translateY(-2px); 
+}
+
+
+/* ============================================================
+   5. ORDER & HISTORY (หน้าสั่งซื้อและประวัติ)
+   ไฟล์ที่ใช้: checkout.html, history.html
+   หน้าที่: Layout สั่งซื้อ, ตารางสรุป, ตารางประวัติ
+============================================================ */
+
+/* Checkout Styles */
+.checkout-container { 
+    display: grid; 
+    grid-template-columns: 1fr 1fr; 
+    gap: 40px; padding: 2rem 0; 
+}
+
+.checkout-section {
+    background-color: var(--white-color);
+    padding: 2rem;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+}
+.order-summary table { 
+    width: 100%; 
+    border-collapse: collapse; 
+    margin-bottom: 1rem; 
+}
+
+.order-summary th, .order-summary td { 
+    padding: 12px 8px; 
+    border-bottom: 1px solid #eee; 
+    text-align: left; 
+}
+
+.order-total { 
+    text-align: right; 
+    margin-top: 1rem; 
+}
+
+.order-total h3 { 
+    font-size: 1.5rem; 
+    color: var(--primary-color); 
+}
+
+/* History Table Styles */
+.order-history-table { 
+    width: 100%; 
+    border-collapse: collapse;
+}
+
+.order-history-table th { 
+    background: #f5f5f5; 
+    padding: 15px;
+ }
+.order-history-table td { 
+    padding: 15px; 
+    border-bottom: 1px solid #eee; 
+}
+
+/* Status Badges */
+.status-badge { 
+    padding: 5px 12px; 
+    border-radius: 20px; 
+    font-size: 0.8rem; 
+    font-weight: 500; 
+}
+.status-pending { 
+    background-color: #fff3e0; 
+    color: #f57c00; 
+    border: 1px solid #ffe0b2; 
+}
+
+.status-success {
+    background-color: #e8f5e9; 
+    color: #2e7d32; 
+    border: 1px solid #c8e6c9; 
+}
+
+.status-error { 
+    background-color: #ffebee; 
+    color: #c62828; 
+    border: 1px solid #ffcdd2; 
+}
+
+
+/* ============================================================
+   6. CONTACT PAGE (หน้าติดต่อเรา)
+   ไฟล์ที่ใช้: contact.html
+   หน้าที่: การ์ดติดต่อขนาดใหญ่
+============================================================ */
+
+.unified-contact-card {
+    display: grid;
+    grid-template-columns: 400px 1fr;
+    min-height: 600px;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+}
+.contact-sidebar {
+    background: rgba(66, 66, 66, 0.9); /* Dark Green Tint */
+    backdrop-filter: blur(10px);
+    padding: 50px 40px;
+    color: var(--white-color);
+}
+.contact-sidebar h2 { 
+    color: var(--accent-color); 
+    text-align: left; 
+    text-shadow: none; 
+}
+.contact-form-body { 
+    padding: 50px; 
+    background: var(--white-color);
+ }
+
+
+/* ============================================================
+   7. ADMIN DASHBOARD (หน้าผู้ดูแลระบบ)
+   ไฟล์ที่ใช้: admin.html
+   หน้าที่: Sidebar, Dashboard, Tables, Modals
+============================================================ */
+
+/* Main Layout */
+.admin-body { 
+    margin: 0; 
+    font-family: var(--font-family); 
+    overflow: hidden;
+     background: #f0f0f0; 
+}
+
+.admin-wrapper { 
+    display: flex; 
+    height: 100vh; 
+    width: 100vw; 
+}
+
+/* Sidebar */
+.sidebar {
+    width: 250px;
+    background-color: var(--admin-sidebar);
+    color: #fff;
+    display: flex; flex-direction: column;
+    padding: 20px;
+    box-shadow: 4px 0 15px rgba(0,0,0,0.3);
+    flex-shrink: 0; z-index: 10;
+}
+.sidebar-header { 
+    margin-bottom: 30px; 
+    border-bottom: 1px solid rgba(255,255,255,0.3); 
+    padding-bottom: 20px; 
+    text-align: center; 
+}
+.sidebar-menu { 
+    display: flex; 
+    flex-direction: column; 
+    gap: 12px; 
+}
+
+.menu-item {
+    color: #333; 
+    background: #fff;
+    padding: 12px 20px; 
+    border-radius: 30px;
+    text-decoration: none; 
+    font-weight: 500;
+    display: flex; 
+    align-items: center; 
+    gap: 10px;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+.menu-item:hover {
+     transform: translateX(5px); 
+     background: #f0f0f0; 
+}
+.menu-item.active { 
+    background: var(--admin-highlight); 
+    color: #333; 
+    font-weight: bold; 
+}
+.menu-item.logout { 
+    margin-top: auto; 
+    background: #ff5252; 
+    color: #fff;
+ }
+
+/* Admin Content Area */
+.main-content {
+    flex: 1; 
+    position: relative;
+    background: url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80') center/cover;
+}
+.main-content::before {
+    content: ''; 
+    position: absolute;
+    top: 0; 
+    left: 0; 
+    right: 0; 
+    bottom: 0;
+    background: rgba(0,0,0,0.15); 
+    pointer-events: none;
+}
+.content-container {
+    position: relative; 
+    z-index: 2;
+    padding: 30px; 
+    height: 100%; 
+    box-sizing: border-box;
+    display: flex; 
+    flex-direction: column;
+    gap: 25px;
+    overflow-y: auto;
+}
+
+/* Stats Cards */
+.stats-grid { 
+    display: grid; 
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
+    gap: 20px; 
+}
+.stat-card {
+    border-radius: 20px; 
+    padding: 25px; 
+    color: #333;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    transition: transform 0.3s;
+}
+.stat-card:hover { 
+    transform: translateY(-5px); 
+}
+.card-yellow { 
+    background: rgba(255, 241, 118, 0.85); 
+}
+.card-green { 
+    background: rgba(174, 213, 129, 0.85); 
+}
+.card-grey { 
+    background: rgba(144, 164, 174, 0.85); 
+    color: #fff; 
+}
+.card-orange { 
+    background: rgba(255, 183, 77, 0.85); 
+}
+
+/* Admin Tables */
+.table-card {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 20px; 
+    padding: 30px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    flex: 1; 
+    display: flex; 
+    flex-direction: column;
+}
+.table-header-row { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    margin-bottom: 20px;
+    border-bottom: 2px solid #eee; 
+    padding-bottom: 15px; 
+}
+.data-table { 
+    width: 100%; 
+    border-collapse: separate; 
+    border-spacing: 0; 
+}
+.data-table th { 
+    background: #f1f8e9; 
+    padding: 15px; 
+    text-align: center; 
+    font-weight: 600; 
+    color: #33691e; 
+}
+.data-table td { 
+    padding: 15px; 
+    border-bottom: 1px solid #eee; 
+    text-align: center; 
+    vertical-align: middle; 
+}
+
+/* Admin Modal/Popup */
+.modal-overlay {
+    display: none; 
+    position: fixed; 
+    top: 0; left: 0; 
+    width: 100%; 
+    height: 100%;
+    background: rgba(0,0,0,0.6); 
+    z-index: 2000;
+    justify-content: center; 
+    align-items: center;
+    backdrop-filter: blur(5px);
+}
+.modal-content {
+    background: #fff; 
+    width: 100%; 
+    max-width: 500px;
+    border-radius: 20px; 
+    padding: 0;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+    animation: slideUp 0.3s ease-out;
+}
+@keyframes slideUp { 
+    from { transform: translateY(50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } 
+}
+.modal-header {
+    background: var(--admin-sidebar); 
+    color: #fff;
+    padding: 20px 30px; 
+    border-radius: 20px 20px 0 0;
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center;
+}
+
+
+/* ============================================================
+   8. RESPONSIVE DESIGN (การแสดงผลบนมือถือ)
+   ไฟล์ที่ใช้: ทุกไฟล์ (ปรับแต่งการแสดงผล)
+============================================================ */
+/* ============================================================
+   8. RESPONSIVE DESIGN (ปรับแต่งสำหรับมือถือและแท็บเล็ต)
+   วางส่วนนี้ไว้ล่างสุดของไฟล์ style.css เสมอ
+============================================================ */
+
+/* --- สำหรับ iPad และ Tablet (หน้าจอขนาดไม่เกิน 1024px) --- */
+@media (max-width: 1024px) {
+    /* ปรับ Container ให้ชิดขอบมากขึ้น เพื่อให้มีพื้นที่เนื้อหาเยอะขึ้น */
+    .container {
+        padding: 0 30px; 
+    }
+
+    /* ปรับหัวข้อให้เล็กลงหน่อยบน Tablet */
+    h1 { font-size: 2.8rem; }
+    h2 { font-size: 2rem; }
+
+    /* ส่วนขั้นตอนการสั่งซื้อ (Steps) ให้เหลือ 2 แถว หรือปรับตามความเหมาะสม */
+    .steps-grid {
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 1.5rem;
+    }
+}
+
+/* --- สำหรับมือถือ (Mobile) (หน้าจอขนาดไม่เกิน 768px) --- */
+@media (max-width: 768px) {
+    
+    /* 1. จัดการ Navbar (เมนู) ให้เรียงลงมาแนวตั้ง */
+    .navbar .container {
+        flex-direction: column;
+        gap: 15px;
+    }
+    .navbar nav ul {
+        flex-wrap: wrap; /* ให้เมนูขึ้นบรรทัดใหม่ได้ถ้ายาวเกิน */
+        justify-content: center;
+        gap: 10px;
+    }
+    .navbar nav ul li { margin-left: 10px; margin-right: 10px; }
+
+    /* 2. ส่วน Hero Banner (รูปปก) */
+    .hero { height: auto; padding: 60px 20px; min-height: 400px; }
+    .hero-content h1 { font-size: 2rem; } /* ลดขนาดตัวอักษร */
+    .hero-content p { font-size: 1rem; }
+
+    /* 3. ปรับ Grid ทั้งหมดให้เหลือ 1 คอลัมน์ (เรียงจากบนลงล่าง) */
+    /* .steps-grid คือส่วนขั้นตอน 1-2-3 ในรูป */
+    .steps-grid, 
+    .seedling-grid, 
+    .news-grid,
+    .checkout-container,
+    .unified-contact-card {
+        grid-template-columns: 1fr !important; /* บังคับให้เหลือ 1 ช่องเต็มๆ */
+        gap: 20px;
+    }
+
+    /* 4. ปรับ Admin Dashboard ในมือถือ */
+    .admin-wrapper { flex-direction: column; }
+    .sidebar { width: 100%; flex-direction: row; overflow-x: auto; padding: 10px; }
+    .sidebar-header { display: none; } /* ซ่อนหัวข้อ Sidebar เพื่อประหยัดที่ */
+    .stats-grid { grid-template-columns: 1fr; } /* การ์ดสถิติเรียงเดี่ยว */
+
+    /* 5. อื่นๆ */
+    .btn-primary, .btn-secondary {
+        width: 100%; /* ปุ่มเต็มจอ กดง่ายขึ้น */
+        margin-bottom: 10px;
+    }
+    
+    /* ส่วนรูปภาพใน Step Card ให้เล็กลงหน่อย */
+    .step-icon { font-size: 2.5rem; }
+}
+
+
+/* file:about css */
+/* ===== About Page ===== */
+
+.about-hero {
+    height: 60vh;
+    background: linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)),url("../images/riceberry.png") center/cover no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: #fff;
+}
+
+.about-hero h1 {
+    font-size: 42px;
+    margin-bottom: 12px;
+}
+
+.about-hero p {
+    font-size: 18px;
+    max-width: 700px;
+}
+
+.about-section {
+    background: var(--light-color);
+    padding: 60px 0;
+}
+
+.container.small {
+    max-width: 800px;
+    margin: auto;
+    text-align: center;
+}
+
+.gray-bg {
+    background: #f7f7f7;
+}
+
+.grid-2 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+}
+
+.grid-3 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 30px;
+}
+
+.about-card {
+    background: #fff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+.about-card h3 {
+    margin: 15px 0;
+    color: #2e7d32;
+}
+
+.about-card ul {
+    text-align: left;
+    padding-left: 20px;
+}
+
+.icon {
+    font-size: 36px;
+    color: #2e7d32;
+}
+
+.about-cta {
+    background-color: var(--dark-color);
+    color: #fff;
+    padding: 60px 20px;
+    text-align: center;
+}
+
+.about-cta .btn-primary {
+    margin-top: 20px;
+    display: inline-block;
+}
+
+

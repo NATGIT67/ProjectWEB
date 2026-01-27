@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EasyRice - ระบบซื้อขายต้นกล้าและบริการปักดำข้าว</title>
+    
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<body> 
+    <header class="navbar">
+        <div class="container">
+            <a href="index.html" class="logo">🌾 EasyRice</a>
+            <nav>
+            <ul>
+                <li><a href="index.html" class="active">หน้าแรก</a></li>
+                <li><a href="product.html">สินค้า</a></li>
+                <li><a href="about.html">ข่าวสาร</a></li>
+                <li><a href="contact.html">ติดต่อ</a></li>
+            </ul>
+        </nav>
+            <a href="sign-in.html" class="btn-signin">เข้าสู่ระบบ</a>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="hero-content">
+                <h1>ยินดีต้อนรับสู่ EasyRice</h1>
+                <h1>ระบบซื้อขายต้นกล้าและบริการปักดำข้าว</h1>
+                <p>สะดวก รวดเร็ว มั่นใจได้ในคุณภาพ ต้นกล้าแข็งแรงพร้อมลงนา</p>
+                <div class="hero-buttons">
+                    <a href="product.html" class="btn-primary">ซื้อต้นกล้าทันที</a>
+                    <a href="contact.html" class="btn-secondary">ติดต่อบริการรถดำนา</a>
+                </div>
+            </div>
+        </section>
+        
+        <section class="how-it-works" style="background-color: var(--light-color);">
+            <div class="container">
+                <h2>ขั้นตอนการสั่งซื้อสินค้า</h2>
+                <div class="steps-grid">
+                    <div class="step-card">
+                        <i class="fas fa-search step-icon"></i>
+                        <h3>1. เลือกพันธุ์ข้าว</h3>
+                        <p>เลือกพันธุ์ข้าวที่เหมาะสมกับพื้นที่และฤดูกาลของคุณจากรายการสินค้าคุณภาพของเรา</p>
+                    </div>
+                    <div class="step-card">
+                        <i class="fas fa-clipboard-list step-icon"></i>
+                        <h3>2. ระบุรายละเอียด</h3>
+                        <p>กด "ซื้อเลย" ระบุจำนวนถาดที่ต้องการ และวันที่สะดวกรับสินค้า หรือใช้บริการรถดำ</p>
+                    </div>
+                    <div class="step-card">
+                        <i class="fas fa-check-circle step-icon"></i>
+                        <h3>3. ยืนยันและรอรับ</h3>
+                        <p>ตรวจสอบข้อมูล ยืนยันการซื้อ และรอรับต้นกล้าคุณภาพถึงมือคุณตามนัดหมาย</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="seedlings" style="background-color: var(--light-color);">
+            <div class="container">
+                <h2>ซื้อต้นกล้าข้าวพันธุ์ดี</h2>
+                <div class="seedling-grid" id="productContainer">
+                    <p style="text-align:center; width:100%;">กำลังโหลดข้อมูลสินค้า...</p>
+                </div>
+                
+                <div style="text-align: center; margin-top: 40px;">
+                    <a href="product.html" class="btn-secondary" style="border-color:var(--border-color); color:var(--dark-color);">ดูสินค้าทั้งหมด</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="news" style="background-color: var(--light-color);">
+            <div class="container">
+                <h2>สาระน่ารู้คู่ชาวนา</h2>
+                <div class="news-grid">
+                    <div class="news-card">
+                        <div class="news-img-wrapper">
+                            <img src="../images/tonka.jpg" alt="ต้นกล้า">
+                        </div>
+                        <div class="news-content">
+                            <div class="news-date"><i class="far fa-calendar-alt"></i> 10 ม.ค. 2567</div>
+                            <h3>ทำไมต้องใช้ต้นกล้าอายุ 20 วัน?</h3>
+                            <p>ต้นกล้าในวัยนี้รากกำลังเดินดี เมื่อนำไปปักดำจะฟื้นตัวเร็ว แตกกอได้ดีกว่าต้นกล้าแก่...</p>
+                            <a href="about.html" class="read-more-btn">อ่านต่อ <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                    <div class="news-card">
+                        <div class="news-img-wrapper">
+                            <img src="../images/NA.png" alt="ทุ่งนา">
+                        </div>
+                        <div class="news-content">
+                            <div class="news-date"><i class="far fa-calendar-alt"></i> 12 ม.ค. 2567</div>
+                            <h3>วิธีเลือกพันธุ์ข้าวให้เหมาะกับดิน</h3>
+                            <p>ดินเค็ม ดินเปรี้ยว หรือพื้นที่ลุ่มน้ำท่วมถึง การเลือกพันธุ์ข้าวให้ถูกโฉลกกับดินจะช่วยเพิ่มผลผลิต...</p>
+                            <a href="about.html" class="read-more-btn">อ่านต่อ <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                    <div class="news-card">
+                        <div class="news-img-wrapper">
+                            <img src="../images/DUM.jpeg" alt="รถดำนา">
+                        </div>
+                        <div class="news-content">
+                            <div class="news-date"><i class="far fa-calendar-alt"></i> 15 ม.ค. 2567</div>
+                            <h3>เทคนิคเตรียมดินก่อนรถดำลง</h3>
+                            <p>การปรับหน้าดินให้เรียบเสมอและการรักษาระดับน้ำ เป็นหัวใจสำคัญที่จะทำให้รถดำทำงานได้ราบรื่น...</p>
+                            <a href="about.html" class="read-more-btn">อ่านต่อ <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+       
+        <section class="faq-section" style="background-color: var(--light-color);">
+            <div class="container">
+                <div class="faq-slider">
+                    <button class="arrow left" onclick="slideFAQ(-1)"><i class="fas fa-chevron-left"></i></button>
+                    <div class="faq-wrapper" id="faqWrapper">
+                        <div class="faq-slide" style="background-color: var(--white-color);">
+                            <h2><i class="fas fa-shipping-fast"></i> วิธีการจัดส่งและแพ็คต้นกล้า</h2>
+                            <ul>
+                                <li><i class="fas fa-check" style="color:var(--primary-color);"></i> คัดเลือกต้นกล้าแข็งแรง อายุ 20–30 วัน</li>
+                                <li><i class="fas fa-check" style="color:var(--primary-color);"></i> มัดเป็นกำเล็กๆ ห่อโคนรักษาความชื้น</li>
+                                <li><i class="fas fa-check" style="color:var(--primary-color);"></i> จัดส่งถึงที่ภายใน 24 ชม.</li>
+                            </ul>
+                        </div>
+                        <div class="faq-slide">
+                            <h2><i class="fas fa-seedling"></i> หลักการเลือกพันธุ์ข้าว</h2>
+                            <ul>
+                                <li><i class="fas fa-check" style="color:var(--primary-color);"></i> พิจารณาพื้นที่ (นาลุ่ม/นาดอน)</li>
+                                <li><i class="fas fa-check" style="color:var(--primary-color);"></i> ดูช่วงเวลาเก็บเกี่ยว (นาปี/นาปรัง)</li>
+                                <li><i class="fas fa-check" style="color:var(--primary-color);"></i> เลือกพันธุ์ที่ต้านทานโรค</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <button class="arrow right" onclick="slideFAQ(1)"><i class="fas fa-chevron-right"></i></button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <div class="container">
+            <h3>EasyRice Seedling Hub</h3>
+            <p>แหล่งรวมพันธุกรรมข้าวคุณภาพ เพื่อเกษตรกรไทย</p>
+            <p style="font-size: 0.8rem; margin-top: 20px; color: #aaa;">&copy; 2024 EasyRice. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // --- 1. โหลดข้อมูลสินค้า (ใช้ข้อมูลชุดสาธิต เพื่อให้หน้าเว็บไม่ว่าง) ---
+        function initData() {
+            // เช็คว่ามีข้อมูลใน LocalStorage หรือไม่ ถ้าไม่มีให้ใช้ข้อมูลตัวอย่าง
+            let products = localStorage.getItem('easyrice_db');
+            if (!products) {
+                const demoProducts = [
+                    { id: 1, name: 'ข้าวหอมมะลิ 105', desc: 'ต้นกล้าข้าวหอมมะลิแท้ กลิ่นหอม นุ่มนวล', price: 35, stock: 150, img: 'https://images.unsplash.com/photo-1586201375761-83865001e31c?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80' },
+                    { id: 2, name: 'ข้าวไรซ์เบอร์รี่', desc: 'ข้าวเพื่อสุขภาพ สีม่วงเข้ม สารต้านอนุมูลอิสระสูง', price: 45, stock: 25, img: 'https://images.unsplash.com/photo-1620027727192-3c824c641269?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80' },
+                    { id: 3, name: 'ข้าว RD43', desc: 'ข้าวดัชนีน้ำตาลต่ำ เหมาะสำหรับผู้รักสุขภาพ', price: 30, stock: 200, img: 'https://images.unsplash.com/photo-1599940778173-e276d4acb2be?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80' },
+                    { id: 4, name: 'ข้าวปทุมธานี 1', desc: 'ข้าวหอมนุ่ม ราคาประหยัด ผลผลิตต่อไร่สูง', price: 32, stock: 0, img: 'https://images.unsplash.com/photo-1533241240368-12d2eb73602d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80' }
+                ];
+                localStorage.setItem('easyrice_db', JSON.stringify(demoProducts));
+                return demoProducts;
+            }
+            return JSON.parse(products);
+        }
+
+        function displayProducts() {
+            const products = initData();
+            const container = document.getElementById('productContainer');
+            container.innerHTML = ''; 
+
+            // แสดงเฉพาะ 4 รายการแรก
+            products.slice(0, 4).forEach(p => {
+                let stockClass = p.stock > 0 ? 'available' : 'out-of-stock';
+                let stockText = p.stock > 0 ? `มีสินค้า (${p.stock})` : 'สินค้าหมด';
+                let btnState = p.stock > 0 ? '' : 'disabled';
+                let btnStyle = p.stock > 0 ? '' : 'background-color:#ccc; cursor:not-allowed;';
+
+                container.innerHTML += `
+                    <div class="card">
+                        <img src="${p.img}" alt="${p.name}">
+                        <div class="card-content">
+                            <h3>${p.name}</h3>
+                            <p style="flex-grow:1; color:#666; font-size:0.9rem;">${p.desc}</p>
+                            <div class="price">฿${p.price} / ถาด</div>
+                            <div class="stock-info">
+                                <span class="stock-status ${stockClass}">${stockText}</span>
+                            </div>
+                            <a href="checkout.html" class="btn-reserve" style="width:100%; text-decoration:none; ${btnStyle}">ซื้อเลย</a>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        // --- 2. FAQ Slider Script ---
+        let slideIndex = 0;
+        function slideFAQ(direction) {
+            const wrapper = document.getElementById("faqWrapper");
+            const slides = document.querySelectorAll(".faq-slide");
+            const total = slides.length;
+            slideIndex += direction;
+            if (slideIndex < 0) slideIndex = total - 1;
+            else if (slideIndex >= total) slideIndex = 0;
+            wrapper.style.transform = `translateX(-${slideIndex * 100}%)`;
+        }
+
+        window.onload = function () {
+            displayProducts();
+        };
+    </script>
+    <script src="/project/js/easyrice.js"></script>
+</body>
+</html>
