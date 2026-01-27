@@ -3,119 +3,79 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EasyRice - เกี่ยวกับเรา</title>
+    <title>EasyRice - ข่าวสารเกษตรกร</title>
 
-    <!-- CSS หลัก -->
-    <link rel="stylesheet" href="/project/css/style.css">
-    <!-- Google Font -->
+    <link rel="stylesheet" href="../css/style.css">
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;700&display=swap" rel="stylesheet">
 
-    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
 
-<!-- ===== Navbar ===== -->
 <header class="navbar">
-        <div class="container">
-            <a href="index.html" class="logo">🌾 EasyRice</a>
-            <nav>
-                <ul>
-                    <li><a href="index.html">หน้าแรก</a></li>
-                    <li><a href="product.html" class="active">สินค้า</a></li>
-                    <li><a href="about.html">เกี่ยวกับเรา</a></li>
-                    <li><a href="about.html">ข่าวสาร</a></li>
-                    <li><a href="contact.html">ติดต่อ</a></li>
-                </ul>
-            </nav>
-            <a href="sign-in.html" class="btn-signin">เข้าสู่ระบบ</a>
-        </div>
-    </header>
-
-
-<!-- ===== Hero Section ===== -->
-<section class="about-hero">
-    <div class="about-hero-content">
-        <h1>เกี่ยวกับ EasyRice</h1>
-        <p>
-            แพลตฟอร์มซื้อขายต้นกล้าและบริการปลูกดำข้าวออนไลน์  
-            เพื่อเกษตรกรไทยในยุคดิจิทัล
-        </p>
-    </div>
-</section>
-
-<!-- ===== About Content ===== -->
-<section class="about-section">
-    <div class="container small">
-        <h2>EasyRice คืออะไร</h2>
-        <p>
-            EasyRice คือแพลตฟอร์มออนไลน์ที่พัฒนาขึ้นเพื่ออำนวยความสะดวก
-            ในการซื้อขายต้นกล้าและบริการปลูกดำข้าว
-            โดยเชื่อมต่อผู้ใช้งานกับเกษตรกรและผู้ให้บริการโดยตรง
-        </p>
-    </div>
-</section>
-
-<!-- ===== Vision & Mission ===== -->
-<section class="about-section gray-bg">
-    <div class="container grid-2">
-        <div class="about-card">
-            <h3>🌱 วิสัยทัศน์</h3>
-            <p>
-                เป็นแพลตฟอร์มด้านการเกษตรที่ช่วยให้การปลูกข้าว
-                เป็นเรื่องง่าย เข้าถึงได้ และยั่งยืน
-            </p>
-        </div>
-
-        <div class="about-card">
-            <h3>🎯 พันธกิจ</h3>
-            <ul>
-                <li>พัฒนาแพลตฟอร์มที่ใช้งานง่าย</li>
-                <li>สนับสนุนเกษตรกรไทย</li>
-                <li>เพิ่มประสิทธิภาพการปลูกข้าว</li>
-                <li>สร้างความเชื่อมั่นให้ผู้ใช้งาน</li>
-            </ul>
-        </div>
-    </div>
-</section>
-
-<!-- ===== Services ===== -->
-<section class="about-section">
     <div class="container">
-        <h2>บริการของเรา</h2>
+        <a href="index.html" class="logo">🌾 EasyRice</a>
+        <nav>
+            <ul>
+                <li><a href="index.html">หน้าแรก</a></li>
+                <li><a href="product.html">สินค้า</a></li>
+                <li><a href="about.html"class="active">ข่าวสาร</a></li>
+                <li><a href="contact.html">ติดต่อ</a></li>
+            </ul>
+        </nav>
+        <a href="sign-in.html" class="btn-signin">เข้าสู่ระบบ</a>
+    </div>
+</header>
 
-        <div class="grid-3">
-            <div class="about-card">
-                <i class="fas fa-seedling icon"></i>
-                <h3>ซื้อต้นกล้า</h3>
-                <p>เลือกชนิดต้นกล้าได้ตามความต้องการผ่านระบบออนไลน์</p>
-            </div>
+<section class="container" style="padding: 60px 20px;">
+    <h2 style="margin-bottom: 40px;">สาระน่ารู้คู่ชาวนา</h2>
 
-            <div class="about-card">
-                <i class="fas fa-tractor icon"></i>
-                <h3>บริการปลูกดำ</h3>
-                <p>บริการปลูกดำข้าวโดยผู้เชี่ยวชาญ สะดวกและรวดเร็ว</p>
+    <div class="news-grid">
+        <article class="news-card">
+            <div class="news-img-wrapper">
+                <img src="../images/background.png" alt="ต้นกล้า"> </div>
+            <div class="news-content">
+                <p class="news-date"><i class="far fa-calendar-alt"></i> 10 ม.ค. 2567</p>
+                <h3>ทำไมต้องใช้ต้นกล้าอายุ 20 วัน?</h3>
+                <p>ต้นกล้าในวัยนี้รากกำลังเดินดี เมื่อนำไปปักดำจะฟื้นตัวเร็ว แตกกอได้ดีกว่าต้นกล้าแก่...</p>
+                <a href="#" class="read-more-btn">อ่านต่อ <i class="fas fa-arrow-right"></i></a>
             </div>
+        </article>
 
-            <div class="about-card">
-                <i class="fas fa-chart-line icon"></i>
-                <h3>ติดตามสถานะ</h3>
-                <p>ตรวจสอบข้อมูลการให้บริการได้แบบเรียลไทม์</p>
+        <article class="news-card">
+            <div class="news-img-wrapper">
+                <img src="../images/riceberry.png" alt="นาข้าว"> </div>
+            <div class="news-content">
+                <p class="news-date"><i class="far fa-calendar-alt"></i> 12 ม.ค. 2567</p>
+                <h3>วิธีเลือกพันธุ์ข้าวให้เหมาะกับดิน</h3>
+                <p>ดินเค็ม ดินเปรี้ยว หรือพื้นที่ลุ่มน้ำท่วมถึง การเลือกพันธุ์ข้าวให้ถูกโฉลกกับดินจะช่วยเพิ่มผลผลิต...</p>
+                <a href="#" class="read-more-btn">อ่านต่อ <i class="fas fa-arrow-right"></i></a>
             </div>
-        </div>
+        </article>
+
+        <article class="news-card">
+            <div class="news-img-wrapper">
+                <img src="../images/background.png" alt="รถดำนา"> </div>
+            <div class="news-content">
+                <p class="news-date"><i class="far fa-calendar-alt"></i> 15 ม.ค. 2567</p>
+                <h3>เทคนิคเตรียมดินก่อนรถดำลง</h3>
+                <p>การปรับหน้าดินให้เรียบเสมอและการรักษาระดับน้ำ เป็นหัวใจสำคัญที่จะทำให้รถดำทำงานได้ราบรื่น...</p>
+                <a href="#" class="read-more-btn">อ่านต่อ <i class="fas fa-arrow-right"></i></a>
+            </div>
+        </article>
     </div>
 </section>
 
-<!-- ===== CTA ===== -->
- <footer>
-        <div class="container">
-            <h3>EasyRice Seedling Hub</h3>
-            <p>แหล่งรวมพันธุกรรมข้าวคุณภาพ เพื่อเกษตรกรไทย</p>
-            <p style="font-size: 0.8rem; margin-top: 20px; color: #aaa;">&copy; 2024 EasyRice. All Rights Reserved.</p>
-        </div>
-    </footer>
+<footer>
+    <div class="container">
+        <h3>EasyRice Seedling Hub</h3>
+        <p>แหล่งรวมพันธุกรรมข้าวคุณภาพ เพื่อเกษตรกรไทย</p>
+        <p style="font-size: 0.8rem; margin-top: 20px; color: #aaa;">&copy; 2024 EasyRice. All Rights Reserved.</p>
+    </div>
+</footer>
 
 </body>
 </html>
