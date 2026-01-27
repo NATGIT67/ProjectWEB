@@ -183,11 +183,39 @@ footer {
 }
 
 
-/* ============================================================
-   2. HOME PAGE (หน้าแรก)
-   ไฟล์ที่ใช้: index.html
-   หน้าที่: Hero Banner, ขั้นตอนการทำงาน, ข่าวสาร, FAQ
-============================================================ */
+.user-profile {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--dark-color);
+    font-weight: 500;
+}
+
+.alert {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 15px 20px;
+    border-radius: 5px;
+    color: white;
+    font-weight: 500;
+    z-index: 1000;
+    max-width: 400px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.alert button {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 0;
+    margin-left: 10px;
+}
 
 .container {
     max-width: 1200px;

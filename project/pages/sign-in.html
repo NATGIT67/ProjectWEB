@@ -34,17 +34,16 @@
                 <p>เข้าสู่ระบบเพื่อใช้งานต่อ</p>
             </div>
 
-            <form id="loginForm">
+            <form id="loginForm" autocomplete="on" novalidate>
+                <div id="login-message" style="display:none; margin-bottom:15px;"></div>
                 <div class="form-group">
                     <label for="username">อีเมลหรือเบอร์โทรศัพท์</label>
-                    <input type="text" id="username" class="form-control" placeholder="กรอกอีเมลหรือเบอร์โทรศัพท์" required>
+                    <input type="text" id="username" class="form-control" placeholder="กรอกอีเมลหรือเบอร์โทรศัพท์" required autocomplete="username">
                 </div>
-
                 <div class="form-group">
                     <label for="password">รหัสผ่าน</label>
-                    <input type="password" id="password" class="form-control" placeholder="กรอกรหัสผ่าน" required>
+                    <input type="password" id="password" class="form-control" placeholder="กรอกรหัสผ่าน" required autocomplete="current-password">
                 </div>
-
                 <div class="form-options">
                     <div class="remember-me">
                         <input type="checkbox" id="remember">
@@ -52,7 +51,6 @@
                     </div>
                     <a href="forgot-password.html" class="forgot-password">ลืมรหัสผ่าน?</a>
                 </div>
-
                 <button type="submit" class="btn-primary full-width">เข้าสู่ระบบ</button>
             </form>
             
@@ -72,7 +70,6 @@
         </div>
     </main>
 
-    <script>
 document.getElementById('loginForm').addEventListener('submit', function(e) {
     e.preventDefault();
 
@@ -89,5 +86,56 @@ document.getElementById('loginForm').addEventListener('submit', function(e) {
 });
 </script>
 
+<script>
+const loginForm = document.getElementById('loginForm');
+const loginMsg = document.getElementById('login-message');
+
+loginForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+    loginMsg.style.display = 'none';
+    loginMsg.innerHTML = '';
+
+    const username = document.getElementById('username').value.trim();
+    const password = document.getElementById('password').value.trim();
+
+    // Basic validation
+    if (!username || !password) {
+        showMsg('กรุณากรอกข้อมูลให้ครบถ้วน', false);
+        return;
+    }
+
+    // Demo: admin login
+    if (username === "admin" && password === "1234") {
+        showMsg('ยินดีต้อนรับผู้ดูแลระบบ กำลังเข้าสู่ระบบ...', true);
+        setTimeout(() => { window.location.href = 'admin.html'; }, 1200);
+        return;
+    }
+
+    // Check user credentials
+    const users = JSON.parse(localStorage.getItem('easyrice_users')) || [];
+    const user = users.find(u => (u.email === username || u.phone === username) && u.password === password);
+
+    if (user) {
+        // Store current user session
+        localStorage.setItem('current_user', JSON.stringify(user));
+        showMsg('เข้าสู่ระบบสำเร็จ กำลังนำทาง...', true);
+        setTimeout(() => { window.location.href = 'index.html'; }, 1200);
+    } else {
+        showMsg('อีเมล/เบอร์โทรศัพท์ หรือรหัสผ่านไม่ถูกต้อง', false);
+    }
+});
+
+function showMsg(msg, success) {
+    loginMsg.style.display = 'block';
+    loginMsg.innerHTML = msg;
+    loginMsg.style.background = success ? '#e8f5e9' : '#ffebee';
+    loginMsg.style.color = success ? '#2e7d32' : '#c62828';
+    loginMsg.style.border = success ? '1px solid #81c784' : '1px solid #e57373';
+    loginMsg.style.padding = '10px 15px';
+    loginMsg.style.borderRadius = '6px';
+    loginMsg.style.textAlign = 'center';
+}
+</script>
+<script src="/project/js/easyrice.js"></script>
 </body>
 </html>

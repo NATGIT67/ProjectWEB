@@ -10,6 +10,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </head>
 <body class="login-page-body">
 
@@ -34,12 +36,12 @@
             <div class="contact-sidebar">
                 <h2>ข้อมูลพันธุ์ข้าว</h2>
                 <div class="product-preview">
-                    <img src="https://scontent.fcnx4-1.fna.fbcdn.net/v/t1.6435-9/68727995_2046961368782899_8682895568529260544_n.jpg?stp=dst-jpg_s960x960_tt6&_nc_cat=111&ccb=1-7&_nc_sid=833d8c&_nc_ohc=p9HxK_UD8BoQ7kNvwF-oPOs&_nc_oc=Adnj5bJfS0DAAwsuEgoZMJhE1Hf_61xQ2WPBrH3JSKboDI7oYvs3Kjlcfmhdkw183wc&_nc_zt=23&_nc_ht=scontent.fcnx4-1.fna&_nc_gid=TVRKscVPOLc4sI2N2jJfkQ&oh=00_Afkqhl75FWE5brb8trs3m0YcscvbAhr8Xxop2IP4Y1zriw&oe=696CF188" alt="ข้าวหอมมะลิ 105" class="order-image">
+                    <img id="productImage" src="../images/jasmine105.png" alt="ข้าวหอมมะลิ 105" class="order-image">
                     <div class="product-info-text">
-                        <strong>พันธุ์ข้าว: ข้าวหอมมะลิ 105</strong>
-                        <p><i class="fas fa-seedling"></i> เวลาเจริญเติบโต: 120 วัน</p>
-                        <p><i class="fas fa-tag"></i> ราคาต้นกล้า: 13 บาท / ถาด</p>
-                        <p><i class="fas fa-tractor"></i> บริการปักดำ: 1,800 บาท / ไร่ (รวมกล้าแล้ว)</p>
+                        <strong id="productName">พันธุ์ข้าว: ข้าวหอมมะลิ 105</strong>
+                        <p id="growthTime"><i class="fas fa-seedling"></i> เวลาเจริญเติบโต: 120 วัน</p>
+                        <p id="seedPrice"><i class="fas fa-tag"></i> ราคาต้นกล้า: 13 บาท / ถาด</p>
+                        <p id="plantingPrice"><i class="fas fa-tractor"></i> บริการปักดำ: 1,800 บาท / ไร่ (รวมกล้าแล้ว)</p>
                     </div>
                 </div>
                 
@@ -73,6 +75,13 @@
                     <div class="form-group">
                         <label>ที่อยู่การจัดส่ง</label>
                         <textarea class="form-control" rows="2" placeholder="กรอกที่อยู่โดยละเอียด" required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>เลือกตำแหน่งจัดส่งบนแผนที่</label>
+                        <div id="map" style="height: 300px; border-radius: 10px;"></div>
+                        <input type="hidden" id="lat" name="lat">
+                        <input type="hidden" id="lng" name="lng">
                     </div>
 
                     <div class="checkout-grid-form" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
@@ -134,6 +143,7 @@
                 <p><strong>รายละเอียดเพิ่มเติม:</strong> <span id="resDetails"></span></p>
                 <p><strong>สินค้า:</strong> <span id="resProduct">ข้าวหอมมะลิ 105</span></p>
                 <p id="resQuantity"></p>
+                <p id="resQuantity"></p>
                 <hr style="margin: 10px 0; border: 0; border-top: 1px solid #ccc;">
                 <p style="font-size: 1.2rem;"><strong>ราคาทั้งหมด:</strong> <span id="resTotal" style="color: var(--primary-color);"></span></p>
                 <p style="font-size: 1.3rem; color: #c62828;"><strong>ยอดมัดจำที่ต้องชำระ (50%):</strong> <span id="resDeposit"></span></p>
@@ -167,6 +177,38 @@
     </div>
 
     <script>
+        let selectedProduct = { id: 1, name: 'ข้าวหอมมะลิ 105', desc: 'ต้นกล้าข้าวคุณภาพดี มีกลิ่นหอม ให้ผลผลิตข้าวนุ่ม', age: 25, feature: 'กลิ่นหอม', price: 35, stock: 150, img: '../images/jasmine105.png' };
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const productId = urlParams.get('id');
+            if (productId) {
+                const products = JSON.parse(localStorage.getItem('easyrice_db')) || [];
+                const product = products.find(p => p.id == productId);
+                if (product) {
+                    selectedProduct = product;
+                    document.getElementById('productImage').src = selectedProduct.img;
+                    document.getElementById('productName').innerText = `พันธุ์ข้าว: ${selectedProduct.name}`;
+                    document.getElementById('growthTime').innerHTML = `<i class="fas fa-seedling"></i> เวลาเจริญเติบโต: ${selectedProduct.age} วัน`;
+                    document.getElementById('seedPrice').innerHTML = `<i class="fas fa-tag"></i> ราคาต้นกล้า: ${selectedProduct.price} บาท / ถาด`;
+                }
+            }
+
+            // Initialize map
+            var map = L.map('map').setView([13.7563, 100.5018], 10);
+            L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+                attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+            }).addTo(map);
+            var marker = L.marker([13.7563, 100.5018], {draggable: true}).addTo(map);
+            marker.on('dragend', function(e) {
+                var latlng = e.target.getLatLng();
+                document.getElementById('lat').value = latlng.lat;
+                document.getElementById('lng').value = latlng.lng;
+            });
+            document.getElementById('lat').value = 13.7563;
+            document.getElementById('lng').value = 100.5018;
+        });
+
         const quantityInput = document.getElementById('quantity');
         const plantingCheck = document.getElementById('plantingService');
         const totalPriceEl = document.getElementById('totalPrice');
@@ -182,7 +224,7 @@
                 total = qty * 1800;
             } else {
                 quantityLabel.innerText = "จำนวน (ถาด)";
-                total = qty * 13;
+                total = qty * selectedProduct.price;
             }
 
             const deposit = total * 0.5;
@@ -199,15 +241,56 @@
 
         document.getElementById('orderForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            alert('บันทึกคำสั่งซื้อสำเร็จ! กรุณาชำระยอดมัดจำเพื่อดำเนินการต่อ');
+            // Populate modal
+            document.getElementById('resName').innerText = document.querySelector('input[placeholder="กรอกชื่อของคุณ"]').value;
+            document.getElementById('resPhone').innerText = document.querySelector('input[placeholder="08X-XXX-XXXX"]').value;
+            document.getElementById('resDetails').innerText = document.getElementById('additionalDetails').value || "ไม่มีระบุ";
+            document.getElementById('resProduct').innerText = selectedProduct.name;
+            document.getElementById('resQuantity').innerText = `จำนวน: ${quantityInput.value} ${plantingCheck.checked ? 'ไร่' : 'ถาด'}`;
+            document.getElementById('resTotal').innerText = totalPriceEl.innerText;
+            document.getElementById('resDeposit').innerText = depositPriceEl.innerText;
+            document.getElementById('orderDateDisplay').innerText = new Date().toLocaleDateString('th-TH');
+            document.getElementById('orderModal').style.display = 'flex';
         });
 
-        // เพิ่มบรรทัดนี้ในส่วนที่กดยืนยันการสั่งซื้อ (Event Listener ของ orderForm)
-        const detailsValue = document.getElementById('additionalDetails').value;
-        const resDetails = document.getElementById('resDetails');
+        function finalizeOrder() {
+            // Get form data
+            const name = document.querySelector('input[placeholder="กรอกชื่อของคุณ"]').value;
+            const phone = document.querySelector('input[placeholder="08X-XXX-XXXX"]').value;
+            const email = document.querySelector('input[type="email"]').value;
+            const address = document.querySelector('textarea').value;
+            const date = document.querySelector('input[type="date"]').value;
+            const deliveryMethod = document.getElementById('deliveryMethod').value;
+            const additionalDetails = document.getElementById('additionalDetails').value;
 
-        // แสดงข้อมูลใน Modal สรุปผล
-        document.getElementById('resDetails').innerText = detailsValue ? detailsValue : "ไม่มีระบุ";
+            // Create order object
+            const order = {
+                id: 'ER-' + Date.now(),
+                customerName: name,
+                phone: phone,
+                email: email,
+                address: address,
+                product: selectedProduct.name,
+                quantity: quantityInput.value,
+                unit: plantingCheck.checked ? 'ไร่' : 'ถาด',
+                total: parseInt(totalPriceEl.innerText.replace('฿', '').replace(',', '')),
+                deposit: parseInt(depositPriceEl.innerText.replace('฿', '').replace(',', '')),
+                deliveryDate: date,
+                deliveryMethod: deliveryMethod,
+                additionalDetails: additionalDetails,
+                status: 'pending',
+                orderDate: new Date().toISOString(),
+                type: plantingCheck.checked ? 'service' : 'seedling'
+            };
+
+            // Save to localStorage
+            const orders = JSON.parse(localStorage.getItem('easyrice_orders')) || [];
+            orders.push(order);
+            localStorage.setItem('easyrice_orders', JSON.stringify(orders));
+
+            alert('คำสั่งซื้อเสร็จสิ้น! เลขที่คำสั่งซื้อ: ' + order.id + ' กรุณาชำระมัดจำและส่งหลักฐานการชำระเงิน');
+            window.location.href = 'history.html';
+        }
     </script>
 
     

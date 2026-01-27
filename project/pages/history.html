@@ -9,6 +9,43 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .status-badge {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        .status-pending {
+            background-color: #fff3e0;
+            color: #ef6c00;
+        }
+        .status-success {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+        }
+        .status-error {
+            background-color: #ffebee;
+            color: #c62828;
+        }
+        .btn-view {
+            background: #2196F3;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+        .btn-view:hover {
+            background: #1976D2;
+        }
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+    </style>
 </head>
 <body class="login-page-body">
 
@@ -87,9 +124,127 @@
                 </table>
             </div>
         </div>
-    </main>
+    <script>
+document.addEventListener('DOMContentLoaded', function() {
+    loadOrderHistory();
+});
 
+function loadOrderHistory() {
+    // Get orders from localStorage (in real app, this would come from server)
+    let orders = JSON.parse(localStorage.getItem('easyrice_orders')) || [];
 
+    // If no orders, create sample data
+    if (orders.length === 0) {
+        orders = [
+            {
+                id: 'ER-2025001',
+                date: '20 ธ.ค. 2025',
+                product: 'ข้าวหอมมะลิ 105',
+                details: 'จำนวน 50 ถาด (รับเอง)',
+                total: 650,
+                deposit: 325,
+                status: 'pending',
+                type: 'seedling'
+            },
+            {
+                id: 'ER-2025002',
+                date: '15 ธ.ค. 2025',
+                product: 'บริการปักดำข้าว (รวมกล้า)',
+                details: 'พื้นที่ 5 ไร่ (จัดส่ง)',
+                total: 9000,
+                deposit: 4500,
+                status: 'paid',
+                type: 'service'
+            },
+            {
+                id: 'ER-2025003',
+                date: '10 ธ.ค. 2025',
+                product: 'ข้าวไรซ์เบอร์รี่',
+                details: 'จำนวน 25 ถาด (จัดส่ง)',
+                total: 1125,
+                deposit: 562.5,
+                status: 'completed',
+                type: 'seedling'
+            }
+        ];
+        localStorage.setItem('easyrice_orders', JSON.stringify(orders));
+    }
 
-</body>
-</html>
+    const tbody = document.getElementById('historyBody');
+    tbody.innerHTML = '';
+
+    orders.forEach(order => {
+        const statusClass = getStatusClass(order.status);
+        const statusText = getStatusText(order.status);
+
+        tbody.innerHTML += `
+            <tr style="border-bottom: 1px solid #eee;">
+                <td style="padding: 15px;">#${order.id}</td>
+                <td style="padding: 15px;">${order.date}</td>
+                <td style="padding: 15px;">
+                    <strong>${order.product}</strong><br>
+                    <small>${order.details}</small>
+                </td>
+                <td style="padding: 15px;">฿${order.total.toLocaleString()}</td>
+                <td style="padding: 15px;">฿${order.deposit.toLocaleString()}</td>
+                <td style="padding: 15px;">
+                    <span class="status-badge status-${order.status}">${statusText}</span>
+                </td>
+                <td style="padding: 15px;">
+                    <button class="btn-view" onclick="viewOrderDetails('${order.id}')">
+                        <i class="fas fa-search"></i> ดูรายละเอียด
+                    </button>
+                </td>
+            </tr>
+        `;
+    });
+}
+
+function getStatusClass(status) {
+    switch(status) {
+        case 'pending': return 'pending';
+        case 'paid': return 'success';
+        case 'completed': return 'success';
+        case 'cancelled': return 'error';
+        default: return 'pending';
+    }
+}
+
+function getStatusText(status) {
+    switch(status) {
+        case 'pending': return 'รอตรวจสอบสลิป';
+        case 'paid': return 'ชำระเงินแล้ว';
+        case 'completed': return 'เสร็จสิ้น';
+        case 'cancelled': return 'ยกเลิก';
+        default: return 'รอตรวจสอบสลิป';
+    }
+}
+
+function viewOrderDetails(orderId) {
+    const orders = JSON.parse(localStorage.getItem('easyrice_orders')) || [];
+    const order = orders.find(o => o.id === orderId);
+
+    if (order) {
+        const details = `
+            เลขที่คำสั่งซื้อ: #${order.id}
+            วันที่สั่ง: ${order.date}
+            สินค้า/บริการ: ${order.product}
+            รายละเอียด: ${order.details}
+            ยอดรวม: ฿${order.total.toLocaleString()}
+            มัดจำ (50%): ฿${order.deposit.toLocaleString()}
+            สถานะ: ${getStatusText(order.status)}
+        `;
+
+        alert(details);
+    }
+}
+
+// Logout functionality
+document.querySelector('.btn-signin').addEventListener('click', function(e) {
+    e.preventDefault();
+    if (confirm('ต้องการออกจากระบบหรือไม่?')) {
+        // In real app, clear session/token
+        window.location.href = 'sign-in.html';
+    }
+});
+</script>

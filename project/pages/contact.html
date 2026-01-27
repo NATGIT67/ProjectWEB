@@ -96,7 +96,67 @@
                 </form>
             </div>
         </div>
-    </main>
+    <script>
+document.getElementById('contactForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const name = document.querySelector('input[placeholder="กรอกชื่อของคุณ"]').value.trim();
+    const contact = document.querySelector('input[placeholder="เพื่อให้เราติดต่อกลับ"]').value.trim();
+    const subject = document.querySelector('select').value;
+    const message = document.querySelector('textarea').value.trim();
+
+    // Validation
+    if (!name || !contact || !message) {
+        showMessage('กรุณากรอกข้อมูลให้ครบถ้วน', false);
+        return;
+    }
+
+    // Simulate sending message
+    const contactData = {
+        id: Date.now(),
+        name: name,
+        contact: contact,
+        subject: subject,
+        message: message,
+        timestamp: new Date().toISOString(),
+        status: 'unread'
+    };
+
+    // Store in localStorage (in real app, this would be sent to server)
+    const contacts = JSON.parse(localStorage.getItem('easyrice_contacts')) || [];
+    contacts.push(contactData);
+    localStorage.setItem('easyrice_contacts', JSON.stringify(contacts));
+
+    showMessage('ส่งข้อความสำเร็จ! เจ้าหน้าที่จะติดต่อกลับภายใน 24 ชั่วโมง', true);
+
+    // Reset form
+    this.reset();
+
+    // Hide message after 3 seconds
+    setTimeout(() => {
+        document.getElementById('contact-message').style.display = 'none';
+    }, 3000);
+});
+
+function showMessage(message, success) {
+    let msgDiv = document.getElementById('contact-message');
+    if (!msgDiv) {
+        msgDiv = document.createElement('div');
+        msgDiv.id = 'contact-message';
+        document.getElementById('contactForm').prepend(msgDiv);
+    }
+
+    msgDiv.style.display = 'block';
+    msgDiv.innerHTML = message;
+    msgDiv.style.background = success ? '#e8f5e9' : '#ffebee';
+    msgDiv.style.color = success ? '#2e7d32' : '#c62828';
+    msgDiv.style.border = success ? '1px solid #81c784' : '1px solid #e57373';
+    msgDiv.style.padding = '10px 15px';
+    msgDiv.style.borderRadius = '6px';
+    msgDiv.style.marginBottom = '15px';
+    msgDiv.style.textAlign = 'center';
+}
+</script>
 
     <footer>
         <div class="container">
@@ -111,5 +171,6 @@
             this.reset();
         });
     </script>
+    <script src="/project/js/easyrice.js"></script>
 </body>
 </html>

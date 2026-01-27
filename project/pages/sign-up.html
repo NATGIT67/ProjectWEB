@@ -89,32 +89,81 @@
 document.getElementById('signUpForm').addEventListener('submit', function(e) {
     e.preventDefault();
 
-    const fullname = document.getElementById('fullname').value;
-    const email = document.getElementById('email').value;
-    const phone = document.getElementById('phone').value;
+    const fullname = document.getElementById('fullname').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const phone = document.getElementById('phone').value.trim();
     const password = document.getElementById('password').value;
     const confirmPassword = document.getElementById('confirm-password').value;
+    const terms = document.getElementById('terms').checked;
 
-    if (password !== confirmPassword) {
-        alert('Passwords do not match. Please try again.');
+    // Validation
+    if (!fullname || !email || !phone || !password || !confirmPassword) {
+        showMessage('กรุณากรอกข้อมูลให้ครบถ้วน', false);
         return;
     }
 
-    // เก็บข้อมูลผู้ใช้
-    const user = {
+    if (password !== confirmPassword) {
+        showMessage('รหัสผ่านไม่ตรงกัน กรุณาตรวจสอบอีกครั้ง', false);
+        return;
+    }
+
+    if (password.length < 6) {
+        showMessage('รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร', false);
+        return;
+    }
+
+    if (!terms) {
+        showMessage('กรุณายอมรับเงื่อนไขและข้อกำหนด', false);
+        return;
+    }
+
+    // Check if email already exists
+    const existingUsers = JSON.parse(localStorage.getItem('easyrice_users')) || [];
+    const emailExists = existingUsers.some(user => user.email === email);
+
+    if (emailExists) {
+        showMessage('อีเมลนี้ถูกใช้งานแล้ว กรุณาใช้อีเมลอื่น', false);
+        return;
+    }
+
+    // Create new user
+    const newUser = {
+        id: Date.now(),
         fullname: fullname,
         email: email,
         phone: phone,
-        password: password
+        password: password, // In real app, this should be hashed
+        createdAt: new Date().toISOString()
     };
 
-    localStorage.setItem('user', JSON.stringify(user));
+    existingUsers.push(newUser);
+    localStorage.setItem('easyrice_users', JSON.stringify(existingUsers));
 
-    alert('Registration Successful!');
-    window.location.href = 'sign-in.html';
+    showMessage('สมัครสมาชิกสำเร็จ! กำลังนำทางไปหน้าเข้าสู่ระบบ...', true);
+    setTimeout(() => {
+        window.location.href = 'sign-in.html';
+    }, 1500);
 });
+
+function showMessage(message, success) {
+    let msgDiv = document.getElementById('signup-message');
+    if (!msgDiv) {
+        msgDiv = document.createElement('div');
+        msgDiv.id = 'signup-message';
+        document.getElementById('signUpForm').prepend(msgDiv);
+    }
+
+    msgDiv.style.display = 'block';
+    msgDiv.innerHTML = message;
+    msgDiv.style.background = success ? '#e8f5e9' : '#ffebee';
+    msgDiv.style.color = success ? '#2e7d32' : '#c62828';
+    msgDiv.style.border = success ? '1px solid #81c784' : '1px solid #e57373';
+    msgDiv.style.padding = '10px 15px';
+    msgDiv.style.borderRadius = '6px';
+    msgDiv.style.marginBottom = '15px';
+    msgDiv.style.textAlign = 'center';
+}
 </script>
-
-
+<script src="/project/js/easyrice.js"></script>
 </body>
 </html>
