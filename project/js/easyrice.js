@@ -115,4 +115,46 @@ class EasyRiceUtils {
 // Initialize when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
     EasyRiceUtils.updateNavbar();
+    
+    // Update sign-in button based on login status
+    updateSignInButton();
 });
+
+function updateSignInButton() {
+    const isLoggedIn = localStorage.getItem('easyrice_logged_in');
+    const isAdmin = localStorage.getItem('easyrice_admin_logged_in');
+    const btn = document.querySelector('.btn-signin');
+    
+    if (!btn) return;
+    
+    if (isAdmin) {
+        // Admin logged in - don't change navbar button for admin pages
+        if (!window.location.pathname.includes('admin.html')) {
+            btn.href = '#';
+            btn.textContent = 'ออกจากระบบ';
+            btn.style.background = '#ff5252';
+            btn.style.color = 'white';
+            btn.onclick = (e) => {
+                e.preventDefault();
+                localStorage.removeItem('easyrice_admin_logged_in');
+                localStorage.removeItem('easyrice_admin_name');
+                alert('ออกจากระบบแล้ว');
+                location.href = 'index.html';
+            };
+        }
+    } else if (isLoggedIn) {
+        // User logged in
+        btn.href = '#';
+        btn.textContent = 'ออกจากระบบ';
+        btn.style.background = '#ff5252';
+        btn.style.color = 'white';
+        btn.onclick = (e) => {
+            e.preventDefault();
+            localStorage.removeItem('easyrice_logged_in');
+            localStorage.removeItem('current_user');
+            localStorage.removeItem('easyrice_user_name');
+            alert('ออกจากระบบแล้ว');
+            location.href = 'index.html';
+        };
+    }
+}

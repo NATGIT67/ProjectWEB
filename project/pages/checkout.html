@@ -255,39 +255,50 @@
         });
 
         function finalizeOrder() {
-            // Get form data
-            const name = document.querySelector('input[placeholder="กรอกชื่อของคุณ"]').value;
-            const phone = document.querySelector('input[placeholder="08X-XXX-XXXX"]').value;
-            const email = document.querySelector('input[type="email"]').value;
-            const address = document.querySelector('textarea').value;
-            const date = document.querySelector('input[type="date"]').value;
-            const deliveryMethod = document.getElementById('deliveryMethod').value;
-            const additionalDetails = document.getElementById('additionalDetails').value;
+            const slipFile = document.getElementById('slipFile');
+            if (!slipFile.files.length) {
+                alert('กรุณาแนบสลิป');
+                return;
+            }
 
-            // Create order object
-            const order = {
-                id: 'ER-' + Date.now(),
-                customerName: name,
-                phone: phone,
-                email: email,
-                address: address,
-                product: selectedProduct.name,
-                quantity: quantityInput.value,
-                unit: plantingCheck.checked ? 'ไร่' : 'ถาด',
-                total: parseInt(totalPriceEl.innerText.replace('฿', '').replace(',', '')),
-                deposit: parseInt(depositPriceEl.innerText.replace('฿', '').replace(',', '')),
-                deliveryDate: date,
-                deliveryMethod: deliveryMethod,
-                additionalDetails: additionalDetails,
-                status: 'pending',
-                orderDate: new Date().toISOString(),
-                type: plantingCheck.checked ? 'service' : 'seedling'
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                // Get form data
+                const name = document.querySelector('input[placeholder="กรอกชื่อของคุณ"]').value;
+                const phone = document.querySelector('input[placeholder="08X-XXX-XXXX"]').value;
+                const email = document.querySelector('input[type="email"]').value;
+                const address = document.querySelector('textarea').value;
+                const date = document.querySelector('input[type="date"]').value;
+                const deliveryMethod = document.getElementById('deliveryMethod').value;
+
+                // Create order object
+                const order = {
+                    id: 'ER-' + Date.now(),
+                    name: name,
+                    phone: phone,
+                    email: email,
+                    address: address,
+                    product: selectedProduct.name,
+                    quantity: quantityInput.value,
+                    total: parseInt(totalPriceEl.innerText.replace('฿', '').replace(',', '')),
+                    deposit: parseInt(depositPriceEl.innerText.replace('฿', '').replace(',', '')),
+                    date: date,
+                    deliveryMethod: deliveryMethod,
+                    slip: e.target.result,
+                    status: 'pending',
+                    orderDate: new Date().toISOString()
+                };
+
+                // Save to localStorage
+                const orders = JSON.parse(localStorage.getItem('easyrice_orders')) || [];
+                orders.push(order);
+                localStorage.setItem('easyrice_orders', JSON.stringify(orders));
+                
+                alert('สั่งซื้อเสร็จสิ้น! ขอบคุณที่ใช้บริการ');
+                location.reload();
             };
-
-            // Save to localStorage
-            const orders = JSON.parse(localStorage.getItem('easyrice_orders')) || [];
-            orders.push(order);
-            localStorage.setItem('easyrice_orders', JSON.stringify(orders));
+            reader.readAsDataURL(slipFile.files[0]);
+        }
 
             alert('คำสั่งซื้อเสร็จสิ้น! เลขที่คำสั่งซื้อ: ' + order.id + ' กรุณาชำระมัดจำและส่งหลักฐานการชำระเงิน');
             window.location.href = 'history.html';

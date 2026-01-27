@@ -3,34 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EasyRice Admin - จัดการสินค้า</title>
+    <title>EasyRice Admin</title>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="../css/style.css">
     <style>
-        :root { 
-            --primary: #4CAF50; 
-            --bg: #f4f7f6; 
-        }
-        body { 
-            font-family: 'Kanit', sans-serif; 
-            background-image: url('../images/background.png');
-            margin: 0; 
-            padding-bottom: 50px; 
-        }
-        .container { max-width: 1000px; margin: 0 auto; padding: 20px; }
-        .header { background: #fff; padding: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); display: flex; justify-content: space-between; align-items: center; }
-        .logo { color: var(--primary); font-size: 1.5rem; font-weight: bold; text-decoration: none; }
-        
         .card { background: #fff; padding: 30px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-top: 20px; }
         .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; }
         .form-group label { display: block; margin-bottom: 5px; font-weight: 500; }
         .form-control { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; }
-        .btn-save { background: var(--primary); color: white; border: none; padding: 12px 20px; border-radius: 6px; cursor: pointer; width: 100%; margin-top: 15px; font-size: 1rem; }
+        .btn-save { background: var(--primary-color); color: white; border: none; padding: 12px 20px; border-radius: 6px; cursor: pointer; width: 100%; margin-top: 15px; font-size: 1rem; }
         .btn-save:hover { background: #45a049; }
-        
         table { width: 100%; border-collapse: collapse; margin-top: 15px; }
         th, td { padding: 12px; text-align: left; border-bottom: 1px solid #eee; }
+        th { background: #f5f5f5; font-weight: 600; }
         .btn-del { background: #ff5252; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; }
+        .tab-btn { padding: 10px 20px; background: none; border: none; cursor: pointer; font-size: 1rem; color: #999; transition: 0.3s; }
+        .tab-btn.active { color: var(--primary-color); border-bottom: 3px solid var(--primary-color); font-weight: bold; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        .status-pending { background: #fff3cd; color: #856404; padding: 5px 10px; border-radius: 4px; font-size: 0.85rem; }
+        .status-approved { background: #d4edda; color: #155724; padding: 5px 10px; border-radius: 4px; font-size: 0.85rem; }
     </style>
 </head>
 <body>
@@ -45,141 +38,248 @@
                     <li><a href="contact.html">ติดต่อ</a></li>
                 </ul>
             </nav>
-            <a href="index.html" target="_blank" style="text-decoration:none; color: var(--primary);">ไปที่หน้าสินค้าหน้าร้าน <i class="fas fa-external-link-alt"></i></a>
+            <div style="display: flex; gap: 10px; align-items: center;">
+                <span id="adminName" style="color: var(--primary-color); font-weight: 500;"></span>
+                <button id="logoutBtn" onclick="logout()" style="background: #ff5252; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer;">ออกจากระบบ</button>
+            </div>
         </div>
     </header>
 
     <div class="container">
-        <div class="card">
-            <h3><i class="fas fa-plus-circle"></i> เพิ่มพันธุ์ข้าวใหม่</h3>
-            <form id="addForm">
-                <div class="form-grid">
-                    <div class="form-group">
-                        <label>ชื่อพันธุ์ข้าว</label>
-                        <input type="text" id="pName" class="form-control" placeholder="เช่น ข้าวหอมมะลิ 105" required>
-                    </div>
-                    <div class="form-group">
-                        <label>คำโปรยสั้นๆ</label>
-                        <input type="text" id="pDesc" class="form-control" placeholder="เช่น ต้นกล้าคุณภาพดี..." required>
-                    </div>
-                    <div class="form-group">
-                        <label>อายุกล้า (วัน)</label>
-                        <input type="number" id="pAge" class="form-control" placeholder="25" required>
-                    </div>
-                    <div class="form-group">
-                        <label>ลักษณะเด่น</label>
-                        <input type="text" id="pFeature" class="form-control" placeholder="เช่น กลิ่นหอม" required>
-                    </div>
-                    <div class="form-group">
-                        <label>ราคา (บาท/ถาด)</label>
-                        <input type="number" id="pPrice" class="form-control" placeholder="35" required>
-                    </div>
-                    <div class="form-group">
-                        <label>สต็อกสินค้า (ถาด)</label>
-                        <input type="number" id="pStock" class="form-control" placeholder="150" required>
-                    </div>
-                </div>
-                <div class="form-group" style="margin-top:15px;">
-                    <label>แนบรูปภาพ</label>
-                    <input type="file" id="pImg" class="form-control" accept="image/*" required>
-                </div>
-                <button type="submit" class="btn-save">บันทึกข้อมูล</button>
-            </form>
+        <div style="display: flex; gap: 10px; margin-top: 20px; margin-bottom: 20px; border-bottom: 2px solid #ddd;">
+            <button onclick="switchTab('products')" class="tab-btn active"><i class="fas fa-boxes"></i> จัดการสินค้า</button>
+            <button onclick="switchTab('orders')" class="tab-btn"><i class="fas fa-clipboard-list"></i> จัดการออเดอร์</button>
+            <button onclick="switchTab('stock')" class="tab-btn"><i class="fas fa-warehouse"></i> ดูสต๊อก</button>
         </div>
 
-        <div class="card">
-            <h3><i class="fas fa-boxes"></i> รายการสินค้าปัจจุบัน</h3>
-            <div style="overflow-x:auto;">
+        <!-- TAB 1 -->
+        <div id="products" class="tab-content active">
+            <div class="card">
+                <h3><i class="fas fa-plus-circle"></i> เพิ่มสินค้า</h3>
+                <form id="addForm">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>ชื่อ</label>
+                            <input type="text" id="pName" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label>รายละเอียด</label>
+                            <input type="text" id="pDesc" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label>อายุกล้า (วัน)</label>
+                            <input type="number" id="pAge" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label>ลักษณะ</label>
+                            <input type="text" id="pFeature" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label>ราคา</label>
+                            <input type="number" id="pPrice" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label>สต็อก</label>
+                            <input type="number" id="pStock" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>รูปภาพ</label>
+                        <input type="file" id="pImg" class="form-control" accept="image/*" required>
+                    </div>
+                    <button type="submit" class="btn-save">บันทึก</button>
+                </form>
+            </div>
+            
+            <div class="card">
+                <h3><i class="fas fa-list"></i> รายการสินค้า</h3>
                 <table>
                     <thead>
-                        <tr>
-                            <th>รูป</th>
-                            <th>ชื่อ</th>
-                            <th>รายละเอียด</th>
-                            <th>ราคา</th>
-                            <th>สต็อก</th>
-                            <th>จัดการ</th>
-                        </tr>
+                        <tr><th>รูป</th><th>ชื่อ</th><th>ราคา</th><th>สต็อก</th><th>จัดการ</th></tr>
                     </thead>
                     <tbody id="productList"></tbody>
                 </table>
             </div>
         </div>
+
+        <!-- TAB 2 -->
+        <div id="orders" class="tab-content">
+            <div class="card">
+                <h3><i class="fas fa-clipboard-list"></i> รายการออเดอร์</h3>
+                <table>
+                    <thead>
+                        <tr><th>#</th><th>ลูกค้า</th><th>เบอร์</th><th>สินค้า</th><th>จำนวน</th><th>มัดจำ</th><th>สถานะ</th><th>ดู</th></tr>
+                    </thead>
+                    <tbody id="orderList"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- TAB 3 -->
+        <div id="stock" class="tab-content">
+            <div class="card">
+                <h3><i class="fas fa-warehouse"></i> สต๊อก</h3>
+                <table>
+                    <thead>
+                        <tr><th>รูป</th><th>ชื่อ</th><th>คงเหลือ</th><th>ราคา</th><th>มูลค่า</th></tr>
+                    </thead>
+                    <tbody id="stockList"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="orderModal" class="modal-overlay" style="display: none;">
+        <div class="login-card modal-content" style="max-width: 600px;">
+            <div class="login-header"><h2>รายละเอียดออเดอร์</h2></div>
+            <div id="orderDetail" style="max-height: 60vh; overflow-y: auto; padding: 20px; text-align: left;"></div>
+            <button onclick="acceptOrder()" id="acceptBtn" class="btn-save" style="background: #2196F3;">รับออเดอร์</button>
+            <button onclick="closeOrderModal()" class="btn-save" style="background: #999; margin-top: 10px;">ปิด</button>
+        </div>
     </div>
 
     <script>
-        // โหลดข้อมูลเมื่อเปิดหน้าเว็บ
-        document.addEventListener('DOMContentLoaded', loadProducts);
-
-        const form = document.getElementById('addForm');
+        let currentOrderIdx = null;
         
-        form.addEventListener('submit', function(e) {
-            e.preventDefault();
-            const fileInput = document.getElementById('pImg');
-            if (fileInput.files.length === 0) {
-                alert('กรุณาเลือกไฟล์รูปภาพ');
+        document.addEventListener('DOMContentLoaded', () => {
+            if (!localStorage.getItem('easyrice_admin_logged_in')) {
+                alert('ต้องเข้าสู่ระบบ');
+                location.href = 'sign-in.html';
                 return;
             }
-            const file = fileInput.files[0];
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const imgData = e.target.result;
-                const newProduct = {
-                    id: Date.now(),
-                    name: document.getElementById('pName').value,
-                    desc: document.getElementById('pDesc').value,
-                    age: document.getElementById('pAge').value,
-                    feature: document.getElementById('pFeature').value,
-                    price: document.getElementById('pPrice').value,
-                    stock: document.getElementById('pStock').value,
-                    img: imgData
+            const name = localStorage.getItem('easyrice_admin_name') || 'ผู้ดูแล';
+            document.getElementById('adminName').textContent = 'ยินดีต้อนรับ ' + name;
+            document.getElementById('addForm').addEventListener('submit', (e) => {
+                e.preventDefault();
+                const img = document.getElementById('pImg');
+                if (!img.files.length) { alert('เลือกรูป'); return; }
+                const reader = new FileReader();
+                reader.onload = (ev) => {
+                    const p = {
+                        id: Date.now(),
+                        name: document.getElementById('pName').value,
+                        desc: document.getElementById('pDesc').value,
+                        age: document.getElementById('pAge').value,
+                        feature: document.getElementById('pFeature').value,
+                        price: parseInt(document.getElementById('pPrice').value),
+                        stock: parseInt(document.getElementById('pStock').value),
+                        img: ev.target.result
+                    };
+                    let products = JSON.parse(localStorage.getItem('easyrice_db')) || [];
+                    products.push(p);
+                    localStorage.setItem('easyrice_db', JSON.stringify(products));
+                    alert('บันทึกแล้ว');
+                    document.getElementById('addForm').reset();
+                    loadProducts();
+                    loadStock();
                 };
-                let products = JSON.parse(localStorage.getItem('easyrice_db')) || [];
-                products.push(newProduct);
-                localStorage.setItem('easyrice_db', JSON.stringify(products));
-                alert('บันทึกข้อมูลแล้ว! กรุณารีเฟรชหน้าสินค้าเพื่อดูการเปลี่ยนแปลง');
-                form.reset();
-                loadProducts();
-            };
-            reader.readAsDataURL(file);
+                reader.readAsDataURL(img.files[0]);
+            });
+            loadProducts();
+            loadOrders();
+            loadStock();
         });
+
+        function logout() {
+            localStorage.removeItem('easyrice_admin_logged_in');
+            localStorage.removeItem('easyrice_admin_name');
+            location.href = 'index.html';
+        }
+
+        function switchTab(t) {
+            document.querySelectorAll('.tab-content').forEach(x => x.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(x => x.classList.remove('active'));
+            document.getElementById(t).classList.add('active');
+            event.target.classList.add('active');
+        }
 
         function loadProducts() {
             let products = JSON.parse(localStorage.getItem('easyrice_db')) || [];
-            const tbody = document.getElementById('productList');
-            tbody.innerHTML = '';
-
-            // ถ้าไม่มีข้อมูลเลย ให้สร้างข้อมูลจำลองตามรูปภาพ
-            if(products.length === 0) {
+            if (!products.length) {
                 products = [
-                    {id: 1, name: 'ข้าวหอมมะลิ 105', desc: 'ต้นกล้าข้าวคุณภาพดี มีกลิ่นหอม ให้ผลผลิตข้าวนุ่ม', age: 25, feature: 'กลิ่นหอม', price: 35, stock: 150, img: 'https://images.unsplash.com/photo-1586201375761-83865001e31c?auto=format&fit=crop&w=500&q=80'},
-                    {id: 2, name: 'ข้าวไรซ์เบอร์รี่', desc: 'ข้าวเพื่อสุขภาพ อุดมด้วยสารต้านอนุมูลอิสระ', age: 30, feature: 'คุณค่าทางโภชนาการสูง', price: 45, stock: 25, img: 'https://images.unsplash.com/photo-1620027727192-3c824c641269?auto=format&fit=crop&w=500&q=80'},
-                    {id: 3, name: 'ข้าว RD43', desc: 'พันธุ์ข้าวทนโรค ให้ผลผลิตสูง เหมาะสำหรับการปลูกเชิงพาณิชย์', age: 20, feature: 'ทนโรค ผลผลิตสูง', price: 30, stock: 200, img: 'https://images.unsplash.com/photo-1536304929831-d703779e583c?auto=format&fit=crop&w=500&q=80'}
+                    {id: 1, name: 'ข้าวหอมมะลิ 105', desc: 'กลิ่นหอม', age: 25, feature: 'ดี', price: 35, stock: 150, img: 'https://via.placeholder.com/100'},
+                    {id: 2, name: 'ข้าวไรซ์เบอร์รี่', desc: 'สุขภาพ', age: 30, feature: 'ดี', price: 45, stock: 25, img: 'https://via.placeholder.com/100'},
+                    {id: 3, name: 'ข้าว RD43', desc: 'ทนโรค', age: 20, feature: 'ดี', price: 30, stock: 200, img: 'https://via.placeholder.com/100'}
                 ];
                 localStorage.setItem('easyrice_db', JSON.stringify(products));
             }
-
+            const tbody = document.getElementById('productList');
+            tbody.innerHTML = '';
             products.forEach(p => {
-                tbody.innerHTML += `
-                    <tr>
-                        <td><img src="${p.img}" width="50" style="border-radius:4px;"></td>
-                        <td>${p.name}</td>
-                        <td>${p.desc}</td>
-                        <td>${p.price} บ.</td>
-                        <td>${p.stock}</td>
-                        <td><button onclick="deleteProduct(${p.id})" class="btn-del"><i class="fas fa-trash"></i></button></td>
-                    </tr>
-                `;
+                tbody.innerHTML += `<tr><td><img src="${p.img}" width="40" style="border-radius:4px;"></td><td>${p.name}</td><td>${p.price}</td><td>${p.stock}</td><td><button onclick="deleteProduct(${p.id})" class="btn-del"><i class="fas fa-trash"></i></button></td></tr>`;
             });
         }
 
         function deleteProduct(id) {
-            if(confirm('ต้องการลบสินค้านี้ใช่หรือไม่?')) {
-                let products = JSON.parse(localStorage.getItem('easyrice_db'));
-                products = products.filter(p => p.id !== id);
-                localStorage.setItem('easyrice_db', JSON.stringify(products));
-                loadProducts();
+            if (!confirm('ลบ?')) return;
+            let products = JSON.parse(localStorage.getItem('easyrice_db')) || [];
+            products = products.filter(p => p.id !== id);
+            localStorage.setItem('easyrice_db', JSON.stringify(products));
+            loadProducts();
+            loadStock();
+        }
+
+        function loadOrders() {
+            let orders = JSON.parse(localStorage.getItem('easyrice_orders')) || [];
+            const tbody = document.getElementById('orderList');
+            tbody.innerHTML = '';
+            if (!orders.length) {
+                tbody.innerHTML = '<tr><td colspan="8" style="text-align:center; color:#999;">ไม่มี</td></tr>';
+                return;
             }
+            orders.forEach((o, i) => {
+                const st = o.status === 'pending' ? '<span class="status-pending">รอ</span>' : '<span class="status-approved">อนุมัติ</span>';
+                tbody.innerHTML += `<tr><td>${i+1}</td><td>${o.name}</td><td>${o.phone}</td><td>${o.product}</td><td>${o.quantity}</td><td>${o.deposit}</td><td>${st}</td><td><button onclick="showOrder(${i})" style="padding:5px 10px; background:#2196F3; color:#fff; border:0; border-radius:4px; cursor:pointer;"><i class="fas fa-eye"></i></button></td></tr>`;
+            });
+        }
+
+        function showOrder(i) {
+            currentOrderIdx = i;
+            let orders = JSON.parse(localStorage.getItem('easyrice_orders')) || [];
+            const o = orders[i];
+            const slip = o.slip ? `<div style="margin-top:15px;"><strong>สลิป:</strong><img src="${o.slip}" style="max-width:300px; margin-top:10px; border-radius:8px; display:block;"></div>` : '';
+            document.getElementById('orderDetail').innerHTML = `
+                <p><strong>ชื่อ:</strong> ${o.name}</p>
+                <p><strong>เบอร์:</strong> ${o.phone}</p>
+                <p><strong>อีเมล:</strong> ${o.email || '-'}</p>
+                <p><strong>ที่อยู่:</strong> ${o.address || '-'}</p>
+                <p><strong>สินค้า:</strong> ${o.product}</p>
+                <p><strong>จำนวน:</strong> ${o.quantity} ถาด</p>
+                <p><strong>วันที่:</strong> ${o.date || '-'}</p>
+                <hr>
+                <p style="font-weight:bold;">รวม: ${o.total} บาท</p>
+                <p style="font-weight:bold;">มัดจำ: ${o.deposit} บาท</p>
+                ${slip}
+            `;
+            document.getElementById('acceptBtn').style.display = o.status === 'pending' ? 'block' : 'none';
+            document.getElementById('orderModal').style.display = 'flex';
+        }
+
+        function acceptOrder() {
+            let orders = JSON.parse(localStorage.getItem('easyrice_orders')) || [];
+            orders[currentOrderIdx].status = 'approved';
+            localStorage.setItem('easyrice_orders', JSON.stringify(orders));
+            alert('อนุมัติแล้ว');
+            closeOrderModal();
+            loadOrders();
+        }
+
+        function closeOrderModal() {
+            document.getElementById('orderModal').style.display = 'none';
+        }
+
+        function loadStock() {
+            let products = JSON.parse(localStorage.getItem('easyrice_db')) || [];
+            const tbody = document.getElementById('stockList');
+            tbody.innerHTML = '';
+            let total = 0;
+            products.forEach(p => {
+                const val = p.price * p.stock;
+                total += val;
+                tbody.innerHTML += `<tr><td><img src="${p.img}" width="40" style="border-radius:4px;"></td><td>${p.name}</td><td>${p.stock}</td><td>${p.price}</td><td>${val.toLocaleString()}</td></tr>`;
+            });
+            tbody.innerHTML += `<tr style="background:#f5f5f5; font-weight:bold;"><td colspan="4" style="text-align:right;">รวม:</td><td>${total.toLocaleString()}</td></tr>`;
         }
     </script>
 </body>

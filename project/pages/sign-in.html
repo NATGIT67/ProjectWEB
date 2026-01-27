@@ -104,6 +104,8 @@ loginForm.addEventListener('submit', function(e) {
 
     // Demo: admin login
     if (username === "admin" && password === "1234") {
+        localStorage.setItem('easyrice_admin_logged_in', 'true');
+        localStorage.setItem('easyrice_admin_name', 'ผู้ดูแลระบบ');
         showMsg('ยินดีต้อนรับผู้ดูแลระบบ กำลังเข้าสู่ระบบ...', true);
         setTimeout(() => { window.location.href = 'admin.html'; }, 1200);
         return;
@@ -116,6 +118,8 @@ loginForm.addEventListener('submit', function(e) {
     if (user) {
         // Store current user session
         localStorage.setItem('current_user', JSON.stringify(user));
+        localStorage.setItem('easyrice_logged_in', 'true');
+        localStorage.setItem('easyrice_user_name', user.name || user.email);
         showMsg('เข้าสู่ระบบสำเร็จ กำลังนำทาง...', true);
         setTimeout(() => { window.location.href = 'index.html'; }, 1200);
     } else {
