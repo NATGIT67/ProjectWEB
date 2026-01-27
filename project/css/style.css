@@ -44,7 +44,7 @@ body {
     color: var(--dark-color);
     background-color: var(--white-color);
     /* พื้นหลังเริ่มต้นสำหรับหน้าทั่วไป */
-    background-image: url('images/background.png');
+    background-image: url('../images/background.png');
     background-size: 150% auto;
     background-position: top;
     background-repeat: no-repeat;
@@ -335,7 +335,7 @@ h2 { text-align: center; margin-bottom: 2rem; font-size: 2.5rem; color: rgb(0, 0
 ============================================================ */
 
 .login-page-body {
-    background-image: url('images/background.png');
+    background-image: url('../images/background.png');
     background-size: cover;
     background-attachment: fixed;
     min-height: 100vh;
@@ -610,4 +610,91 @@ h2 { text-align: center; margin-bottom: 2rem; font-size: 2.5rem; color: rgb(0, 0
     /* ส่วนรูปภาพใน Step Card ให้เล็กลงหน่อย */
     .step-icon { font-size: 2.5rem; }
 }
+
+
+/* file:about css */
+/* ===== About Page ===== */
+
+.about-hero {
+    height: 60vh;
+    background: linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)),url("../images/riceberry.png") center/cover no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: #fff;
+}
+
+.about-hero h1 {
+    font-size: 42px;
+    margin-bottom: 12px;
+}
+
+.about-hero p {
+    font-size: 18px;
+    max-width: 700px;
+}
+
+.about-section {
+    background: var(--light-color);
+    padding: 60px 0;
+}
+
+.container.small {
+    max-width: 800px;
+    margin: auto;
+    text-align: center;
+}
+
+.gray-bg {
+    background: #f7f7f7;
+}
+
+.grid-2 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+}
+
+.grid-3 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 30px;
+}
+
+.about-card {
+    background: #fff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+.about-card h3 {
+    margin: 15px 0;
+    color: #2e7d32;
+}
+
+.about-card ul {
+    text-align: left;
+    padding-left: 20px;
+}
+
+.icon {
+    font-size: 36px;
+    color: #2e7d32;
+}
+
+.about-cta {
+    background-color: var(--dark-color);
+    color: #fff;
+    padding: 60px 20px;
+    text-align: center;
+}
+
+.about-cta .btn-primary {
+    margin-top: 20px;
+    display: inline-block;
+}
+
 
