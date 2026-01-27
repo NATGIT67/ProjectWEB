@@ -1,4 +1,6 @@
 {
-  "public": "project"
+  "buildCommand": "",
+  "framework": null,
+  "outputDirectory": "project"
 }
 
