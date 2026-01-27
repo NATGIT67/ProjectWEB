@@ -1,6 +1,19 @@
 {
   "buildCommand": "",
   "framework": null,
-  "outputDirectory": "project/pages"
+  "public": true,
+  "outputDirectory": "project",
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "rewrites": [
+    {
+      "source": "/",
+      "destination": "/pages/index.html"
+    },
+    {
+      "source": "/:path((?!css|images|js)[^.]*)",
+      "destination": "/pages/$1.html"
+    }
+  ]
 }
 
