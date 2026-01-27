@@ -1037,4 +1037,190 @@ h2 { text-align: center; margin-bottom: 2rem; font-size: 2.5rem; color: rgb(0, 0
     display: inline-block;
 }
 
+/* ============================================================
+   RESPONSIVE DESIGN & MOBILE MENU
+============================================================ */
 
+.navbar .hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    background: none;
+    border: none;
+}
+
+.hamburger span {
+    width: 25px;
+    height: 3px;
+    background: var(--primary-color);
+    display: block;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+}
+
+.hamburger.active span:nth-child(1) {
+    transform: rotate(45deg) translate(10px, 10px);
+}
+
+.hamburger.active span:nth-child(2) {
+    opacity: 0;
+}
+
+.hamburger.active span:nth-child(3) {
+    transform: rotate(-45deg) translate(7px, -7px);
+}
+
+@media (max-width: 768px) {
+    .navbar .hamburger {
+        display: flex;
+    }
+
+    .navbar nav {
+        display: none;
+    }
+
+    .navbar nav.active {
+        display: flex;
+        position: absolute;
+        top: 70px;
+        left: 0;
+        right: 0;
+        flex-direction: column;
+        background: #fff;
+        border-bottom: 1px solid #eee;
+        z-index: 100;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    .navbar nav ul {
+        flex-direction: column;
+        gap: 0;
+    }
+
+    .navbar nav li {
+        width: 100%;
+        border-bottom: 1px solid #f0f0f0;
+    }
+
+    .navbar nav a {
+        display: block;
+        padding: 15px 20px;
+    }
+
+    .navbar .container {
+        flex-wrap: wrap;
+    }
+
+    .navbar .btn-signin {
+        margin-left: 0 !important;
+        margin-top: 10px;
+    }
+
+    .container {
+        padding: 0 15px;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr !important;
+    }
+
+    table {
+        font-size: 0.85rem;
+    }
+
+    th, td {
+        padding: 8px 5px !important;
+    }
+
+    .card {
+        padding: 15px !important;
+    }
+
+    .hero-content h1 {
+        font-size: 1.8rem;
+    }
+
+    .hero-content p {
+        font-size: 0.95rem;
+    }
+
+    .seedling-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)) !important;
+        gap: 15px !important;
+    }
+
+    .login-card {
+        max-width: 100% !important;
+    }
+
+    .modal-content {
+        max-width: 90% !important;
+        margin: 10px !important;
+    }
+
+    .unified-contact-card {
+        grid-template-columns: 1fr !important;
+    }
+
+    .page-header h1 {
+        font-size: 1.5rem;
+    }
+
+    #map {
+        height: 200px !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .navbar .container {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .logo {
+        font-size: 1.2rem !important;
+    }
+
+    h1 {
+        font-size: 1.5rem !important;
+    }
+
+    h2 {
+        font-size: 1.3rem !important;
+    }
+
+    h3 {
+        font-size: 1.1rem !important;
+    }
+
+    .hero-buttons {
+        flex-direction: column;
+    }
+
+    .hero-buttons a {
+        width: 100%;
+    }
+
+    table {
+        font-size: 0.75rem;
+    }
+
+    th, td {
+        padding: 5px 3px !important;
+    }
+
+    .btn-primary, .btn-secondary {
+        padding: 8px 12px !important;
+        font-size: 0.85rem !important;
+    }
+
+    .form-control {
+        font-size: 16px;
+    }
+
+    .social-btn {
+        padding: 8px 5px !important;
+        font-size: 0.75rem;
+    }
+}

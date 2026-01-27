@@ -18,7 +18,12 @@
 <header class="navbar">
     <div class="container">
         <a href="index.html" class="logo">🌾 EasyRice</a>
-        <nav>
+        <button class="hamburger" id="hamburger" onclick="toggleMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <nav id="navMenu">
             <ul>
                 <li><a href="index.html">หน้าแรก</a></li>
                 <li><a href="product.html">สินค้า</a></li>
@@ -93,5 +98,23 @@
 </footer>
 
 <script src="../js/easyrice.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', updateSignInButton);
+
+    function toggleMenu() {
+        const hamburger = document.getElementById('hamburger');
+        const navMenu = document.getElementById('navMenu');
+        hamburger.classList.toggle('active');
+        navMenu.classList.toggle('active');
+    }
+
+    // Close menu when link clicked
+    document.querySelectorAll('#navMenu a').forEach(link => {
+        link.addEventListener('click', () => {
+            document.getElementById('hamburger').classList.remove('active');
+            document.getElementById('navMenu').classList.remove('active');
+        });
+    });
+</script>
 </body>
 </html>

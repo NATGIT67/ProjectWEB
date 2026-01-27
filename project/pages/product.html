@@ -101,7 +101,12 @@
     <header class="navbar">
         <div class="container">
             <a href="index.html" class="logo">🌾 EasyRice</a>
-            <nav>
+            <button class="hamburger" id="hamburger" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <nav id="navMenu">
             <ul>
                 <li><a href="index.html">หน้าแรก</a></li>
                 <li><a href="product.html" class="active">สินค้า</a></li>
@@ -123,6 +128,17 @@
         </section>
 
         <section class="container">
+            <!-- Search & Filter -->
+            <div style="display: flex; gap: 15px; margin-bottom: 25px; flex-wrap: wrap;">
+                <input type="text" id="searchInput" placeholder="ค้นหาสินค้า..." class="form-control" style="flex: 1; min-width: 200px;" onkeyup="filterProducts()">
+                <select id="sortSelect" class="form-control" style="min-width: 150px;" onchange="filterProducts()">
+                    <option value="">-- เรียงลำดับ --</option>
+                    <option value="price-asc">ราคาต่ำสุด</option>
+                    <option value="price-desc">ราคาสูงสุด</option>
+                    <option value="name">ชื่อ A-Z</option>
+                </select>
+            </div>
+
             <div class="seedling-grid" id="productContainer">
                 <p style="text-align:center; width:100%;">กำลังโหลดข้อมูลสินค้า...</p>
             </div>
@@ -157,6 +173,9 @@
                 ];
                 localStorage.setItem('easyrice_db', JSON.stringify(products));
             }
+            
+            // 3. บันทึกไว้ใน allProducts สำหรับใช้ใน filterProducts()
+            allProducts = products;
 
             const container = document.getElementById('productContainer');
             container.innerHTML = '';
@@ -203,6 +222,91 @@
                 container.innerHTML += html;
             });
         }
+
+        // Filter & Search Function
+        function filterProducts() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const sortBy = document.getElementById('sortSelect').value;
+            let products = allProducts || [];
+
+            // Filter by search
+            products = products.filter(p => 
+                p.name.toLowerCase().includes(searchTerm) || 
+                p.desc.toLowerCase().includes(searchTerm)
+            );
+
+            // Sort
+            if (sortBy === 'price-asc') {
+                products.sort((a, b) => a.price - b.price);
+            } else if (sortBy === 'price-desc') {
+                products.sort((a, b) => b.price - a.price);
+            } else if (sortBy === 'name') {
+                products.sort((a, b) => a.name.localeCompare(b.name, 'th'));
+            }
+
+            // Redraw
+            const container = document.getElementById('productContainer');
+            container.innerHTML = '';
+            
+            if (products.length === 0) {
+                container.innerHTML = '<p style="text-align:center; width:100%; padding: 40px;">ไม่พบสินค้าที่ค้นหา</p>';
+                return;
+            }
+
+            products.forEach(p => {
+                const btnState = parseInt(p.stock) === 0 ? 'disabled' : '';
+                const btnStyle = parseInt(p.stock) === 0 ? 'opacity: 0.5; cursor: not-allowed;' : '';
+                
+                let stockClass = 'in-stock';
+                let stockText = '✅ มีสต็อก';
+                if (parseInt(p.stock) === 0) {
+                    stockClass = 'no-stock';
+                    stockText = '❌ หมด';
+                } else if (parseInt(p.stock) < 50) {
+                    stockClass = 'low-stock';
+                    stockText = '⚠️ เหลือน้อย';
+                }
+
+                const html = `
+                <div class="card">
+                    <img src="${p.img}" alt="${p.name}">
+                    <div class="card-content">
+                        <h3>${p.name}</h3>
+                        <p>${p.desc}</p>
+                        <ul class="product-info">
+                            <li>⏱ อายุกล้า: ${p.age} วัน</li>
+                            <li>🌱 ลักษณะเด่น: ${p.feature}</li>
+                        </ul>
+                        <div class="price">฿${p.price} / ถาด</div>
+                        <div class="stock-info">
+                            <span class="stock-status ${stockClass}">${stockText}</span>
+                            <span class="stock-quantity">เหลือ ${p.stock} ถาด</span>
+                        </div>
+                        <a href="checkout.html?id=${p.id}" class="btn-reserve ${btnState}">เลือกสินค้า</a>
+                    </div>
+                </div>
+                `;
+                container.innerHTML += html;
+            });
+        }
+
+        // Hamburger Menu
+        function toggleMenu() {
+            const hamburger = document.getElementById('hamburger');
+            const navMenu = document.getElementById('navMenu');
+            hamburger.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        }
+
+        document.querySelectorAll('#navMenu a').forEach(link => {
+            link.addEventListener('click', () => {
+                document.getElementById('hamburger').classList.remove('active');
+                document.getElementById('navMenu').classList.remove('active');
+            });
+        });
+
+        // Store products globally for filtering
+        let allProducts = [];
     </script>
     <script src="../js/easyrice.js"></script>
 </body>

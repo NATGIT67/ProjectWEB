@@ -30,7 +30,12 @@
     <header class="navbar">
         <div class="container">
             <a href="index.html" class="logo">🌾 EasyRice</a>
-            <nav>
+            <button class="hamburger" id="hamburger" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <nav id="navMenu">
                 <ul>
                     <li><a href="index.html">หน้าแรก</a></li>
                     <li><a href="product.html">สินค้า</a></li>
@@ -281,6 +286,22 @@
             });
             tbody.innerHTML += `<tr style="background:#f5f5f5; font-weight:bold;"><td colspan="4" style="text-align:right;">รวม:</td><td>${total.toLocaleString()}</td></tr>`;
         }
+
+        // Mobile menu toggle
+        function toggleMenu() {
+            const hamburger = document.getElementById('hamburger');
+            const navMenu = document.getElementById('navMenu');
+            hamburger.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        }
+
+        // Close menu when link clicked
+        document.querySelectorAll('#navMenu a').forEach(link => {
+            link.addEventListener('click', () => {
+                document.getElementById('hamburger').classList.remove('active');
+                document.getElementById('navMenu').classList.remove('active');
+            });
+        });
     </script>
 </body>
 </html>
