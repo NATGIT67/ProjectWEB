@@ -130,19 +130,29 @@
         </div>
     <script>
 document.addEventListener('DOMContentLoaded', function() {
-    let loggedInUser = localStorage.getItem('easyrice_user_name'); 
+    const nameDisplay = document.getElementById('userNameDisplay');
     
-    if (loggedInUser) {
-        // ตรวจสอบว่าถ้าสิ่งที่ดึงมาเป็น Email (มีเครื่องหมาย @) 
-        // ให้ตัดเอาเฉพาะข้อความข้างหน้า @ มาแสดงเป็นชื่อ
-        if (loggedInUser.includes('@')) {
-            loggedInUser = loggedInUser.split('@')[0];
+    // ลองดึงจาก current_user ก่อน
+    const currentUser = JSON.parse(localStorage.getItem('current_user'));
+    let displayName = 'ผู้ใช้งาน';
+    
+    if (currentUser && currentUser.name) {
+        displayName = currentUser.name;
+    } else if (currentUser && currentUser.fullname) {
+        displayName = currentUser.fullname;
+    } else {
+        // Fallback ไปใช้ easyrice_user_name
+        const userName = localStorage.getItem('easyrice_user_name');
+        if (userName) {
+            displayName = userName;
         }
-        
-        const nameDisplay = document.getElementById('userNameDisplay');
-        if (nameDisplay) {
-            nameDisplay.textContent = loggedInUser;
-        }
+    }
+    
+    // ตัดเอาเฉพาะชื่อแรก (ไม่รวมนามสกุล)
+    displayName = displayName.split(' ')[0];
+    
+    if (nameDisplay) {
+        nameDisplay.textContent = displayName;
     }
     loadOrderHistory();
 });

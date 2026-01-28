@@ -124,7 +124,7 @@ loginForm.addEventListener('submit', function(e) {
         // Store current user session
         localStorage.setItem('current_user', JSON.stringify(user));
         localStorage.setItem('easyrice_logged_in', 'true');
-        localStorage.setItem('easyrice_user_name', user.name || user.email);
+        localStorage.setItem('easyrice_user_name', user.name || user.fullname || user.email);
         showMsg('เข้าสู่ระบบสำเร็จ กำลังนำทาง...', true);
         setTimeout(() => { window.location.href = 'index.html'; }, 1200);
     } else {
