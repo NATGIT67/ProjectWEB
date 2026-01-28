@@ -65,7 +65,7 @@
             </ul>
         </nav>
             <div class="user-profile">
-                <span>สวัสดี, คุณสมชาย</span>
+                <span>สวัสดี, <span id="userNameDisplay">ผู้ใช้งาน</span></span>
                 <a href="sign-in.html" class="btn-signin" style="margin-left:10px; background: #ff5252 !important; color: white !important;">ออกจากระบบ</a>
             </div>
         </div>
@@ -130,6 +130,20 @@
         </div>
     <script>
 document.addEventListener('DOMContentLoaded', function() {
+    let loggedInUser = localStorage.getItem('easyrice_user_name'); 
+    
+    if (loggedInUser) {
+        // ตรวจสอบว่าถ้าสิ่งที่ดึงมาเป็น Email (มีเครื่องหมาย @) 
+        // ให้ตัดเอาเฉพาะข้อความข้างหน้า @ มาแสดงเป็นชื่อ
+        if (loggedInUser.includes('@')) {
+            loggedInUser = loggedInUser.split('@')[0];
+        }
+        
+        const nameDisplay = document.getElementById('userNameDisplay');
+        if (nameDisplay) {
+            nameDisplay.textContent = loggedInUser;
+        }
+    }
     loadOrderHistory();
 });
 

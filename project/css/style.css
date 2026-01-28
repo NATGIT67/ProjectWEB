@@ -209,6 +209,7 @@ footer {
     color: var(--light-color);
     text-align: center;
     padding: 2rem 0;
+    margin-top:auto;
 }
 
 
