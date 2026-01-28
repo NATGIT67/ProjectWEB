@@ -166,10 +166,10 @@
             let products = localStorage.getItem('easyrice_db');
             if (!products) {
                 const demoProducts = [
-                    { id: 1, name: 'ข้าวหอมมะลิ 105', desc: 'ต้นกล้าข้าวหอมมะลิแท้ กลิ่นหอม นุ่มนวล', price: 35, stock: 150, img: 'https://images.unsplash.com/photo-1586201375761-83865001e31c?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80' },
-                    { id: 2, name: 'ข้าวไรซ์เบอร์รี่', desc: 'ข้าวเพื่อสุขภาพ สีม่วงเข้ม สารต้านอนุมูลอิสระสูง', price: 45, stock: 25, img: 'https://images.unsplash.com/photo-1620027727192-3c824c641269?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80' },
-                    { id: 3, name: 'ข้าว RD43', desc: 'ข้าวดัชนีน้ำตาลต่ำ เหมาะสำหรับผู้รักสุขภาพ', price: 30, stock: 200, img: 'https://images.unsplash.com/photo-1599940778173-e276d4acb2be?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80' },
-                    { id: 4, name: 'ข้าวปทุมธานี 1', desc: 'ข้าวหอมนุ่ม ราคาประหยัด ผลผลิตต่อไร่สูง', price: 32, stock: 0, img: 'https://images.unsplash.com/photo-1533241240368-12d2eb73602d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80' }
+                    { id: 1, name: 'ข้าวหอมมะลิ 105', desc: 'ต้นกล้าข้าวหอมมะลิแท้ กลิ่นหอม นุ่มนวล', price: 35, stock: 150, img: 'https://via.placeholder.com/300x200?text=Jasmine+Rice' },
+                    { id: 2, name: 'ข้าวไรซ์เบอร์รี่', desc: 'ข้าวเพื่อสุขภาพ สีม่วงเข้ม สารต้านอนุมูลอิสระสูง', price: 45, stock: 25, img: 'https://via.placeholder.com/300x200?text=Riceberry' },
+                    { id: 3, name: 'ข้าว RD43', desc: 'ข้าวดัชนีน้ำตาลต่ำ เหมาะสำหรับผู้รักสุขภาพ', price: 30, stock: 200, img: 'https://via.placeholder.com/300x200?text=RD43' },
+                    { id: 4, name: 'ข้าวปทุมธานี 1', desc: 'ข้าวหอมนุ่ม ราคาประหยัด ผลผลิตต่อไร่สูง', price: 32, stock: 0, img: 'https://via.placeholder.com/300x200?text=Pathum1' }
                 ];
                 localStorage.setItem('easyrice_db', JSON.stringify(demoProducts));
                 return demoProducts;
