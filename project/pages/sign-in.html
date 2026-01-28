@@ -73,22 +73,6 @@
         </div>
     </main>
 
-document.getElementById('loginForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-
-    const username = document.getElementById('username').value;
-    const password = document.getElementById('password').value;
-
-    if (username === "admin" && password === "1234") {
-        alert('ยินดีต้อนรับผู้ดูแลระบบ');
-        window.location.href = 'admin.html';
-    } else {
-        alert('เข้าสู่ระบบสำเร็จ');
-        window.location.href = 'index.html';
-    }
-});
-</script>
-
 <script>
 const loginForm = document.getElementById('loginForm');
 const loginMsg = document.getElementById('login-message');
