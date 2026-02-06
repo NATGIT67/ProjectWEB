@@ -1,0 +1,25 @@
+{
+  "name": "easyrice",
+  "version": 2,
+  "framework": null,
+  "public": false,
+  "buildCommand": "cd backend && npm install && cd ../frontend",
+  "devCommand": "cd backend && npm run dev",
+  "outputDirectory": "backend",
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/backend/server.js"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/backend/server.js"
+    }
+  ],
+  "env": {
+    "NODE_ENV": "production",
+    "PORT": "3000"
+  },
+  "envPrefix": "VERCEL_",
+  "installCommand": "npm install"
+}

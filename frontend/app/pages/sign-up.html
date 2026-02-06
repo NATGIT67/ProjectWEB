@@ -135,6 +135,7 @@ document.getElementById('signUpForm').addEventListener('submit', async function(
         localStorage.setItem('email', email);
         localStorage.setItem('full_name', fullname);
         localStorage.setItem('phone', phone);
+        localStorage.setItem('role', 'user'); // Default role for new users
         localStorage.setItem('is_logged_in', 'true');
 
         showMessage('สมัครสมาชิกสำเร็จ! กำลังนำทางไปหน้าแรก...', true);

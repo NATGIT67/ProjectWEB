@@ -42,9 +42,13 @@ router.post('/register', async (req, res) => {
       [username, email, hashedPassword, full_name || null, phone || null]
     );
 
+    // Get role from database
+    const [newUser] = await pool.query('SELECT role FROM users WHERE user_id = ?', [result.insertId]);
+    const userRole = newUser[0]?.role || 'user';
+
     // Generate token
     const token = jwt.sign(
-      { user_id: result.insertId, username, email, role: 'user' },
+      { user_id: result.insertId, username, email, role: userRole },
       process.env.JWT_SECRET,
       { expiresIn: '30d' }
     );
@@ -83,13 +87,16 @@ router.post('/login', async (req, res) => {
       return res.status(401).json({ error: 'Invalid email or password' });
     }
 
+    // Get role from database
+    const userRole = user.role || 'user';
+
     // Generate token
     const token = jwt.sign(
       { 
         user_id: user.user_id, 
         username: user.username, 
         email: user.email,
-        role: 'user'
+        role: userRole
       },
       process.env.JWT_SECRET,
       { expiresIn: '30d' }
@@ -122,7 +129,7 @@ router.get('/me', async (req, res) => {
 
   try {
     const decoded = jwt.verify(actualToken, process.env.JWT_SECRET);
-    const [users] = await pool.query('SELECT user_id, username, email, full_name, phone, address, created_at FROM users WHERE user_id = ?', [decoded.user_id]);
+    const [users] = await pool.query('SELECT user_id, username, email, full_name, phone, address, role, created_at FROM users WHERE user_id = ?', [decoded.user_id]);
     
     if (users.length === 0) {
       return res.status(404).json({ error: 'User not found' });

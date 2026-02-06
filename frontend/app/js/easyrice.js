@@ -5,6 +5,7 @@
 function updateUserNav() {
     const isLoggedIn = localStorage.getItem('is_logged_in');
     const fullName = localStorage.getItem('full_name');
+    const userRole = localStorage.getItem('role');
     const navContainer = document.querySelector('.navbar .container');
     let signInBtn = document.querySelector('.btn-signin');
     
@@ -23,10 +24,19 @@ function updateUserNav() {
             userNav.id = 'userNav';
             userNav.style.cssText = 'display: flex; align-items: center; gap: 15px; justify-content: flex-end;';
             
+            let adminLink = '';
+            if (userRole === 'admin') {
+                adminLink = `
+                <a href="./pages/admin.html" style="color: #ff5252; text-decoration: none; font-size: 0.9rem; font-weight: 500;">
+                    <i class="fas fa-chart-bar"></i> Admin
+                </a>`;
+            }
+            
             userNav.innerHTML = `
                 <span style="color: var(--primary-color); font-weight: 500;">👤 ${fullName}</span>
-                <a href="./pages/admin.html" style="color: var(--primary-color); text-decoration: none; font-size: 0.9rem;">
-                    <i class="fas fa-cog"></i> Profile
+                ${adminLink}
+                <a href="./pages/profile.html" style="color: var(--primary-color); text-decoration: none; font-size: 0.9rem;">
+                    <i class="fas fa-user"></i> Profile
                 </a>
                 <button onclick="logoutUser()" style="background: #ff5252; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; font-size: 0.9rem;">
                     ออกจากระบบ
@@ -56,6 +66,7 @@ function logoutUser() {
     localStorage.removeItem('email');
     localStorage.removeItem('full_name');
     localStorage.removeItem('phone');
+    localStorage.removeItem('role');
     localStorage.removeItem('token');
     
     // ล้าง API token

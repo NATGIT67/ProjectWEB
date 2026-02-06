@@ -100,6 +100,24 @@ loginForm.addEventListener('submit', async function(e) {
         // บันทึก token
         api.setToken(response.token);
 
+        // Decode JWT to get role
+        let userRole = 'user';
+        try {
+            const parts = response.token.split('.');
+            if (parts.length === 3) {
+                let payload = parts[1];
+                // Add padding if needed
+                const padding = 4 - (payload.length % 4);
+                if (padding !== 4) {
+                    payload += '='.repeat(padding);
+                }
+                const decoded = JSON.parse(atob(payload));
+                userRole = decoded.role || 'user';
+            }
+        } catch (e) {
+            console.log('Could not decode role from token');
+        }
+
         // บันทึกข้อมูลผู้ใช้
         if (response.user) {
             localStorage.setItem('user_id', response.user.user_id || response.user.id);
@@ -107,6 +125,7 @@ loginForm.addEventListener('submit', async function(e) {
             localStorage.setItem('email', response.user.email);
             localStorage.setItem('full_name', response.user.full_name || response.user.username);
             localStorage.setItem('phone', response.user.phone || '');
+            localStorage.setItem('role', userRole);
             localStorage.setItem('is_logged_in', 'true');
         }
 
