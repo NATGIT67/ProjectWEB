@@ -13,8 +13,8 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Serve static frontend files from ../frontend/app
-app.use(express.static(path.join(__dirname, '../frontend/app')));
+// Serve static frontend files from ../public
+app.use(express.static(path.join(__dirname, '../public')));
 
 // Routes
 app.use('/api/auth', authRoutes);
@@ -28,7 +28,7 @@ app.get('/health', (req, res) => {
 // Serve pages/index.html for root and any non-existent routes (SPA)
 app.get('*', (req, res) => {
   if (!req.path.startsWith('/api')) {
-    res.sendFile(path.join(__dirname, '../frontend/app/pages/index.html'));
+    res.sendFile(path.join(__dirname, '../public/index.html'));
   } else {
     res.status(404).json({ error: 'Route not found' });
   }
@@ -48,5 +48,10 @@ app.use((err, req, res, next) => {
 const PORT = process.env.PORT || 5000;
 const HOST = '0.0.0.0';
 app.listen(PORT, HOST, () => {
-  console.log(`Server running on http://0.0.0.0:${PORT}`);
+  console.log(`\n==================================================`);
+  console.log(`Server is running!`);
+  console.log(`--------------------------------------------------`);
+  console.log(`Local (You):      http://localhost:${PORT}`);
+  console.log(`Network (Friend): http://${require('os').networkInterfaces()['Wi-Fi']?.find(i => i.family === 'IPv4')?.address || 'YOUR_IP'}:${PORT}`);
+  console.log(`==================================================\n`);
 });
