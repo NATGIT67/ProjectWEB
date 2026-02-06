@@ -84,31 +84,38 @@ loginForm.addEventListener('submit', async function(e) {
     loginMsg.style.display = 'none';
     loginMsg.innerHTML = '';
 
-    const username = document.getElementById('username').value.trim();
+    const email = document.getElementById('username').value.trim();
     const password = document.getElementById('password').value.trim();
 
-    // Basic validation
-    if (!username || !password) {
+    // ตรวจสอบข้อมูล
+    if (!email || !password) {
         showMsg('กรุณากรอกข้อมูลให้ครบถ้วน', false);
         return;
     }
 
     try {
-        // Login via API
-        const response = await api.login(username, password);
+        // เข้าสู่ระบบผ่าน API
+        const response = await api.login(email, password);
         
-        // Save token
+        // บันทึก token
         api.setToken(response.token);
 
-        // Save user info
-        localStorage.setItem('easyrice_user', JSON.stringify(response.user));
+        // บันทึกข้อมูลผู้ใช้
+        if (response.user) {
+            localStorage.setItem('user_id', response.user.user_id || response.user.id);
+            localStorage.setItem('username', response.user.username);
+            localStorage.setItem('email', response.user.email);
+            localStorage.setItem('full_name', response.user.full_name || response.user.username);
+            localStorage.setItem('phone', response.user.phone || '');
+            localStorage.setItem('is_logged_in', 'true');
+        }
 
         showMsg('เข้าสู่ระบบสำเร็จ กำลังนำทาง...', true);
         setTimeout(() => { 
-            window.location.href = 'index.html'; 
+            window.location.href = '../'; 
         }, 1200);
     } catch (error) {
-        showMsg(error.message || 'อีเมล/เบอร์โทรศัพท์ หรือรหัสผ่านไม่ถูกต้อง', false);
+        showMsg(error.message || 'อีเมลหรือรหัสผ่านไม่ถูกต้อง', false);
     }
 });
 
@@ -123,7 +130,7 @@ function showMsg(msg, success) {
     loginMsg.style.textAlign = 'center';
 }
 
-// Mobile menu toggle
+// แสดง/ซ่อนเมนู
 function toggleMenu() {
     const hamburger = document.getElementById('hamburger');
     const navMenu = document.getElementById('navMenu');
@@ -131,7 +138,7 @@ function toggleMenu() {
     navMenu.classList.toggle('active');
 }
 
-// Close menu when link clicked
+// ปิดเมนูเมื่อคลิกลิงก์
 document.querySelectorAll('#navMenu a').forEach(link => {
     link.addEventListener('click', () => {
         document.getElementById('hamburger').classList.remove('active');

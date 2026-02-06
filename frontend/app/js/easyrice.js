@@ -1,6 +1,77 @@
 // EasyRice JavaScript Utilities
 // This file contains common functions used across the website
 
+// ============ USER AUTHENTICATION & NAVBAR ============
+function updateUserNav() {
+    const isLoggedIn = localStorage.getItem('is_logged_in');
+    const fullName = localStorage.getItem('full_name');
+    const navContainer = document.querySelector('.navbar .container');
+    let signInBtn = document.querySelector('.btn-signin');
+    
+    if (!navContainer) return;
+    
+    if (isLoggedIn === 'true' && fullName) {
+        // ซ่อน sign-in button
+        if (signInBtn) {
+            signInBtn.style.display = 'none';
+        }
+        
+        // สร้าง user profile section
+        let userNav = document.getElementById('userNav');
+        if (!userNav) {
+            userNav = document.createElement('div');
+            userNav.id = 'userNav';
+            userNav.style.cssText = 'display: flex; align-items: center; gap: 15px; justify-content: flex-end;';
+            
+            userNav.innerHTML = `
+                <span style="color: var(--primary-color); font-weight: 500;">👤 ${fullName}</span>
+                <a href="./pages/admin.html" style="color: var(--primary-color); text-decoration: none; font-size: 0.9rem;">
+                    <i class="fas fa-cog"></i> Profile
+                </a>
+                <button onclick="logoutUser()" style="background: #ff5252; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; font-size: 0.9rem;">
+                    ออกจากระบบ
+                </button>
+            `;
+            navContainer.appendChild(userNav);
+        }
+    } else {
+        // แสดง sign-in button
+        if (signInBtn) {
+            signInBtn.style.display = 'block';
+        }
+        
+        // ลบ user nav
+        let userNav = document.getElementById('userNav');
+        if (userNav) {
+            userNav.remove();
+        }
+    }
+}
+
+function logoutUser() {
+    // ลบข้อมูลผู้ใช้
+    localStorage.removeItem('is_logged_in');
+    localStorage.removeItem('user_id');
+    localStorage.removeItem('username');
+    localStorage.removeItem('email');
+    localStorage.removeItem('full_name');
+    localStorage.removeItem('phone');
+    localStorage.removeItem('token');
+    
+    // ล้าง API token
+    if (window.api) {
+        api.clearToken();
+    }
+    
+    alert('ออกจากระบบเรียบร้อย');
+    window.location.href = './pages/sign-in.html';
+}
+
+// อัปเดต navbar เมื่อหน้าโหลด
+document.addEventListener('DOMContentLoaded', () => {
+    updateUserNav();
+});
+
 // ============ SHOPPING CART ============
 class ShoppingCart {
     static init() {
