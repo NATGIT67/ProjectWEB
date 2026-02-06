@@ -1,25 +1,23 @@
 {
-  "name": "easyrice",
-  "version": 2,
-  "framework": null,
-  "public": false,
-  "buildCommand": "cd backend && npm install && cd ../frontend",
-  "devCommand": "cd backend && npm run dev",
-  "outputDirectory": "backend",
-  "routes": [
+  "build": {
+    "env": {
+      "NODE_ENV": "production"
+    }
+  },
+  "buildCommand": "cd backend && npm install",
+  "functions": {
+    "backend/server.js": {
+      "runtime": "nodejs18.x"
+    }
+  },
+  "rewrites": [
     {
-      "src": "/api/(.*)",
-      "dest": "/backend/server.js"
+      "source": "/api/(.*)",
+      "destination": "/backend/server.js"
     },
     {
-      "src": "/(.*)",
-      "dest": "/backend/server.js"
+      "source": "/(.*)",
+      "destination": "/backend/server.js"
     }
-  ],
-  "env": {
-    "NODE_ENV": "production",
-    "PORT": "3000"
-  },
-  "envPrefix": "VERCEL_",
-  "installCommand": "npm install"
+  ]
 }
