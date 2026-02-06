@@ -1,0 +1,41 @@
+# Dependencies
+node_modules/
+*.log
+npm-debug.log*
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Build files
+dist/
+build/
+*.tgz
+
+# Tests
+.nyc_output
+coverage/
+
+# Misc
+.cache/
+.temp/
+temp/
+
+# Frontend
+frontend/app/images/temp/
+
+# Backend
+backend/uploads/
+backend/.env.production

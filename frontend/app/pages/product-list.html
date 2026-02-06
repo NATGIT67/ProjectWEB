@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .products-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .product-card {
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .product-card:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transform: translateY(-5px);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 200px;
+            background: #f0f0f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+        }
+
+        .product-info {
+            padding: 15px;
+        }
+
+        .product-name {
+            font-weight: 500;
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+            color: #2e7d32;
+        }
+
+        .product-price {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #d32f2f;
+            margin-bottom: 8px;
+        }
+
+        .product-stock {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 12px;
+        }
+
+        .product-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-cart {
+            flex: 1;
+            background: #2e7d32;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: background 0.3s;
+        }
+
+        .btn-cart:hover {
+            background: #1b5e20;
+        }
+
+        .btn-detail {
+            flex: 1;
+            background: #f57c00;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: background 0.3s;
+        }
+
+        .btn-detail:hover {
+            background: #e65100;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            font-size: 1.1rem;
+            color: #666;
+        }
+
+        .error {
+            background: #ffebee;
+            color: #c62828;
+            padding: 15px;
+            border-radius: 4px;
+            margin: 20px 0;
+            border: 1px solid #e57373;
+        }
+
+        .filter-section {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .filter-section input {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 0.95rem;
+        }
+
+        .filter-section select {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 0.95rem;
+        }
+    </style>
+</head>
+<body>
+    <header class="navbar">
+        <div class="container">
+            <a href="index.html" class="logo">🌾 EasyRice</a>
+            <button class="hamburger" id="hamburger" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <nav id="navMenu">
+                <ul>
+                    <li><a href="index.html">หน้าแรก</a></li>
+                    <li><a href="product.html" class="active">สินค้า</a></li>
+                    <li><a href="about.html">ข่าวสาร</a></li>
+                    <li><a href="contact.html">ติดต่อ</a></li>
+                </ul>
+            </nav>
+            <div class="header-actions">
+                <a href="checkout.html" class="btn-cart-header">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span id="cart-count">0</span>
+                </a>
+                <span id="user-status"></span>
+            </div>
+        </div>
+    </header>
+
+    <main class="container" style="padding-top: 30px;">
+        <h1>สินค้าของเรา</h1>
+        
+        <div class="filter-section">
+            <input type="text" id="searchInput" placeholder="ค้นหาสินค้า..." style="flex: 1;">
+            <select id="categoryFilter">
+                <option value="">ทั้งหมด</option>
+                <option value="jasmine">ข้าวหอม</option>
+                <option value="sticky">ข้าวเหนียว</option>
+                <option value="brown">ข้าวกล้อง</option>
+            </select>
+        </div>
+
+        <div id="productsContainer" class="products-container">
+            <div class="loading">กำลังโหลดสินค้า...</div>
+        </div>
+    </main>
+
+    <footer style="background: #2e7d32; color: white; padding: 40px 20px; text-align: center; margin-top: 60px;">
+        <p>&copy; 2026 EasyRice. เรารักษาความเป็นส่วนตัวของคุณ</p>
+    </footer>
+
+    <script src="../js/api-client.js"></script>
+    <script>
+        let allProducts = [];
+
+        // Load products on page load
+        document.addEventListener('DOMContentLoaded', async () => {
+            await loadProducts();
+            updateUserStatus();
+            loadCartCount();
+
+            // Add search and filter listeners
+            document.getElementById('searchInput').addEventListener('input', filterProducts);
+            document.getElementById('categoryFilter').addEventListener('change', filterProducts);
+        });
+
+        async function loadProducts() {
+            const container = document.getElementById('productsContainer');
+            try {
+                container.innerHTML = '<div class="loading">กำลังโหลดสินค้า...</div>';
+                allProducts = await api.getProducts();
+                displayProducts(allProducts);
+            } catch (error) {
+                container.innerHTML = `<div class="error">เกิดข้อผิดพลาดในการโหลดสินค้า: ${error.message}</div>`;
+            }
+        }
+
+        function displayProducts(products) {
+            const container = document.getElementById('productsContainer');
+            
+            if (products.length === 0) {
+                container.innerHTML = '<div class="loading">ไม่พบสินค้า</div>';
+                return;
+            }
+
+            container.innerHTML = products.map(product => `
+                <div class="product-card">
+                    <div class="product-image">
+                        🌾
+                    </div>
+                    <div class="product-info">
+                        <div class="product-name">${product.product_name}</div>
+                        <div class="product-price">฿${parseFloat(product.price).toFixed(2)}</div>
+                        <div class="product-stock">
+                            สต็อก: ${product.stock > 0 ? product.stock : 'หมด'}
+                        </div>
+                        <div class="product-actions">
+                            <button class="btn-cart" 
+                                onclick="addToCart(${product.product_id}, '${product.product_name}')"
+                                ${product.stock <= 0 ? 'disabled' : ''}>
+                                <i class="fas fa-cart-plus"></i> เพิ่มรถเข็น
+                            </button>
+                            <button class="btn-detail" onclick="viewDetail(${product.product_id})">
+                                ดูรายละเอียด
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function filterProducts() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const categoryFilter = document.getElementById('categoryFilter').value;
+
+            const filtered = allProducts.filter(product => {
+                const matchesSearch = product.product_name.toLowerCase().includes(searchTerm) ||
+                                    (product.description && product.description.toLowerCase().includes(searchTerm));
+                const matchesCategory = categoryFilter === '' || product.category === categoryFilter;
+                
+                return matchesSearch && matchesCategory;
+            });
+
+            displayProducts(filtered);
+        }
+
+        async function addToCart(productId, productName) {
+            if (!api.getToken()) {
+                alert('กรุณาเข้าสู่ระบบก่อน');
+                window.location.href = 'sign-in.html';
+                return;
+            }
+
+            try {
+                await api.addToCart(productId, 1);
+                alert(`เพิ่ม ${productName} ลงทะเบียนสำเร็จ`);
+                loadCartCount();
+            } catch (error) {
+                alert('เกิดข้อผิดพลาด: ' + error.message);
+            }
+        }
+
+        function viewDetail(productId) {
+            window.location.href = `product.html?id=${productId}`;
+        }
+
+        async function loadCartCount() {
+            if (!api.getToken()) return;
+            
+            try {
+                const cart = await api.getCart();
+                const count = cart.reduce((sum, item) => sum + item.quantity, 0);
+                document.getElementById('cart-count').textContent = count;
+            } catch (error) {
+                console.error('Error loading cart:', error);
+            }
+        }
+
+        function updateUserStatus() {
+            const userStatus = document.getElementById('user-status');
+            const token = api.getToken();
+            
+            if (token) {
+                const user = localStorage.getItem('easyrice_user');
+                const userData = user ? JSON.parse(user) : null;
+                if (userData) {
+                    userStatus.innerHTML = `<span style="color: white; margin-right: 15px;">สวัสดี ${userData.username}</span><a href="#" onclick="logout(); return false;" class="btn-signin" style="margin: 0;">ออกจากระบบ</a>`;
+                }
+            } else {
+                userStatus.innerHTML = '<a href="sign-in.html" class="btn-signin">เข้าสู่ระบบ</a>';
+            }
+        }
+
+        function logout() {
+            api.clearToken();
+            localStorage.removeItem('easyrice_user');
+            window.location.reload();
+        }
+
+        // Mobile menu toggle
+        function toggleMenu() {
+            const hamburger = document.getElementById('hamburger');
+            const navMenu = document.getElementById('navMenu');
+            hamburger.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        }
+
+        document.querySelectorAll('#navMenu a').forEach(link => {
+            link.addEventListener('click', () => {
+                document.getElementById('hamburger').classList.remove('active');
+                document.getElementById('navMenu').classList.remove('active');
+            });
+        });
+    </script>
+    <script src="../js/easyrice.js"></script>
+</body>
+</html>

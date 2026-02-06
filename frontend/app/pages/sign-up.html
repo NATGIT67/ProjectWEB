@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+</head>
+<body class="login-page-body">
+
+    <header class="navbar">
+        <div class="container">
+            <a href="index.html" class="logo">🌾 EasyRice</a>
+            <button class="hamburger" id="hamburger" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <nav id="navMenu">
+            <ul>
+                <li><a href="index.html">หน้าแรก</a></li>
+                <li><a href="product.html">สินค้า</a></li>
+                <li><a href="about.html">ข่าวสาร</a></li>
+                <li><a href="contact.html">ติดต่อ</a></li>
+            </ul>
+        </nav>
+            <a href="sign-in.html" class="btn-signin active">เข้าสู่ระบบ</a>
+        </div>
+    </header>
+
+    <main class="login-main">
+        <div class="login-card">
+            <div class="login-header">
+                <h2>Create Account</h2>
+                <p>Join us for a better farming experience</p>
+            </div>
+
+            <form id="signUpForm">
+                <div class="form-group">
+                    <label for="fullname">Full Name</label>
+                    <input type="text" id="fullname" class="form-control" placeholder="Enter your full name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" class="form-control" placeholder="example@email.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" class="form-control" placeholder="08X-XXX-XXXX" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" class="form-control" placeholder="Create a password" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirm-password">Confirm Password</label>
+                    <input type="password" id="confirm-password" class="form-control" placeholder="Repeat your password" required>
+                </div>
+
+                <div class="form-options">
+                    <div class="remember-me">
+                        <input type="checkbox" id="terms" required>
+                        <label for="terms" style="font-size: 0.85rem;">I agree to the <a href="#" style="color:#2e7d32;">Terms & Conditions</a></label>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-primary full-width">Sign Up</button>
+            </form>
+            
+            <div class="sign-in-link" style="text-align:center; margin-top:15px;">
+                <span>Already have an account?</span>
+                <a href="sign-in.html" style="color:#2e7d32; font-weight:500;"> Login Here</a>
+            </div>
+
+            <div class="divider"><span>OR</span></div>
+
+            <div class="social-login">
+                <button class="social-btn"><i class="fab fa-google"></i> Google</button>
+                <button class="social-btn"><i class="fab fa-line"></i> LINE</button>
+            </div>
+        </div>
+    </main>
+
+    <script src="../js/api-client.js"></script>
+    <script>
+document.getElementById('signUpForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    const fullname = document.getElementById('fullname').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const phone = document.getElementById('phone').value.trim();
+    const password = document.getElementById('password').value;
+    const confirmPassword = document.getElementById('confirm-password').value;
+    const terms = document.getElementById('terms').checked;
+    const username = email.split('@')[0]; // Extract username from email
+
+    // Validation
+    if (!fullname || !email || !phone || !password || !confirmPassword) {
+        showMessage('กรุณากรอกข้อมูลให้ครบถ้วน', false);
+        return;
+    }
+
+    if (password !== confirmPassword) {
+        showMessage('รหัสผ่านไม่ตรงกัน กรุณาตรวจสอบอีกครั้ง', false);
+        return;
+    }
+
+    if (password.length < 6) {
+        showMessage('รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร', false);
+        return;
+    }
+
+    if (!terms) {
+        showMessage('กรุณายอมรับเงื่อนไขและข้อกำหนด', false);
+        return;
+    }
+
+    try {
+        // Register via API
+        const response = await api.register(username, email, password, fullname, phone);
+        
+        // Save token
+        api.setToken(response.token);
+
+        showMessage('สมัครสมาชิกสำเร็จ! กำลังนำทางไปหน้าแรก...', true);
+        setTimeout(() => {
+            window.location.href = 'index.html';
+        }, 1500);
+    } catch (error) {
+        showMessage(error.message || 'เกิดข้อผิดพลาด กรุณาลองใหม่', false);
+    }
+});
+
+function showMessage(message, success) {
+    let msgDiv = document.getElementById('signup-message');
+    if (!msgDiv) {
+        msgDiv = document.createElement('div');
+        msgDiv.id = 'signup-message';
+        document.getElementById('signUpForm').prepend(msgDiv);
+    }
+
+    msgDiv.style.display = 'block';
+    msgDiv.innerHTML = message;
+    msgDiv.style.background = success ? '#e8f5e9' : '#ffebee';
+    msgDiv.style.color = success ? '#2e7d32' : '#c62828';
+    msgDiv.style.border = success ? '1px solid #81c784' : '1px solid #e57373';
+    msgDiv.style.padding = '10px 15px';
+    msgDiv.style.borderRadius = '6px';
+    msgDiv.style.marginBottom = '15px';
+    msgDiv.style.textAlign = 'center';
+}
+
+// Mobile menu toggle
+function toggleMenu() {
+    const hamburger = document.getElementById('hamburger');
+    const navMenu = document.getElementById('navMenu');
+    hamburger.classList.toggle('active');
+    navMenu.classList.toggle('active');
+}
+
+// Close menu when link clicked
+document.querySelectorAll('#navMenu a').forEach(link => {
+    link.addEventListener('click', () => {
+        document.getElementById('hamburger').classList.remove('active');
+        document.getElementById('navMenu').classList.remove('active');
+    });
+});
+</script>
+<script src="../js/easyrice.js"></script>
+</body>
+</html>
