@@ -39,7 +39,7 @@
             </button>
             <nav id="navMenu">
                 <ul>
-                    <li><a href="index.html" >หน้าแรก</a></li>
+                    <li><a href="../" >หน้าแรก</a></li>
                     <li><a href="product.html" class="active">สินค้า</a></li>
                     <li><a href="about.html">ข่าวสาร</a></li>
                     <li><a href="contact.html">ติดต่อ</a></li>
@@ -196,25 +196,40 @@
         <textarea id="additionalDetails" class="form-control" rows="3" placeholder="ระบุรายละเอียดเพิ่มเติม เช่น สายพันธุ์ข้าวที่ต้องการ หรือหมายเหตุสำหรับทีมงาน..."></textarea>
     </div>
 
+    <script src="../js/api-client.js"></script>
     <script>
-        let selectedProduct = { id: 1, name: 'ข้าวหอมมะลิ 105', desc: 'ต้นกล้าข้าวคุณภาพดี มีกลิ่นหอม ให้ผลผลิตข้าวนุ่ม', age: 25, feature: 'กลิ่นหอม', price: 35, stock: 150, img: '../images/jasmine105.png' };
+        let selectedProduct = null;
 
-        document.addEventListener('DOMContentLoaded', function() {
-            // Update sign-in button based on login status
-            updateSignInButton();
-            
-            const urlParams = new URLSearchParams(window.location.search);
-            const productId = urlParams.get('id');
-            if (productId) {
-                const products = JSON.parse(localStorage.getItem('easyrice_db')) || [];
-                const product = products.find(p => p.id == productId);
-                if (product) {
-                    selectedProduct = product;
-                    document.getElementById('productImage').src = selectedProduct.img;
-                    document.getElementById('productName').innerText = `พันธุ์ข้าว: ${selectedProduct.name}`;
-                    document.getElementById('growthTime').innerHTML = `<i class="fas fa-seedling"></i> เวลาเจริญเติบโต: ${selectedProduct.age} วัน`;
-                    document.getElementById('seedPrice').innerHTML = `<i class="fas fa-tag"></i> ราคาต้นกล้า: ${selectedProduct.price} บาท / ถาด`;
+        document.addEventListener('DOMContentLoaded', async function() {
+            try {
+                // Check if user is authenticated
+                const user = await api.getCurrentUser();
+                
+                const urlParams = new URLSearchParams(window.location.search);
+                const productId = urlParams.get('id');
+                
+                if (productId) {
+                    // Fetch product from API
+                    const product = await api.getProduct(productId);
+                    selectedProduct = product.data || product;
+                    
+                    const productName = selectedProduct.product_name || selectedProduct.name;
+                    const productImg = selectedProduct.image_url || selectedProduct.img || '../images/jasmine105.png';
+                    const productPrice = selectedProduct.price;
+                    
+                    document.getElementById('productImage').src = productImg;
+                    document.getElementById('productName').innerText = `พันธุ์ข้าว: ${productName}`;
+                    document.getElementById('growthTime').innerHTML = `<i class="fas fa-seedling"></i> เวลาเจริญเติบโต: ${selectedProduct.age || 25} วัน`;
+                    document.getElementById('seedPrice').innerHTML = `<i class="fas fa-tag"></i> ราคาต้นกล้า: ${productPrice} บาท / ถาด`;
+                } else {
+                    alert('ไม่พบสินค้า');
+                    window.location.href = 'product.html';
                 }
+            } catch (error) {
+                console.error('Auth error:', error);
+                alert('กรุณาเข้าสู่ระบบก่อน');
+                window.location.href = 'sign-in.html';
+                return;
             }
 
             // Initialize map
@@ -273,7 +288,7 @@
                 total = qty * 1800;
             } else {
                 quantityLabel.innerText = "จำนวน (ถาด)";
-                total = qty * selectedProduct.price;
+                total = qty * (selectedProduct?.price || 35);
             }
 
             const deposit = total * 0.5;
@@ -290,11 +305,12 @@
 
         document.getElementById('orderForm').addEventListener('submit', function(e) {
             e.preventDefault();
+            const productName = selectedProduct?.product_name || selectedProduct?.name || 'ข้าวหอมมะลิ 105';
             // Populate modal
             document.getElementById('resName').innerText = document.querySelector('input[placeholder="กรอกชื่อของคุณ"]').value;
             document.getElementById('resPhone').innerText = document.querySelector('input[placeholder="08X-XXX-XXXX"]').value;
             document.getElementById('resDetails').innerText = document.getElementById('additionalDetails').value || "ไม่มีระบุ";
-            document.getElementById('resProduct').innerText = selectedProduct.name;
+            document.getElementById('resProduct').innerText = productName;
             document.getElementById('resQuantity').innerText = `จำนวน: ${quantityInput.value} ${plantingCheck.checked ? 'ไร่' : 'ถาด'}`;
             document.getElementById('resTotal').innerText = totalPriceEl.innerText;
             document.getElementById('resDeposit').innerText = depositPriceEl.innerText;
@@ -302,50 +318,30 @@
             document.getElementById('orderModal').style.display = 'flex';
         });
 
-        function finalizeOrder() {
-            const slipFile = document.getElementById('slipFile');
-            if (!slipFile.files.length) {
-                alert('กรุณาแนบสลิป');
-                return;
-            }
+        async function finalizeOrder() {
+            try {
+                const slipFile = document.getElementById('slipFile');
+                if (!slipFile.files.length) {
+                    alert('กรุณาแนบสลิป');
+                    return;
+                }
 
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                // Get form data
-                const name = document.querySelector('input[placeholder="กรอกชื่อของคุณ"]').value;
-                const phone = document.querySelector('input[placeholder="08X-XXX-XXXX"]').value;
-                const email = document.querySelector('input[type="email"]').value;
-                const address = document.querySelector('textarea').value;
-                const date = document.querySelector('input[type="date"]').value;
-                const deliveryMethod = document.getElementById('deliveryMethod').value;
-
-                // Create order object
-                const order = {
-                    id: 'ER-' + Date.now(),
-                    name: name,
-                    phone: phone,
-                    email: email,
-                    address: address,
-                    product: selectedProduct.name,
-                    quantity: quantityInput.value,
-                    total: parseInt(totalPriceEl.innerText.replace('฿', '').replace(',', '')),
-                    deposit: parseInt(depositPriceEl.innerText.replace('฿', '').replace(',', '')),
-                    date: date,
-                    deliveryMethod: deliveryMethod,
-                    slip: e.target.result,
-                    status: 'pending',
-                    orderDate: new Date().toISOString()
-                };
-
-                // Save to localStorage
-                const orders = JSON.parse(localStorage.getItem('easyrice_orders')) || [];
-                orders.push(order);
-                localStorage.setItem('easyrice_orders', JSON.stringify(orders));
+                // Get shipping address from form
+                const address = document.querySelector('textarea[placeholder="กรอกที่อยู่โดยละเอียด"]').value;
                 
-                alert('สั่งซื้อเสร็จสิ้น! ขอบคุณที่ใช้บริการ');
-                location.reload();
-            };
-            reader.readAsDataURL(slipFile.files[0]);
+                // Create order via API
+                const orderResponse = await api.createOrder(address);
+                
+                if (orderResponse && orderResponse.id) {
+                    alert('สั่งซื้อสำเร็จ! เลขที่ออเดอร์: ' + orderResponse.id);
+                    window.location.href = 'history.html';
+                } else {
+                    alert('เกิดข้อผิดพลาด: ' + (orderResponse?.error || 'Unknown error'));
+                }
+            } catch (error) {
+                console.error('Order error:', error);
+                alert('เกิดข้อผิดพลาด: ' + error.message);
+            }
         }
 
         // Mobile menu toggle

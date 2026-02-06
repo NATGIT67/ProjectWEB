@@ -29,7 +29,7 @@
 <body>
     <header class="navbar">
         <div class="container">
-            <a href="index.html" class="logo">🌾 EasyRice</a>
+            <a href="../" class="logo">🌾 EasyRice</a>
             <button class="hamburger" id="hamburger" onclick="toggleMenu()">
                 <span></span>
                 <span></span>
@@ -37,7 +37,7 @@
             </button>
             <nav id="navMenu">
                 <ul>
-                    <li><a href="index.html">หน้าแรก</a></li>
+                    <li><a href="../">หน้าแรก</a></li>
                     <li><a href="product.html">สินค้า</a></li>
                     <li><a href="about.html">ข่าวสาร</a></li>
                     <li><a href="contact.html">ติดต่อ</a></li>
@@ -144,40 +144,48 @@
         </div>
     </div>
 
+    <script src="../js/api-client.js"></script>
     <script>
         let currentOrderIdx = null;
         
-        document.addEventListener('DOMContentLoaded', () => {
-            if (!localStorage.getItem('easyrice_admin_logged_in')) {
-                alert('ต้องเข้าสู่ระบบ');
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                // Check if user is admin
+                const user = await api.getCurrentUser();
+                if (!user.role || user.role !== 'admin') {
+                    alert('เฉพาะผู้ดูแลระบบเท่านั้น');
+                    location.href = '../';
+                    return;
+                }
+                document.getElementById('adminName').textContent = 'ยินดีต้อนรับ ' + (user.full_name || user.username);
+            } catch (error) {
+                alert('กรุณาเข้าสู่ระบบ');
                 location.href = 'sign-in.html';
                 return;
             }
-            const name = localStorage.getItem('easyrice_admin_name') || 'ผู้ดูแล';
-            document.getElementById('adminName').textContent = 'ยินดีต้อนรับ ' + name;
-            document.getElementById('addForm').addEventListener('submit', (e) => {
+            
+            document.getElementById('addForm').addEventListener('submit', async (e) => {
                 e.preventDefault();
                 const img = document.getElementById('pImg');
                 if (!img.files.length) { alert('เลือกรูป'); return; }
                 const reader = new FileReader();
-                reader.onload = (ev) => {
-                    const p = {
-                        id: Date.now(),
-                        name: document.getElementById('pName').value,
-                        desc: document.getElementById('pDesc').value,
-                        age: document.getElementById('pAge').value,
-                        feature: document.getElementById('pFeature').value,
-                        price: parseInt(document.getElementById('pPrice').value),
-                        stock: parseInt(document.getElementById('pStock').value),
-                        img: ev.target.result
-                    };
-                    let products = JSON.parse(localStorage.getItem('easyrice_db')) || [];
-                    products.push(p);
-                    localStorage.setItem('easyrice_db', JSON.stringify(products));
-                    alert('บันทึกแล้ว');
-                    document.getElementById('addForm').reset();
-                    loadProducts();
-                    loadStock();
+                reader.onload = async (ev) => {
+                    try {
+                        const product = await api.createProduct(
+                            document.getElementById('pName').value,
+                            document.getElementById('pDesc').value,
+                            'Rice Seedling',
+                            parseInt(document.getElementById('pPrice').value),
+                            parseInt(document.getElementById('pStock').value),
+                            ev.target.result
+                        );
+                        alert('บันทึกแล้ว');
+                        document.getElementById('addForm').reset();
+                        loadProducts();
+                        loadStock();
+                    } catch (err) {
+                        alert('เกิดข้อผิดพลาด: ' + err.message);
+                    }
                 };
                 reader.readAsDataURL(img.files[0]);
             });
@@ -186,10 +194,125 @@
             loadStock();
         });
 
+        async function loadProducts() {
+            try {
+                const response = await api.getProducts();
+                let products = response.data || response || [];
+                
+                if (!products.length) {
+                    products = [
+                        {id: 1, product_name: 'ข้าวหอมมะลิ 105', description: 'กลิ่นหอม', price: 35, stock: 150, image_url: 'https://via.placeholder.com/100'},
+                        {id: 2, product_name: 'ข้าวไรซ์เบอร์รี่', description: 'สุขภาพ', price: 45, stock: 25, image_url: 'https://via.placeholder.com/100'}
+                    ];
+                }
+                
+                const tbody = document.getElementById('productList');
+                tbody.innerHTML = '';
+                products.forEach(p => {
+                    const name = p.product_name || p.name;
+                    const img = p.image_url || p.img || 'https://via.placeholder.com/40';
+                    tbody.innerHTML += `<tr><td><img src="${img}" width="40" style="border-radius:4px;"></td><td>${name}</td><td>${p.price}</td><td>${p.stock}</td><td><button onclick="deleteProduct(${p.id})" class="btn-del"><i class="fas fa-trash"></i></button></td></tr>`;
+                });
+            } catch (error) {
+                console.error('Load products error:', error);
+            }
+        }
+
+        async function deleteProduct(id) {
+            if (!confirm('ลบ?')) return;
+            try {
+                await api.deleteProduct(id);
+                loadProducts();
+                loadStock();
+            } catch (err) {
+                alert('เกิดข้อผิดพลาด: ' + err.message);
+            }
+        }
+
+        async function loadOrders() {
+            try {
+                const response = await api.getAdminOrders();
+                let orders = response.data || response || [];
+                
+                const tbody = document.getElementById('orderList');
+                tbody.innerHTML = '';
+                if (!orders.length) {
+                    tbody.innerHTML = '<tr><td colspan="8" style="text-align:center; color:#999;">ไม่มี</td></tr>';
+                    return;
+                }
+                orders.forEach((o, i) => {
+                    const status = o.status || 'pending';
+                    const st = status === 'pending' ? '<span class="status-pending">รอ</span>' : '<span class="status-approved">อนุมัติ</span>';
+                    tbody.innerHTML += `<tr><td>${i+1}</td><td>${o.user_name || o.name || '-'}</td><td>${o.user_phone || o.phone || '-'}</td><td>${o.product_name || '-'}</td><td>${o.total_amount || 0}</td><td>${status}</td><td><button onclick="showOrder(${o.id})" style="padding:5px 10px; background:#2196F3; color:#fff; border:0; border-radius:4px; cursor:pointer;"><i class="fas fa-eye"></i></button></td></tr>`;
+                });
+            } catch (error) {
+                console.error('Load orders error:', error);
+            }
+        }
+
+        async function showOrder(orderId) {
+            try {
+                const response = await api.getOrder(orderId);
+                const o = response.data || response;
+                currentOrderIdx = orderId;
+                
+                document.getElementById('orderDetail').innerHTML = `
+                    <p><strong>เลขที่ออเดอร์:</strong> ${o.id}</p>
+                    <p><strong>ชื่อ:</strong> ${o.user_name || '-'}</p>
+                    <p><strong>เบอร์:</strong> ${o.user_phone || '-'}</p>
+                    <p><strong>ที่อยู่:</strong> ${o.shipping_address || '-'}</p>
+                    <p><strong>สินค้า:</strong> ${o.product_name || '-'}</p>
+                    <p><strong>จำนวน:</strong> ${o.quantity || '-'}</p>
+                    <hr>
+                    <p style="font-weight:bold;">รวม: ${o.total_amount || 0} บาท</p>
+                    <p style="font-weight:bold; color: #c62828;">สถานะ: ${o.status || 'pending'}</p>
+                `;
+                document.getElementById('acceptBtn').style.display = o.status === 'pending' ? 'block' : 'none';
+                document.getElementById('orderModal').style.display = 'flex';
+            } catch (error) {
+                alert('เกิดข้อผิดพลาด: ' + error.message);
+            }
+        }
+
+        async function acceptOrder() {
+            try {
+                await api.updateOrderStatus(currentOrderIdx, 'completed');
+                alert('อนุมัติแล้ว');
+                closeOrderModal();
+                loadOrders();
+            } catch (error) {
+                alert('เกิดข้อผิดพลาด: ' + error.message);
+            }
+        }
+
+        function closeOrderModal() {
+            document.getElementById('orderModal').style.display = 'none';
+        }
+
+        async function loadStock() {
+            try {
+                const response = await api.getProducts();
+                let products = response.data || response || [];
+                
+                const tbody = document.getElementById('stockList');
+                tbody.innerHTML = '';
+                let total = 0;
+                products.forEach(p => {
+                    const name = p.product_name || p.name;
+                    const img = p.image_url || p.img || 'https://via.placeholder.com/40';
+                    const val = p.price * p.stock;
+                    total += val;
+                    tbody.innerHTML += `<tr><td><img src="${img}" width="40" style="border-radius:4px;"></td><td>${name}</td><td>${p.stock}</td><td>${p.price}</td><td>${val.toLocaleString()}</td></tr>`;
+                });
+                tbody.innerHTML += `<tr style="background:#f5f5f5; font-weight:bold;"><td colspan="4" style="text-align:right;">รวม:</td><td>${total.toLocaleString()}</td></tr>`;
+            } catch (error) {
+                console.error('Load stock error:', error);
+            }
+        }
+
         function logout() {
-            localStorage.removeItem('easyrice_admin_logged_in');
-            localStorage.removeItem('easyrice_admin_name');
-            location.href = 'index.html';
+            api.clearToken();
+            location.href = '../';
         }
 
         function switchTab(t) {
@@ -197,95 +320,6 @@
             document.querySelectorAll('.tab-btn').forEach(x => x.classList.remove('active'));
             document.getElementById(t).classList.add('active');
             event.target.classList.add('active');
-        }
-
-        function loadProducts() {
-            let products = JSON.parse(localStorage.getItem('easyrice_db')) || [];
-            if (!products.length) {
-                products = [
-                    {id: 1, name: 'ข้าวหอมมะลิ 105', desc: 'กลิ่นหอม', age: 25, feature: 'ดี', price: 35, stock: 150, img: 'https://via.placeholder.com/100'},
-                    {id: 2, name: 'ข้าวไรซ์เบอร์รี่', desc: 'สุขภาพ', age: 30, feature: 'ดี', price: 45, stock: 25, img: 'https://via.placeholder.com/100'},
-                    {id: 3, name: 'ข้าว RD43', desc: 'ทนโรค', age: 20, feature: 'ดี', price: 30, stock: 200, img: 'https://via.placeholder.com/100'}
-                ];
-                localStorage.setItem('easyrice_db', JSON.stringify(products));
-            }
-            const tbody = document.getElementById('productList');
-            tbody.innerHTML = '';
-            products.forEach(p => {
-                tbody.innerHTML += `<tr><td><img src="${p.img}" width="40" style="border-radius:4px;"></td><td>${p.name}</td><td>${p.price}</td><td>${p.stock}</td><td><button onclick="deleteProduct(${p.id})" class="btn-del"><i class="fas fa-trash"></i></button></td></tr>`;
-            });
-        }
-
-        function deleteProduct(id) {
-            if (!confirm('ลบ?')) return;
-            let products = JSON.parse(localStorage.getItem('easyrice_db')) || [];
-            products = products.filter(p => p.id !== id);
-            localStorage.setItem('easyrice_db', JSON.stringify(products));
-            loadProducts();
-            loadStock();
-        }
-
-        function loadOrders() {
-            let orders = JSON.parse(localStorage.getItem('easyrice_orders')) || [];
-            const tbody = document.getElementById('orderList');
-            tbody.innerHTML = '';
-            if (!orders.length) {
-                tbody.innerHTML = '<tr><td colspan="8" style="text-align:center; color:#999;">ไม่มี</td></tr>';
-                return;
-            }
-            orders.forEach((o, i) => {
-                const st = o.status === 'pending' ? '<span class="status-pending">รอ</span>' : '<span class="status-approved">อนุมัติ</span>';
-                tbody.innerHTML += `<tr><td>${i+1}</td><td>${o.name}</td><td>${o.phone}</td><td>${o.product}</td><td>${o.quantity}</td><td>${o.deposit}</td><td>${st}</td><td><button onclick="showOrder(${i})" style="padding:5px 10px; background:#2196F3; color:#fff; border:0; border-radius:4px; cursor:pointer;"><i class="fas fa-eye"></i></button></td></tr>`;
-            });
-        }
-
-        function showOrder(i) {
-            currentOrderIdx = i;
-            let orders = JSON.parse(localStorage.getItem('easyrice_orders')) || [];
-            const o = orders[i];
-            const slip = o.slip ? `<div style="margin-top:15px;"><strong>สลิป:</strong><img src="${o.slip}" style="max-width:300px; margin-top:10px; border-radius:8px; display:block;"></div>` : '';
-            document.getElementById('orderDetail').innerHTML = `
-                <p><strong>ชื่อ:</strong> ${o.name}</p>
-                <p><strong>เบอร์:</strong> ${o.phone}</p>
-                <p><strong>อีเมล:</strong> ${o.email || '-'}</p>
-                <p><strong>ที่อยู่:</strong> ${o.address || '-'}</p>
-                <p><strong>สินค้า:</strong> ${o.product}</p>
-                <p><strong>จำนวน:</strong> ${o.quantity} ถาด</p>
-                <p><strong>วันที่:</strong> ${o.date || '-'}</p>
-                <hr>
-                <p style="font-weight:bold;">รวม: ${o.total} บาท</p>
-                <p style="font-weight:bold;">มัดจำ: ${o.deposit} บาท</p>
-                ${slip}
-            `;
-            document.getElementById('acceptBtn').style.display = o.status === 'pending' ? 'block' : 'none';
-            document.getElementById('orderModal').style.display = 'flex';
-        }
-
-        function acceptOrder() {
-            let orders = JSON.parse(localStorage.getItem('easyrice_orders')) || [];
-            orders[currentOrderIdx].status = 'approved';
-            localStorage.setItem('easyrice_orders', JSON.stringify(orders));
-            alert('อนุมัติแล้ว');
-            closeOrderModal();
-            loadOrders();
-        }
-
-        function closeOrderModal() {
-            document.getElementById('orderModal').style.display = 'none';
-        }
-
-        function loadStock() {
-            let products = JSON.parse(localStorage.getItem('easyrice_db')) || [];
-            const tbody = document.getElementById('stockList');
-            tbody.innerHTML = '';
-            let total = 0;
-            products.forEach(p => {
-                const val = p.price * p.stock;
-                total += val;
-                tbody.innerHTML += `<tr><td><img src="${p.img}" width="40" style="border-radius:4px;"></td><td>${p.name}</td><td>${p.stock}</td><td>${p.price}</td><td>${val.toLocaleString()}</td></tr>`;
-            });
-            tbody.innerHTML += `<tr style="background:#f5f5f5; font-weight:bold;"><td colspan="4" style="text-align:right;">รวม:</td><td>${total.toLocaleString()}</td></tr>`;
-        }
 
         // Mobile menu toggle
         function toggleMenu() {

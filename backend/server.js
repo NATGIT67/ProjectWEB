@@ -25,10 +25,10 @@ app.get('/health', (req, res) => {
   res.json({ message: 'Server is running' });
 });
 
-// Serve index.html for all non-API routes (SPA)
+// Serve pages/index.html for root and any non-existent routes (SPA)
 app.get('*', (req, res) => {
   if (!req.path.startsWith('/api')) {
-    res.sendFile(path.join(__dirname, '../frontend/app/index.html'));
+    res.sendFile(path.join(__dirname, '../frontend/app/pages/index.html'));
   } else {
     res.status(404).json({ error: 'Route not found' });
   }
