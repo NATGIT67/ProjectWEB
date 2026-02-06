@@ -1,6 +1,6 @@
 // API Client for Frontend
 class APIClient {
-  constructor(baseURL = 'http://localhost:5000/api') {
+  constructor(baseURL = '/api') {
     this.baseURL = baseURL;
     this.token = localStorage.getItem('token');
   }
@@ -27,7 +27,7 @@ class APIClient {
     const headers = {
       'Content-Type': contentType,
     };
-    
+
     if (this.token) {
       headers['Authorization'] = `Bearer ${this.token}`;
     }
