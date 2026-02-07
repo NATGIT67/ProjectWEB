@@ -45,10 +45,18 @@ class APIClient {
 
     try {
       const response = await fetch(url, config);
-      const data = await response.json();
+      const text = await response.text();
+
+      let data;
+      try {
+        data = text ? JSON.parse(text) : {};
+      } catch (err) {
+        console.error('Invalid JSON response:', text);
+        throw new Error('Server error (Invalid JSON): ' + text.substring(0, 100));
+      }
 
       if (!response.ok) {
-        throw new Error(data.error || 'An error occurred');
+        throw new Error(data.error || 'An error occurred: ' + response.status);
       }
 
       return data;
@@ -205,6 +213,13 @@ class APIClient {
   async getAdminUsers() {
     return this.request('/admin/users', {
       method: 'GET',
+    });
+  }
+
+  async updateUserRole(userId, role) {
+    return this.request(`/admin/users/${userId}/role`, {
+      method: 'PUT',
+      body: JSON.stringify({ role }),
     });
   }
 }

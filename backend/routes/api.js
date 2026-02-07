@@ -35,7 +35,7 @@ router.get('/products/:id', async (req, res) => {
 // Create product (Admin)
 router.post('/products', verifyToken, verifyAdmin, async (req, res) => {
   const { product_name, description, category, price, stock, image_url } = req.body;
-  
+
   if (!product_name || !price || !stock) {
     return res.status(400).json({ error: 'Product name, price, and stock required' });
   }
@@ -58,7 +58,7 @@ router.post('/products', verifyToken, verifyAdmin, async (req, res) => {
 // Update product (Admin)
 router.put('/products/:id', verifyToken, verifyAdmin, async (req, res) => {
   const { product_name, description, category, price, stock, image_url } = req.body;
-  
+
   try {
     await pool.query(
       'UPDATE products SET product_name = ?, description = ?, category = ?, price = ?, stock = ?, image_url = ? WHERE product_id = ?',
@@ -98,7 +98,7 @@ router.get('/cart', verifyToken, async (req, res) => {
 // Add to cart
 router.post('/cart', verifyToken, async (req, res) => {
   const { product_id, quantity } = req.body;
-  
+
   if (!product_id || !quantity) {
     return res.status(400).json({ error: 'Product ID and quantity required' });
   }
@@ -117,7 +117,7 @@ router.post('/cart', verifyToken, async (req, res) => {
 // Update cart item
 router.put('/cart/:cartId', verifyToken, async (req, res) => {
   const { quantity } = req.body;
-  
+
   if (!quantity) {
     return res.status(400).json({ error: 'Quantity required' });
   }
@@ -181,13 +181,13 @@ router.get('/orders/:orderId', verifyToken, async (req, res) => {
 // Create order from cart
 router.post('/orders', verifyToken, async (req, res) => {
   const { shipping_address } = req.body;
-  
+
   if (!shipping_address) {
     return res.status(400).json({ error: 'Shipping address required' });
   }
 
   const connection = await pool.getConnection();
-  
+
   try {
     await connection.beginTransaction();
 
@@ -257,7 +257,7 @@ router.get('/reviews/product/:productId', async (req, res) => {
 // Create review
 router.post('/reviews', verifyToken, async (req, res) => {
   const { product_id, rating, comment } = req.body;
-  
+
   if (!product_id || !rating) {
     return res.status(400).json({ error: 'Product ID and rating required' });
   }
@@ -282,7 +282,7 @@ router.post('/reviews', verifyToken, async (req, res) => {
 // Update user profile
 router.put('/profile', verifyToken, async (req, res) => {
   const { full_name, phone, address } = req.body;
-  
+
   try {
     await pool.query(
       'UPDATE users SET full_name = ?, phone = ?, address = ? WHERE user_id = ?',
@@ -309,8 +309,24 @@ router.get('/admin/orders', verifyToken, verifyAdmin, async (req, res) => {
 // Get all users (Admin)
 router.get('/admin/users', verifyToken, verifyAdmin, async (req, res) => {
   try {
-    const [rows] = await pool.query('SELECT user_id, username, email, phone, full_name, created_at FROM users ORDER BY created_at DESC');
+    const [rows] = await pool.query('SELECT user_id, username, email, phone, full_name, role, created_at FROM users ORDER BY created_at DESC');
     res.json(rows);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Update user role (Admin)
+router.put('/admin/users/:id/role', verifyToken, verifyAdmin, async (req, res) => {
+  const { role } = req.body;
+
+  if (!role || !['user', 'admin'].includes(role)) {
+    return res.status(400).json({ error: 'Invalid role' });
+  }
+
+  try {
+    await pool.query('UPDATE users SET role = ? WHERE user_id = ?', [role, req.params.id]);
+    res.json({ message: 'User role updated' });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
