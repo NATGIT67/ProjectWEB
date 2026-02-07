@@ -354,6 +354,16 @@ router.put('/admin/orders/:id', verifyToken, verifyAdmin, async (req, res) => {
   }
 });
 
+// Delete order (Admin)
+router.delete('/admin/orders/:id', verifyToken, verifyAdmin, async (req, res) => {
+  try {
+    await pool.query('DELETE FROM orders WHERE order_id = ?', [req.params.id]);
+    res.json({ message: 'Order deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 // Get Monthly Sales (Admin)
 router.get('/admin/sales-monthly', verifyToken, verifyAdmin, async (req, res) => {
   try {
