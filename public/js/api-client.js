@@ -244,20 +244,10 @@ class APIClient {
   }
 
   async sendReport(data) {
-    // This is a public endpoint, but request() helper might add auth header which is fine
-    const response = await fetch(`${this.baseUrl}/contact`, {
+    return this.request('/contact', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
+      body: JSON.stringify(data),
     });
-
-    if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error.error || 'Something went wrong');
-    }
-    return response.json();
   }
 }
 

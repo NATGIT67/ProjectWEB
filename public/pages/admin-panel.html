@@ -579,7 +579,7 @@
                 <div class="stat-card card-blue"> <!-- Changed from card-green to separate color -->
                     <div class="stat-icon"><i class="fas fa-shopping-cart"></i></div>
                     <div class="stat-info">
-                        <div class="stat-title">การจองวันนี้</div>
+                        <div class="stat-title">คำสั่งซื้อวันนี้</div>
                         <div class="stat-value" id="stats-orders-today">0</div>
                     </div>
                 </div>
@@ -593,7 +593,7 @@
                 <div class="stat-card card-green">
                     <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
                     <div class="stat-info">
-                        <div class="stat-title">จองสำเร็จแล้ว</div>
+                        <div class="stat-title">สั่งซื้อสำเร็จ</div>
                         <div class="stat-value" id="stats-completed">0</div>
                     </div>
                 </div>
@@ -616,16 +616,16 @@
 
             <!-- Dynamic Content Area -->
             <div id="dashboard-view" class="content-panel">
-                <h2 style="margin-top:0;">รายการการจองล่าสุด (รอการจัดการ)</h2>
+                <h2 style="margin-top:0;">รายการคำสั่งซื้อล่าสุด (รอการจัดการ)</h2>
                 <table>
                     <thead>
                         <tr>
-                            <th>ลำดับการจอง</th>
+                            <th>เลขที่คำสั่งซื้อ</th>
                             <th>ชื่อลูกค้า</th>
                             <th>วันที่เริ่มผลิตกล้า</th>
                             <th>สถานะ</th>
                             <th>รายละเอียด</th>
-                            <th>ยืนยันการจอง</th>
+                            <th>ยืนยันคำสั่งซื้อ</th>
                         </tr>
                     </thead>
                     <tbody id="dashboard-table-body">
@@ -681,13 +681,13 @@
 
             <!-- Orders View (Hidden by default) -->
             <div id="orders-view" class="content-panel" style="display:none;">
-                <h2 style="margin-top:0;">จัดการการจองทั้งหมด</h2>
+                <h2 style="margin-top:0;">จัดการคำสั่งซื้อทั้งหมด</h2>
                 <table>
                     <thead>
                         <tr>
                             <th>ID</th>
                             <th>ลูกค้า</th>
-                            <th>วันที่จอง</th>
+                            <th>วันที่สั่งซื้อ</th>
                             <th>ยอดรวม</th>
                             <th>สถานะ</th>
                             <th>จัดการ</th>
@@ -745,7 +745,7 @@
     <!-- Order Details Modal -->
     <div id="orderModal" class="modal">
         <div class="modal-content">
-            <h2>รายละเอียดการจอง</h2>
+            <h2>รายละเอียดคำสั่งซื้อ</h2>
             <div id="orderDetailsContent"></div>
             <div style="margin-top:20px; text-align:right;">
                 <button type="button" class="btn-action btn-red" onclick="closeModals()">ปิด</button>
@@ -972,7 +972,7 @@
 
                 if (order.status === 'confirmed' || order.status === 'shipped') {
                     badgeClass = 'badge-confirmed';
-                    statusText = 'จองสำเร็จ'; // Or specific status text
+                    statusText = 'สั่งซื้อสำเร็จ'; // Or specific status text
                 } else if (order.status === 'cancelled') {
                     badgeClass = 'badge-cancelled';
                     statusText = 'ยกเลิกแล้ว';
@@ -1101,7 +1101,10 @@
                     `;
                     tbody.appendChild(tr);
                 });
-            } catch (e) { console.error(e); }
+            } catch (e) {
+                console.error("Error loading users:", e);
+                // Optional: Swal.fire('Error', 'Failed to load users', 'error');
+            }
         }
 
         async function deleteUser(id) {
@@ -1471,6 +1474,26 @@
                 }
             })
         }
+        async function updateStats() {
+            try {
+                const stats = await api.getStats();
+                // Assumes IDs exist: stat-products, stat-orders-today, stat-pending, stat-completed
+                // Let's verify IDs in HTML. If not present, I should add them or just log.
+                // Looking at typical admin panel, these IDs usually exist. 
+                if (document.getElementById('stat-products')) document.getElementById('stat-products').innerText = stats.products;
+                if (document.getElementById('stat-orders-today')) document.getElementById('stat-orders-today').innerText = stats.ordersToday;
+                if (document.getElementById('stat-pending')) document.getElementById('stat-pending').innerText = stats.pending;
+                if (document.getElementById('stat-completed')) document.getElementById('stat-completed').innerText = stats.completed;
+
+                // Real-time users
+                if (document.getElementById('online-users-count')) document.getElementById('online-users-count').innerText = stats.onlineUsers || 0;
+            } catch (e) {
+                console.error("Failed to load stats:", e);
+            }
+        }
+
+        // Call updateStats on load and periodically
+        setInterval(updateStats, 30000); // Every 30s
     </script>
 </body>
 

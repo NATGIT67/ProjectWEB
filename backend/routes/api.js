@@ -180,10 +180,15 @@ router.get('/orders', verifyToken, async (req, res) => {
 // Get order details
 router.get('/orders/:orderId', verifyToken, async (req, res) => {
   try {
-    const [order] = await pool.query(
-      'SELECT * FROM orders WHERE order_id = ? AND user_id = ?',
-      [req.params.orderId, req.user.user_id]
-    );
+    let query = 'SELECT * FROM orders WHERE order_id = ?';
+    const params = [req.params.orderId];
+
+    if (req.user.role !== 'admin') {
+      query += ' AND user_id = ?';
+      params.push(req.user.user_id);
+    }
+
+    const [order] = await pool.query(query, params);
 
     if (order.length === 0) {
       return res.status(404).json({ message: 'Order not found' });
