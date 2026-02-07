@@ -165,12 +165,17 @@ router.delete('/cart/:cartId', verifyToken, async (req, res) => {
 // ============= ORDERS (Protected) =============
 
 // Get user orders
+// Get user orders
 router.get('/orders', verifyToken, async (req, res) => {
   try {
-    const [rows] = await pool.query(
-      'SELECT * FROM orders WHERE user_id = ? ORDER BY order_date DESC',
-      [req.user.user_id]
-    );
+    const [rows] = await pool.query(`
+      SELECT o.order_id, o.user_id, o.order_date, o.total_price, o.payment_type, o.paid_amount, o.status, o.shipping_address, o.payment_slip, o.created_at, 
+             (SELECT COUNT(*) FROM order_items WHERE order_id = o.order_id) as item_count,
+             (SELECT p.product_name FROM order_items oi JOIN products p ON oi.product_id = p.product_id WHERE oi.order_id = o.order_id LIMIT 1) as first_product_name
+      FROM orders o 
+      WHERE user_id = ? 
+      ORDER BY order_date DESC
+    `, [req.user.user_id]);
     res.json(rows);
   } catch (error) {
     res.status(500).json({ error: error.message });
