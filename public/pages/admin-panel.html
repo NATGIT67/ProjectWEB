@@ -572,7 +572,7 @@
                 <div class="stat-card card-green">
                     <div class="stat-icon"><i class="fas fa-seedling"></i></div>
                     <div class="stat-info">
-                        <div class="stat-title">ต้นกล้าทั้งหมด</div>
+                        <div class="stat-title">ยอดคงเหลือรวม (ถาด)</div>
                         <div class="stat-value" id="stats-products">0</div>
                     </div>
                 </div>
@@ -876,8 +876,9 @@
         // Mock data function removed as per user request
 
         function updateStats() {
-            // Count Products
-            document.getElementById('stats-products').innerText = allProducts.length;
+            // Count Products (Total Stock)
+            const totalStock = allProducts.reduce((sum, p) => sum + (parseInt(p.stock) || 0), 0);
+            document.getElementById('stats-products').innerText = totalStock.toLocaleString();
 
             // Count Orders (Today)
             const today = new Date().toISOString().split('T')[0];
@@ -1031,6 +1032,43 @@
                         <button class="btn-action btn-blue" onclick="viewOrderDetails(${o.order_id})">ดู</button>
                     </td>
                  `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function renderProductsTable() {
+            const tbody = document.getElementById('products-table-body');
+            tbody.innerHTML = '';
+
+            if (!allProducts || allProducts.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">ไม่พบข้อมูลสินค้า</td></tr>';
+                return;
+            }
+
+            allProducts.forEach(p => {
+                const tr = document.createElement('tr');
+                // Use a default image if none provided
+                const imgUrl = p.image_url && p.image_url.trim() !== '' ? p.image_url : '../images/no-image.png';
+
+                tr.innerHTML = `
+                    <td>${p.product_id}</td>
+                    <td><img src="${imgUrl}" style="width:50px; height:50px; object-fit:cover; border-radius:8px; border:1px solid #eee;" onerror="this.src='../images/no-image.png'"></td>
+                    <td>${p.product_name}</td>
+                    <td>฿${parseFloat(p.price).toLocaleString()}</td>
+                    <td>
+                        <span class="status-badge" style="background:${p.stock > 10 ? '#e8f5e9' : '#ffebee'}; color:${p.stock > 10 ? '#2e7d32' : '#c62828'};">
+                            ${p.stock.toLocaleString()}
+                        </span>
+                    </td>
+                    <td>
+                        <button class="btn-action btn-blue" onclick="editProduct(${p.product_id})">
+                            <i class="fas fa-edit"></i> แก้ไข
+                        </button>
+                        <button class="btn-action btn-red" onclick="deleteProduct(${p.product_id})">
+                            <i class="fas fa-trash"></i> ลบ
+                        </button>
+                    </td>
+                `;
                 tbody.appendChild(tr);
             });
         }
@@ -1474,26 +1512,8 @@
                 }
             })
         }
-        async function updateStats() {
-            try {
-                const stats = await api.getStats();
-                // Assumes IDs exist: stat-products, stat-orders-today, stat-pending, stat-completed
-                // Let's verify IDs in HTML. If not present, I should add them or just log.
-                // Looking at typical admin panel, these IDs usually exist. 
-                if (document.getElementById('stat-products')) document.getElementById('stat-products').innerText = stats.products;
-                if (document.getElementById('stat-orders-today')) document.getElementById('stat-orders-today').innerText = stats.ordersToday;
-                if (document.getElementById('stat-pending')) document.getElementById('stat-pending').innerText = stats.pending;
-                if (document.getElementById('stat-completed')) document.getElementById('stat-completed').innerText = stats.completed;
-
-                // Real-time users
-                if (document.getElementById('online-users-count')) document.getElementById('online-users-count').innerText = stats.onlineUsers || 0;
-            } catch (e) {
-                console.error("Failed to load stats:", e);
-            }
-        }
-
-        // Call updateStats on load and periodically
-        setInterval(updateStats, 30000); // Every 30s
+        // Call refreshData periodically to keep everything in sync
+        setInterval(refreshData, 30000); // Every 30s
     </script>
 </body>
 
