@@ -34,8 +34,11 @@ CREATE TABLE orders (
   user_id INT NOT NULL,
   order_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   total_price DECIMAL(10, 2) NOT NULL,
+  payment_type ENUM('full', 'deposit') DEFAULT 'full',
+  paid_amount DECIMAL(10, 2) DEFAULT 0.00,
   status ENUM('pending', 'confirmed', 'shipped', 'delivered', 'cancelled') DEFAULT 'pending',
   shipping_address TEXT,
+  payment_slip LONGTEXT,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
