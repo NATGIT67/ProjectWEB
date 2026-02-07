@@ -991,8 +991,8 @@
                     <td>${order.full_name || 'ลูกค้าทั่วไป'}</td>
                     <td>${dateStr}</td>
                     <td><span class="badge ${badgeClass}">${statusText}</span></td>
-                    <td><button class="btn-action btn-blue" onclick="viewOrderDetails(${order.order_id})">ดูรายละเอียด</button></td>
                     <td>
+                        <button class="btn-action btn-blue" onclick="viewOrderDetails(${order.order_id})">ดูรายละเอียด</button>
                         ${order.status === 'pending' ?
                         `<button class="btn-action btn-orange" onclick="updateStatus(${order.order_id}, 'confirmed')">ยืนยันคำสั่งซื้อ</button>` :
                         (order.status === 'confirmed' || order.status === 'shipped' ?
@@ -1000,6 +1000,9 @@
                             (order.status === 'cancelled' ? `<button class="btn-action btn-brown" disabled>ยกเลิกแล้ว</button>` : '')
                         )
                     }
+                        <button class="btn-action btn-red" onclick="deleteOrder(${order.order_id})">
+                            <i class="fas fa-trash"></i> ลบ
+                        </button>
                     </td>
                 `;
                 tbody.appendChild(tr);
@@ -1216,8 +1219,25 @@
             });
 
             if (!result.isConfirmed) return;
-            // Use updateStatus with 'completed'
-            updateStatus(orderId, 'completed');
+
+            try {
+                await api.updateOrderStatus(orderId, 'completed');
+                await Swal.fire({
+                    icon: 'success',
+                    title: 'จบการขายสำเร็จ!',
+                    text: 'คำสั่งซื้อนี้ถูกย้ายไปยัง "ประวัติการขาย" แล้ว',
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+                refreshData();
+            } catch (error) {
+                console.error('Error completing sale:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'เกิดข้อผิดพลาด',
+                    text: error.message
+                });
+            }
         }
 
         async function updateStatus(orderId, newStatus) {
@@ -1226,8 +1246,7 @@
             // Let's modify updateStatus to be generic or just call api directly here if we want to avoid double prompt.
             // However, the existing updateStatus has a prompt inside.
             // Let's just use api directly in handleCompleteSale to avoid double prompt, OR refactor updateStatus.
-            // For simplicity, let's just make handleCompleteSale call api directly.
-
+            // For simplicity, let's
             try {
                 await api.updateOrderStatus(orderId, newStatus);
                 await Swal.fire({
@@ -1240,6 +1259,38 @@
                 await refreshData();
             } catch (err) {
                 Swal.fire('Error', err.message, 'error');
+            }
+        }
+
+        async function deleteOrder(orderId) {
+            const result = await Swal.fire({
+                title: 'ยืนยันการลบ?',
+                text: "คุณต้องการลบคำสั่งซื้อนี้ใช่หรือไม่? การกระทำนี้ไม่สามารถย้อนกลับได้!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'ใช่, ลบเลย!',
+                cancelButtonText: 'ยกเลิก'
+            });
+
+            if (result.isConfirmed) {
+                try {
+                    await api.deleteOrder(orderId);
+                    await Swal.fire(
+                        'ลบสำเร็จ!',
+                        'คำสั่งซื้อถูกลบเรียบร้อยแล้ว.',
+                        'success'
+                    );
+                    refreshData();
+                } catch (error) {
+                    console.error("Error deleting order:", error);
+                    Swal.fire(
+                        'เกิดข้อผิดพลาด!',
+                        'ไม่สามารถลบคำสั่งซื้อได้: ' + error.message,
+                        'error'
+                    );
+                }
             }
         }
 

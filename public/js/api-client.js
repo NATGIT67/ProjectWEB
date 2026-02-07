@@ -214,6 +214,12 @@ class APIClient {
     });
   }
 
+  async deleteOrder(orderId) {
+    return this.request(`/admin/orders/${orderId}`, {
+      method: 'DELETE',
+    });
+  }
+
   async getAdminUsers() {
     return this.request('/admin/users', {
       method: 'GET',

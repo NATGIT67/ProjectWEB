@@ -188,7 +188,7 @@
             const tbody = document.getElementById('historyBody');
             try {
                 // Fetch orders from API
-                const orders = await api.getOrders(); // Assuming this endpoint returns user's orders
+                const orders = await api.getOrders();
 
                 if (!orders || orders.length === 0) {
                     tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding: 20px;">ยังไม่มีประวัติการสั่งซื้อ</td></tr>';
@@ -199,18 +199,30 @@
                 orders.forEach(order => {
                     const statusInfo = getStatusInfo(order.status);
                     // Format date
-                    const dateObj = new Date(order.created_at || order.date);
+                    const dateObj = new Date(order.created_at || order.order_date);
                     const dateStr = dateObj.toLocaleDateString('th-TH', { day: 'numeric', month: 'short', year: 'numeric' });
 
-                    const productName = order.items && order.items.length > 0 ? order.items[0].product_name : (order.product_name || 'สินค้าทั่วไป');
-                    const total = order.total_amount || order.total || 0;
+                    // Product Name Logic (using new API fields)
+                    let productName = 'สินค้าทั่วไป';
+                    if (order.first_product_name) {
+                        productName = order.first_product_name;
+                        if (order.item_count > 1) {
+                            productName += ` (และอีก ${order.item_count - 1} รายการ)`;
+                        }
+                    } else if (order.items && order.items.length > 0) {
+                        productName = order.items[0].product_name;
+                    }
+
+                    // Robust ID and Price
+                    const orderId = order.order_id || order.id || '#Unknown';
+                    const total = parseFloat(order.total_price || order.total || 0);
 
                     tbody.innerHTML += `
                         <tr style="border-bottom: 1px solid #eee;">
-                            <td style="padding: 12px;">#${order.id}</td>
+                            <td style="padding: 12px;">#${orderId}</td>
                             <td style="padding: 12px;">${dateStr}</td>
                             <td style="padding: 12px;">${productName}</td>
-                            <td style="padding: 12px;">฿${parseFloat(total).toLocaleString()}</td>
+                            <td style="padding: 12px;">฿${total.toLocaleString()}</td>
                             <td style="padding: 12px;">
                                 <span class="status-badge" style="background:${statusInfo.bg}; color:${statusInfo.color}; padding: 4px 8px; border-radius: 4px; font-size: 0.85rem;">
                                     ${statusInfo.text}
@@ -222,7 +234,7 @@
 
             } catch (error) {
                 console.error('Failed to load orders:', error);
-                tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; color:red; padding: 20px;">โหลดข้อมูลล้มเหลว</td></tr>';
+                tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:red; padding: 20px;">โหลดข้อมูลล้มเหลว: ${error.message}</td></tr>`;
             }
         }
 

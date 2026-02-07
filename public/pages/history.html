@@ -75,7 +75,6 @@
                 </ul>
             </nav>
             <div class="user-profile">
-                <span>สวัสดี, คุณสมชาย</span>
                 <a href="sign-in.html" class="btn-signin"
                     style="margin-left:10px; background: #ff5252 !important; color: white !important;">ออกจากระบบ</a>
             </div>
@@ -151,6 +150,19 @@
                 const tbody = document.getElementById('historyBody');
                 tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;">กำลังโหลดข้อมูล...</td></tr>';
 
+                // Check auth
+                if (!api.getToken()) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'กรุณาเข้าสู่ระบบ',
+                        text: 'คุณต้องเข้าสู่ระบบเพื่อดูประวัติการสั่งซื้อ',
+                        confirmButtonText: 'ไปหน้าเข้าสู่ระบบ'
+                    }).then(() => {
+                        window.location.href = 'sign-in.html';
+                    });
+                    return;
+                }
+
                 try {
                     const orders = await api.getOrders();
 
@@ -161,40 +173,41 @@
 
                     tbody.innerHTML = '';
                     orders.forEach(order => {
+                        console.log('Order Data:', order); // Debugging
                         const statusClass = getStatusClass(order.status);
                         const statusText = getStatusText(order.status);
                         // Format date
-                        const dateObj = new Date(order.created_at || order.order_date || order.date);
-                        const dateStr = dateObj.toLocaleDateString('th-TH', { day: 'numeric', month: 'short', year: 'numeric' });
+                        const dateObj = new Date(order.created_at || order.order_date);
+                        const dateStr = dateObj.toLocaleDateString('th-TH', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
 
-                        // Items logic (if API returns items joined, or if we need to fetch details)
-                        // For summary list, we might just show "สินค้า X รายการ" or first product name
-                        // If items are not in list, we might just show "คลิกดูรายละเอียด"
+                        // Display product info from new API fields
                         let productDisplay = 'สินค้าคุณภาพ EasyRice';
-                        if (order.items && order.items.length > 0) {
-                            productDisplay = order.items[0].product_name + (order.items.length > 1 ? ` และอีก ${order.items.length - 1} รายการ` : '');
-                        } else if (order.product_name) {
-                            productDisplay = order.product_name;
+                        if (order.first_product_name) {
+                            productDisplay = order.first_product_name;
+                            if (order.item_count > 1) {
+                                productDisplay += ` และอีก ${order.item_count - 1} รายการ`;
+                            }
                         }
 
-                        // Deposit logic (assuming 50% if not set)
+                        // Robust ID and Price access
+                        const orderId = order.order_id || order.id || '#Unknown';
                         const total = parseFloat(order.total_price || order.total || 0);
-                        const deposit = total * 0.5;
+                        const paid = parseFloat(order.paid_amount || 0);
 
                         tbody.innerHTML += `
                             <tr style="border-bottom: 1px solid #eee;">
-                                <td style="padding: 15px;">#${order.order_id || order.id}</td>
+                                <td style="padding: 15px;">#${orderId}</td>
                                 <td style="padding: 15px;">${dateStr}</td>
                                 <td style="padding: 15px;">
                                     <strong>${productDisplay}</strong>
                                 </td>
                                 <td style="padding: 15px;">฿${total.toLocaleString()}</td>
-                                <td style="padding: 15px;">฿${deposit.toLocaleString()}</td>
+                                <td style="padding: 15px;">${depositDisplay}</td>
                                 <td style="padding: 15px;">
                                     <span class="status-badge ${statusClass}">${statusText}</span>
                                 </td>
                                 <td style="padding: 15px;">
-                                    <button class="btn-view" onclick="viewOrderDetails('${order.order_id || order.id}')">
+                                    <button class="btn-view" onclick="viewOrderDetails(${orderId})">
                                         <i class="fas fa-search"></i> ดูรายละเอียด
                                     </button>
                                 </td>
@@ -203,7 +216,10 @@
                     });
                 } catch (error) {
                     console.error('Failed to load history:', error);
-                    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; color:red;">เกิดข้อผิดพลาดในการโหลดข้อมูล</td></tr>';
+                    tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; color:red;">เกิดข้อผิดพลาดในการโหลดข้อมูล: ${error.message}</td></tr>`;
+                    if (error.message.includes('401') || error.message.includes('403')) {
+                        window.location.href = 'sign-in.html';
+                    }
                 }
             }
 
