@@ -524,6 +524,22 @@
             font-family: 'Kanit', sans-serif;
             box-sizing: border-box;
         }
+
+        .info-box {
+            background: #f8f9fa;
+            border: 1px solid #eee;
+            padding: 10px;
+            border-radius: 5px;
+            color: #333;
+        }
+
+        .scrollable-text {
+            max-height: 300px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            /* Preserve line breaks */
+            line-height: 1.6;
+        }
     </style>
     <!-- SweetAlert2 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-material-ui/material-ui.min.css" rel="stylesheet">
@@ -742,6 +758,38 @@
 
     <!-- Floating Button removed as per request -->
 
+    <!-- Report Details Modal -->
+    <div id="reportDetailsModal" class="modal-overlay">
+        <div class="modal-content" style="max-width: 600px;">
+            <div class="modal-header">
+                <h3><i class="fas fa-envelope-open-text"></i> รายละเอียดข้อความ</h3>
+                <button class="close-modal" onclick="closeModals()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>ผู้ส่ง</label>
+                    <div id="reportSenderName" class="info-box"></div>
+                </div>
+                <div class="form-group">
+                    <label>ข้อมูลติดต่อ (อีเมล/โทรศัพท์)</label>
+                    <div id="reportContact" class="info-box"></div>
+                </div>
+                <div class="form-group">
+                    <label>หมวดหมู่</label>
+                    <div id="reportCategory" class="info-box"></div>
+                </div>
+                <div class="form-group">
+                    <label>ข้อความ</label>
+                    <div id="reportMessage" class="info-box scrollable-text"></div>
+                </div>
+                <!-- Date info -->
+                <p id="reportDate" style="font-size: 0.85rem; color: #888; text-align: right; margin-top: 10px;"></p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-cancel" onclick="closeModals()">ปิดหน้าต่าง</button>
+            </div>
+        </div>
+    </div>
     <!-- Order Details Modal -->
     <div id="orderModal" class="modal">
         <div class="modal-content">
@@ -1195,15 +1243,33 @@
                     tr.innerHTML = `
                         <td>${dateStr}</td>
                         <td>${r.name}</td>
-                        <td>${r.contact}</td>
+                        <td style="max-width: 150px; overflow: hidden; text-overflow: ellipsis;">${r.contact}</td>
                         <td><span class="status-badge" style="background:#e3f2fd; color:#1976d2;">${r.category}</span></td>
-                        <td>${r.message}</td>
+                        <td>
+                             <div style="display: flex; gap: 5px;">
+                                <button class="btn-view" onclick='viewReport(${JSON.stringify(r).replace(/'/g, "&apos;")})'>
+                                    <i class="fas fa-eye"></i> ดูรายละเอียด
+                                </button>
+                            </div>
+                        </td>
                     `;
                     tbody.appendChild(tr);
                 });
             } catch (error) {
                 tbody.innerHTML = `<tr><td colspan="5" style="color:red; text-align:center;">Error: ${error.message}</td></tr>`;
             }
+        }
+
+        function viewReport(report) {
+            document.getElementById('reportSenderName').innerText = report.name;
+            document.getElementById('reportContact').innerText = report.contact;
+            document.getElementById('reportCategory').innerText = report.category;
+            document.getElementById('reportMessage').innerText = report.message;
+
+            const dateStr = new Date(report.created_at).toLocaleString('th-TH');
+            document.getElementById('reportDate').innerText = `ส่งเมื่อ: ${dateStr}`;
+
+            document.getElementById('reportDetailsModal').classList.add('active');
         }
 
         // Actions
