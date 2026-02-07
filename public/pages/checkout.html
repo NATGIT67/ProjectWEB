@@ -1,10 +1,12 @@
-
 <!DOCTYPE html>
 <html lang="th">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../css/style.css">
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -20,16 +22,17 @@
             display: block !important;
             background: #f0f0f0;
         }
-        
+
         .leaflet-container {
             width: 100% !important;
             height: 400px !important;
         }
     </style>
 </head>
+
 <body class="login-page-body">
 
-       <header class="navbar">
+    <header class="navbar">
         <div class="container">
             <a href="#" class="logo">🌾 EasyRice</a>
             <button class="hamburger" id="hamburger" onclick="toggleMenu()">
@@ -39,7 +42,7 @@
             </button>
             <nav id="navMenu">
                 <ul>
-                    <li><a href="../" >หน้าแรก</a></li>
+                    <li><a href="../">หน้าแรก</a></li>
                     <li><a href="product.html" class="active">สินค้า</a></li>
                     <li><a href="about.html">ข่าวสาร</a></li>
                     <li><a href="contact.html">ติดต่อ</a></li>
@@ -51,24 +54,28 @@
 
     <main class="container" style="margin-top: 50px; margin-bottom: 50px;">
         <div class="unified-contact-card" style="grid-template-columns: 1fr 1.5fr;">
-            
+
             <div class="contact-sidebar">
                 <h2>ข้อมูลพันธุ์ข้าว</h2>
-                <div class="product-preview">
-                    <img id="productImage" src="../images/jasmine105.png" alt="ข้าวหอมมะลิ 105" class="order-image">
+                <div class="product-preview" style="text-align: center;">
+                    <img id="productImage" src="../images/jasmine105.png" alt="ข้าวหอมมะลิ 105" class="order-image"
+                        style="max-width: 200px; height: auto; border-radius: 10px; margin-bottom: 15px;">
                     <div class="product-info-text">
                         <strong id="productName">พันธุ์ข้าว: ข้าวหอมมะลิ 105</strong>
                         <p id="growthTime"><i class="fas fa-seedling"></i> เวลาเจริญเติบโต: 120 วัน</p>
                         <p id="seedPrice"><i class="fas fa-tag"></i> ราคาต้นกล้า: 13 บาท / ถาด</p>
-                        <p id="plantingPrice"><i class="fas fa-tractor"></i> บริการปักดำ: 1,800 บาท / ไร่ (รวมกล้าแล้ว)</p>
+                        <p id="plantingPrice"><i class="fas fa-tractor"></i> บริการปักดำ: 1,800 บาท / ไร่ (รวมกล้าแล้ว)
+                        </p>
                     </div>
                 </div>
-                
-                <div class="order-notice" style="margin-top: 30px; padding: 15px; background: rgba(255,183,77,0.2); border-radius: 10px;">
+
+                <div class="order-notice"
+                    style="margin-top: 30px; padding: 15px; background: rgba(255,183,77,0.2); border-radius: 10px;">
                     <p style="color: var(--accent-color); font-weight: bold;">
                         <i class="fas fa-exclamation-triangle"></i> หมายเหตุ:
                     </p>
-                    <p>ต้องชำระมัดจำ 50% ของยอดสั่งซื้อทั้งหมดเพื่อยืนยันการจอง หากไม่ทำการแนบหลักฐานการชำระเงินจะไม่สามารถดำเนินการสั่งซื้อได้</p>
+                    <p>ต้องชำระมัดจำ 50% ของยอดสั่งซื้อทั้งหมดเพื่อยืนยันการจอง
+                        หากไม่ทำการแนบหลักฐานการชำระเงินจะไม่สามารถดำเนินการสั่งซื้อได้</p>
                 </div>
             </div>
 
@@ -82,10 +89,11 @@
                         </div>
                         <div class="form-group">
                             <label>หมายเลขโทรศัพท์</label>
-                            <input type="tel" class="form-control" placeholder="08X-XXX-XXXX" required>
+                            <input type="tel" class="form-control" placeholder="08X-XXX-XXXX" required
+                                oninput="this.value = this.value.replace(/[^0-9]/g, '');" maxlength="10">
                         </div>
                     </div>
-                    
+
                     <div class="form-group">
                         <label>อีเมล</label>
                         <input type="email" class="form-control" placeholder="example@gmail.com" required>
@@ -99,16 +107,13 @@
                     <div class="form-group">
                         <label>เลือกตำแหน่งจัดส่งบนแผนที่</label>
                         <div id="map"></div>
-                        <p style="font-size: 0.9rem; color: #666; margin-bottom: 10px;">💡 คลิกที่แผนที่เพื่อเลือกตำแหน่ง หรือลากหมุดเพื่อย้ายตำแหน่ง</p>
+                        <p style="font-size: 0.9rem; color: #666; margin-bottom: 10px;">💡
+                            คลิกที่แผนที่เพื่อเลือกตำแหน่ง หรือลากหมุดเพื่อย้ายตำแหน่ง</p>
                         <input type="hidden" id="lat" name="lat">
                         <input type="hidden" id="lng" name="lng">
                     </div>
 
-                    <div class="checkout-grid-form" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-                        <div class="form-group">
-                            <label>วันที่รับสินค้า/รับบริการ</label>
-                            <input type="date" class="form-control" required>
-                        </div>
+                    <div class="checkout-grid-form" style="display: grid; grid-template-columns: 1fr; gap: 15px;">
                         <div class="form-group">
                             <label>วิธีการรับสินค้า</label>
                             <select id="deliveryMethod" class="form-control">
@@ -118,7 +123,8 @@
                         </div>
                     </div>
 
-                    <div class="form-group" style="background: #f9f9f9; padding: 15px; border-radius: 10px; border: 1px dashed var(--primary-color);">
+                    <div class="form-group"
+                        style="background: #f9f9f9; padding: 15px; border-radius: 10px; border: 1px dashed var(--primary-color);">
                         <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
                             <input type="checkbox" id="plantingService" style="width: 20px; height: 20px;">
                             <span>ต้องการบริการปักดำ (1,800 บาท/ไร่ รวมกล้าแล้ว)</span>
@@ -130,93 +136,135 @@
                         <input type="number" id="quantity" class="form-control" value="1" min="1">
                     </div>
 
-                    <div class="order-summary-box" style="background: #3D4828; color: #fff; padding: 20px; border-radius: 10px; margin-top: 20px;">
+                    <div class="form-group"
+                        style="background: #fff; padding: 15px; border-radius: 10px; border: 1px solid #ddd;">
+                        <label style="font-weight: bold; margin-bottom: 10px; display: block;">รูปแบบการชำระเงิน</label>
+                        <div style="display: flex; gap: 20px;">
+                            <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                <input type="radio" name="paymentType" value="full" checked onchange="calculatePrice()">
+                                <span>จ่ายเต็มจำนวน</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                <input type="radio" name="paymentType" value="deposit" onchange="calculatePrice()">
+                                <span>จอง (มัดจำ 50%)</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="order-summary-box"
+                        style="background: #3D4828; color: #fff; padding: 20px; border-radius: 10px; margin-top: 20px;">
                         <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
                             <span>ราคารวมทั้งหมด:</span>
                             <strong id="totalPrice">฿0</strong>
                         </div>
-                        <div style="display: flex; justify-content: space-between; color: var(--accent-color); font-size: 1.2rem; font-weight: bold;">
-                            <span>ยอดมัดจำ (50%):</span>
+                        <div id="depositRow"
+                            style="display: none; justify-content: space-between; color: var(--accent-color); font-size: 1.2rem; font-weight: bold;">
+                            <span>ยอดมัดจำที่ต้องจ่าย (50%):</span>
                             <strong id="depositPrice">฿0</strong>
+                        </div>
+                        <div id="fullPriceRow"
+                            style="display: flex; justify-content: space-between; color: var(--accent-color); font-size: 1.2rem; font-weight: bold;">
+                            <span>ยอดที่ต้องชำระ:</span>
+                            <strong id="finalPayPrice">฿0</strong>
                         </div>
                     </div>
 
-                    <button type="submit" class="btn-primary full-width" style="margin-top: 20px; height: 55px; font-size: 1.2rem;">ยืนยันการสั่งซื้อ</button>
+                    <button type="submit" class="btn-primary full-width"
+                        style="margin-top: 20px; height: 55px; font-size: 1.2rem;">ยืนยันการสั่งซื้อ</button>
                 </form>
             </div>
-            
+
         </div>
     </main>
 
     <div id="orderModal" class="modal-overlay" style="display: none;">
-    <div class="login-card modal-content" style="max-width: 600px; padding: 30px;">
-        <div class="login-header">
-            <i class="fas fa-check-circle" style="font-size: 3rem; color: var(--primary-color);"></i>
-            <h2>สรุปรายละเอียดการสั่งซื้อ</h2>
-            <p id="orderDateDisplay"></p>
-        </div>
-
-        <div class="summary-details" style="text-align: left; margin-bottom: 20px; color: var(--dark-color);">
-            <div style="background: rgba(0,0,0,0.05); padding: 15px; border-radius: 10px;">
-                <p><strong>ผู้สั่งซื้อ:</strong> <span id="resName"></span></p>
-                <p><strong>เบอร์โทรศัพท์:</strong> <span id="resPhone"></span></p>
-                <p><strong>รายละเอียดเพิ่มเติม:</strong> <span id="resDetails"></span></p>
-                <p><strong>สินค้า:</strong> <span id="resProduct">ข้าวหอมมะลิ 105</span></p>
-                <p id="resQuantity"></p>
-                <p id="resQuantity"></p>
-                <hr style="margin: 10px 0; border: 0; border-top: 1px solid #ccc;">
-                <p style="font-size: 1.2rem;"><strong>ราคาทั้งหมด:</strong> <span id="resTotal" style="color: var(--primary-color);"></span></p>
-                <p style="font-size: 1.3rem; color: #c62828;"><strong>ยอดมัดจำที่ต้องชำระ (50%):</strong> <span id="resDeposit"></span></p>
+        <div class="login-card modal-content" style="max-width: 600px; padding: 30px;">
+            <div class="login-header">
+                <i class="fas fa-check-circle" style="font-size: 3rem; color: var(--primary-color);"></i>
+                <h2>สรุปรายละเอียดการสั่งซื้อ</h2>
+                <p id="orderDateDisplay"></p>
             </div>
-        </div>
 
-        <div class="payment-section" style="border: 2px dashed var(--accent-color); padding: 15px; border-radius: 10px; margin-bottom: 20px;">
-            <h3><i class="fas fa-university"></i> ช่องทางการชำระเงิน</h3>
-            <p>ธนาคารกสิกรไทย (K-Bank)</p>
-            <p style="font-size: 1.2rem; font-weight: bold; letter-spacing: 1px;">เลขบัญชี: xxx-x-xxxx-xxx</p>
-            <p>ชื่อบัญชี: บจก. อีซี่ไรซ์ (EasyRice Co., Ltd.)</p>
-            <div style="margin-top: 10px;">
-                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=EasyRicePayment" alt="QR Payment" style="width: 120px; border: 5px solid #fff;">
-                <p style="font-size: 0.8rem; color: #666;">สแกนเพื่อชำระมัดจำ</p>
+            <div class="summary-details" style="text-align: left; margin-bottom: 20px; color: var(--dark-color);">
+                <div style="background: rgba(0,0,0,0.05); padding: 15px; border-radius: 10px;">
+                    <p><strong>ผู้สั่งซื้อ:</strong> <span id="resName"></span></p>
+                    <p><strong>เบอร์โทรศัพท์:</strong> <span id="resPhone"></span></p>
+                    <p><strong>รายละเอียดเพิ่มเติม:</strong> <span id="resDetails"></span></p>
+                    <p><strong>สินค้า:</strong> <span id="resProduct">ข้าวหอมมะลิ 105</span></p>
+                    <p id="resQuantity"></p>
+                    <p id="resQuantity"></p>
+                    <hr style="margin: 10px 0; border: 0; border-top: 1px solid #ccc;">
+                    <p style="font-size: 1.2rem;"><strong>ราคาทั้งหมด:</strong> <span id="resTotal"
+                            style="color: var(--primary-color);"></span></p>
+                    <p style="font-size: 1.3rem; color: #c62828;"><strong>ยอดมัดจำที่ต้องชำระ (50%):</strong> <span
+                            id="resDeposit"></span></p>
+                </div>
             </div>
-        </div>
 
-        <form id="paymentUploadForm">
-            <div class="form-group" style="text-align: left;">
-                <label><i class="fas fa-file-import"></i> แนบหลักฐานการโอนเงิน (สลิป)</label>
-                <input type="file" id="slipFile" class="form-control" accept="image/*" required>
+            <div class="payment-section"
+                style="border: 2px dashed var(--accent-color); padding: 15px; border-radius: 10px; margin-bottom: 20px;">
+                <h3><i class="fas fa-university"></i> ช่องทางการชำระเงิน</h3>
+                <p>ธนาคารกสิกรไทย (K-Bank)</p>
+                <p style="font-size: 1.2rem; font-weight: bold; letter-spacing: 1px;">เลขบัญชี: xxx-x-xxxx-xxx</p>
+                <p>ชื่อบัญชี: บจก. อีซี่ไรซ์ (EasyRice Co., Ltd.)</p>
+                <div style="margin-top: 10px;">
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=EasyRicePayment"
+                        alt="QR Payment" style="width: 120px; border: 5px solid #fff;">
+                    <p style="font-size: 0.8rem; color: #666;">สแกนเพื่อชำระมัดจำ</p>
+                </div>
             </div>
-                <button type="button" onclick="finalizeOrder()" class="btn-primary full-width">แจ้งชำระเงินและเสร็จสิ้น</button>
+
+            <form id="paymentUploadForm">
+                <div class="form-group" style="margin-top: 20px;">
+                    <label
+                        style="font-weight: 500; color: #333; display: block; margin-bottom: 10px;">แนบสลีปการโอนเงิน</label>
+                    <div class="file-upload-wrapper"
+                        style="border: 2px dashed #ccc; padding: 20px; text-align: center; border-radius: 10px; cursor: pointer; transition: 0.3s;"
+                        onclick="document.getElementById('slipFile').click()">
+                        <input type="file" id="slipFile" accept="image/*" style="display: none;"
+                            onchange="previewSlip(this)">
+                        <div id="uploadPlaceholder">
+                            <i class="fas fa-cloud-upload-alt" style="font-size: 2rem; color: #888;"></i>
+                            <p style="margin-top: 10px; color: #666;">คลิกเพื่อแนบรูปสลิป</p>
+                            <small style="color: #999;">(เจ้าหน้าที่จะตรวจสอบความถูกต้องภายหลัง)</small>
+                        </div>
+                        <img id="slipPreview"
+                            style="max-width: 100%; max-height: 200px; display: none; margin-top: 10px; border-radius: 8px;">
+                    </div>
+                </div>
+                <button type="button" onclick="finalizeOrder()"
+                    class="btn-primary full-width">แจ้งชำระเงินและเสร็จสิ้น</button>
             </form>
         </div>
     </div>
 
     <div class="form-group">
         <label><i class="fas fa-edit"></i> รายละเอียดเพิ่มเติม</label>
-        <textarea id="additionalDetails" class="form-control" rows="3" placeholder="ระบุรายละเอียดเพิ่มเติม เช่น สายพันธุ์ข้าวที่ต้องการ หรือหมายเหตุสำหรับทีมงาน..."></textarea>
+        <textarea id="additionalDetails" class="form-control" rows="3"
+            placeholder="ระบุรายละเอียดเพิ่มเติม เช่น สายพันธุ์ข้าวที่ต้องการ หรือหมายเหตุสำหรับทีมงาน..."></textarea>
     </div>
 
     <script src="../js/api-client.js"></script>
     <script>
         let selectedProduct = null;
 
-        document.addEventListener('DOMContentLoaded', async function() {
+        document.addEventListener('DOMContentLoaded', async function () {
             try {
                 // Check if user is authenticated
                 const user = await api.getCurrentUser();
-                
+
                 const urlParams = new URLSearchParams(window.location.search);
                 const productId = urlParams.get('id');
-                
+
                 if (productId) {
                     // Fetch product from API
                     const product = await api.getProduct(productId);
                     selectedProduct = product.data || product;
-                    
+
                     const productName = selectedProduct.product_name || selectedProduct.name;
                     const productImg = selectedProduct.image_url || selectedProduct.img || '../images/jasmine105.png';
                     const productPrice = selectedProduct.price;
-                    
+
                     document.getElementById('productImage').src = productImg;
                     document.getElementById('productName').innerText = `พันธุ์ข้าว: ${productName}`;
                     document.getElementById('growthTime').innerHTML = `<i class="fas fa-seedling"></i> เวลาเจริญเติบโต: ${selectedProduct.age || 25} วัน`;
@@ -227,8 +275,12 @@
                 }
             } catch (error) {
                 console.error('Auth error:', error);
-                alert('กรุณาเข้าสู่ระบบก่อน');
-                window.location.href = 'sign-in.html';
+                // Clear token if it's invalid to prevent endless loop of "I have token" -> "Invalid" -> "Redirect"
+                if (localStorage.getItem('token')) {
+                    api.clearToken();
+                }
+                alert('กรุณาเข้าสู่ระบบเพื่อดำเนินการสั่งซื้อ');
+                window.location.href = 'sign-in.html?redirect=checkout.html'; // Add redirectParam logic if implemented in sign-in
                 return;
             }
 
@@ -236,36 +288,36 @@
             console.log('Initializing map...');
             var mapElement = document.getElementById('map');
             console.log('Map element:', mapElement);
-            
+
             if (mapElement) {
                 var map = L.map('map', {
                     dragging: true,
                     touchZoom: true,
                     scrollWheelZoom: true
                 }).setView([13.7563, 100.5018], 10);
-                
+
                 console.log('Map created:', map);
-                
+
                 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 }).addTo(map);
-                
+
                 var marker = L.marker([13.7563, 100.5018], { draggable: true }).addTo(map);
-                
+
                 // เมื่อลากหมุดเปลี่ยนตำแหน่ง
-                marker.on('dragend', function() {
+                marker.on('dragend', function () {
                     var coords = marker.getLatLng();
                     document.getElementById('lat').value = coords.lat.toFixed(6);
                     document.getElementById('lng').value = coords.lng.toFixed(6);
                 });
-                
+
                 // ปักหมุดโดยคลิกที่แผนที่
-                map.on('click', function(e) {
+                map.on('click', function (e) {
                     marker.setLatLng(e.latlng);
                     document.getElementById('lat').value = e.latlng.lat.toFixed(6);
                     document.getElementById('lng').value = e.latlng.lng.toFixed(6);
                 });
-                
+
                 document.getElementById('lat').value = 13.7563;
                 document.getElementById('lng').value = 100.5018;
             } else {
@@ -293,17 +345,33 @@
 
             const deposit = total * 0.5;
 
+            const paymentType = document.querySelector('input[name="paymentType"]:checked').value;
+            const depositRow = document.getElementById('depositRow');
+            const fullPriceRow = document.getElementById('fullPriceRow');
+            const finalPayPrice = document.getElementById('finalPayPrice');
+
             totalPriceEl.innerText = `฿${total.toLocaleString()}`;
             depositPriceEl.innerText = `฿${deposit.toLocaleString()}`;
+
+            if (paymentType === 'deposit') {
+                depositRow.style.display = 'flex';
+                fullPriceRow.style.display = 'none'; // Hide full price row if showing deposit? Or show "Pay Now: XXX"
+                // Better:
+                depositRow.style.display = 'flex';
+                fullPriceRow.innerHTML = `<span>ยอดที่ต้องชำระวันนี้:</span> <strong>฿${deposit.toLocaleString()}</strong>`;
+            } else {
+                depositRow.style.display = 'none';
+                fullPriceRow.innerHTML = `<span>ยอดที่ต้องชำระวันนี้:</span> <strong>฿${total.toLocaleString()}</strong>`;
+            }
         }
 
         quantityInput.addEventListener('input', calculatePrice);
         plantingCheck.addEventListener('change', calculatePrice);
-        
+
         // Initial Calculation
         calculatePrice();
 
-        document.getElementById('orderForm').addEventListener('submit', function(e) {
+        document.getElementById('orderForm').addEventListener('submit', function (e) {
             e.preventDefault();
             const productName = selectedProduct?.product_name || selectedProduct?.name || 'ข้าวหอมมะลิ 105';
             // Populate modal
@@ -318,22 +386,72 @@
             document.getElementById('orderModal').style.display = 'flex';
         });
 
+        function previewSlip(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    document.getElementById('slipPreview').src = e.target.result;
+                    document.getElementById('slipPreview').style.display = 'block';
+                    document.getElementById('uploadPlaceholder').style.display = 'none';
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
         async function finalizeOrder() {
             try {
                 const slipFile = document.getElementById('slipFile');
-                if (!slipFile.files.length) {
-                    alert('กรุณาแนบสลิป');
-                    return;
-                }
+                // Optional: require slip
+                // if (!slipFile.files.length) { alert('กรุณาแนบสลิป'); return; }
 
                 // Get shipping address from form
                 const address = document.querySelector('textarea[placeholder="กรอกที่อยู่โดยละเอียด"]').value;
-                
-                // Create order via API
-                const orderResponse = await api.createOrder(address);
-                
-                if (orderResponse && orderResponse.id) {
-                    alert('สั่งซื้อสำเร็จ! เลขที่ออเดอร์: ' + orderResponse.id);
+                if (!address) {
+                    alert('กรุณากรอกที่อยู่จัดส่ง');
+                    return;
+                }
+
+                let slipBase64 = null;
+                if (slipFile.files.length > 0) {
+                    const file = slipFile.files[0];
+                    if (file.size > 5 * 1024 * 1024) { // 5MB limit check (client side)
+                        alert('ไฟล์สลิปมีขนาดใหญ่เกินไป (ไม่เกิน 5MB)');
+                        return;
+                    }
+                    slipBase64 = await toBase64(file);
+                }
+
+                // --- Handle "Buy Now" flow ---
+                // If we are in "Buy Now" mode (URL params present), we need to ensure this item is in the cart
+                // Because api.createOrder() creates order from the backend Cart table.
+                const urlParams = new URLSearchParams(window.location.search);
+                const productId = urlParams.get('id');
+                const quantityRaw = document.getElementById('quantity').value; // Get current quantity from input
+
+                if (productId) {
+                    // 1. Clear existing cart (to avoid mixing with old items) - Optional but safer for "Buy Now"
+                    // Note: We might want a specific API for "clear cart" or "set cart", but for now looping delete or assuming empty is tricky.
+                    // Let's just Add to Cart. If user had items, they will be included. 
+                    // ideally "Buy Now" should trigger a different backend endpoint, but let's reuse existing.
+                    // Better approach for now: Just Add/Update this item to cart.
+
+                    // Actually, to prevent "Cart is empty" error, we MUST ensure the item is added.
+                    console.log('Adding "Buy Now" item to cart...', productId, quantityRaw);
+                    try {
+                        await api.addToCart(productId, parseInt(quantityRaw));
+                    } catch (cartErr) {
+                        console.warn('Add to cart warning:', cartErr);
+                        // Continue, maybe it's already there or duplicate key update worked
+                    }
+                }
+
+                const paymentType = document.querySelector('input[name="paymentType"]:checked').value;
+
+                // Create order via API (which uses backend Cart)
+                const orderResponse = await api.createOrder(address, slipBase64, paymentType);
+
+                if (orderResponse && (orderResponse.id || orderResponse.order_id)) {
+                    alert('สั่งซื้อสำเร็จ! เลขที่ออเดอร์: ' + (orderResponse.id || orderResponse.order_id));
                     window.location.href = 'history.html';
                 } else {
                     alert('เกิดข้อผิดพลาด: ' + (orderResponse?.error || 'Unknown error'));
@@ -343,6 +461,13 @@
                 alert('เกิดข้อผิดพลาด: ' + error.message);
             }
         }
+
+        const toBase64 = file => new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = error => reject(error);
+        });
 
         // Mobile menu toggle
         function toggleMenu() {
@@ -363,4 +488,5 @@
 
     <script src="../js/easyrice.js"></script>
 </body>
+
 </html>

@@ -5,6 +5,28 @@ const pool = require('../config/db');
 const { verifyToken, verifyAdmin } = require('../middleware/auth');
 const { validatePrice, validateRating } = require('../utils/validators');
 
+// In-memory stats
+const onlineUsers = new Map(); // visitorId -> timestamp
+
+// Clean up stale users every 1 minute
+setInterval(() => {
+  const now = Date.now();
+  for (const [id, time] of onlineUsers) {
+    if (now - time > 60000) { // 1 minute timeout
+      onlineUsers.delete(id);
+    }
+  }
+}, 60000);
+
+// Heartbeat Endpoint (Public)
+router.post('/heartbeat', (req, res) => {
+  const { visitorId, userId } = req.body;
+  if (visitorId) {
+    onlineUsers.set(visitorId, Date.now());
+  }
+  res.sendStatus(200);
+});
+
 // ============= PRODUCTS (Public - Read Only) =============
 
 // Get all products
@@ -205,10 +227,14 @@ router.post('/orders', verifyToken, async (req, res) => {
     // Calculate total price
     const total_price = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
 
+    // Payment Type & Paid Amount
+    const payment_type = req.body.payment_type === 'deposit' ? 'deposit' : 'full';
+    const paid_amount = payment_type === 'deposit' ? total_price * 0.5 : total_price;
+
     // Create order
     const [orderResult] = await connection.query(
-      'INSERT INTO orders (user_id, total_price, shipping_address) VALUES (?, ?, ?)',
-      [req.user.user_id, total_price, shipping_address]
+      'INSERT INTO orders (user_id, total_price, shipping_address, payment_slip, payment_type, paid_amount) VALUES (?, ?, ?, ?, ?, ?)',
+      [req.user.user_id, total_price, shipping_address, req.body.payment_slip || null, payment_type, paid_amount]
     );
 
     const order_id = orderResult.insertId;
@@ -306,6 +332,45 @@ router.get('/admin/orders', verifyToken, verifyAdmin, async (req, res) => {
   }
 });
 
+// Update order status (Admin)
+router.put('/admin/orders/:id', verifyToken, verifyAdmin, async (req, res) => {
+  const { status } = req.body;
+  const validStatuses = ['pending', 'confirmed', 'shipped', 'cancelled', 'completed'];
+
+  if (!status || !validStatuses.includes(status)) {
+    return res.status(400).json({ error: 'Invalid status' });
+  }
+
+  try {
+    await pool.query('UPDATE orders SET status = ? WHERE order_id = ?', [status, req.params.id]);
+    res.json({ message: 'Order status updated' });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Get Monthly Sales (Admin)
+router.get('/admin/sales-monthly', verifyToken, verifyAdmin, async (req, res) => {
+  try {
+    // Group by month for current year (simplified) or all time
+    // Status must be 'completed' (or 'shipped'/'confirmed' if they count as sales, but usually completed)
+    // Let's assume 'completed' is the final state for revenue
+    const [rows] = await pool.query(`
+            SELECT 
+                DATE_FORMAT(order_date, '%Y-%m') as month, 
+                SUM(total_price) as total 
+            FROM orders 
+            WHERE status = 'completed'
+            GROUP BY month 
+            ORDER BY month DESC
+            LIMIT 12
+        `);
+    res.json(rows);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 // Get all users (Admin)
 router.get('/admin/users', verifyToken, verifyAdmin, async (req, res) => {
   try {
@@ -315,6 +380,25 @@ router.get('/admin/users', verifyToken, verifyAdmin, async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+
+// Initialize Reports Table
+(async () => {
+  try {
+    await pool.query(`
+            CREATE TABLE IF NOT EXISTS reports (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                name VARCHAR(255) NOT NULL,
+                contact VARCHAR(255) NOT NULL,
+                category VARCHAR(100),
+                message TEXT,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        `);
+    console.log('Reports table initialized');
+  } catch (err) {
+    console.error('Error initializing reports table:', err);
+  }
+})();
 
 // Update user role (Admin)
 router.put('/admin/users/:id/role', verifyToken, verifyAdmin, async (req, res) => {
@@ -327,6 +411,72 @@ router.put('/admin/users/:id/role', verifyToken, verifyAdmin, async (req, res) =
   try {
     await pool.query('UPDATE users SET role = ? WHERE user_id = ?', [role, req.params.id]);
     res.json({ message: 'User role updated' });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Delete user (Admin)
+router.delete('/admin/users/:id', verifyToken, verifyAdmin, async (req, res) => {
+  try {
+    await pool.query('DELETE FROM users WHERE user_id = ?', [req.params.id]);
+    res.json({ message: 'User deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Get all reports (Admin)
+router.get('/admin/reports', verifyToken, verifyAdmin, async (req, res) => {
+  try {
+    const [rows] = await pool.query('SELECT * FROM reports ORDER BY created_at DESC');
+    res.json(rows);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Calculate Stats (Admin)
+router.get('/admin/stats', verifyToken, verifyAdmin, async (req, res) => {
+  try {
+    const [products] = await pool.query('SELECT COUNT(*) as count FROM products');
+    const [ordersToday] = await pool.query('SELECT COUNT(*) as count FROM orders WHERE DATE(order_date) = CURDATE()');
+    const [pending] = await pool.query('SELECT COUNT(*) as count FROM orders WHERE status = "pending"');
+    const [completed] = await pool.query('SELECT COUNT(*) as count FROM orders WHERE status = "confirmed" OR status = "shipped"');
+
+    // Force cleanup capability before sending
+    const now = Date.now();
+    let activeCount = 0;
+    onlineUsers.forEach((time, id) => {
+      if (now - time < 60000) activeCount++;
+    });
+
+    res.json({
+      products: products[0].count,
+      ordersToday: ordersToday[0].count,
+      pending: pending[0].count,
+      completed: completed[0].count,
+      onlineUsers: activeCount
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Submit Report (Public)
+router.post('/contact', async (req, res) => {
+  const { name, contact, category, message } = req.body;
+
+  if (!name || !contact || !message) {
+    return res.status(400).json({ error: 'Please fill in all required fields' });
+  }
+
+  try {
+    await pool.query(
+      'INSERT INTO reports (name, contact, category, message) VALUES (?, ?, ?, ?)',
+      [name, contact, category, message]
+    );
+    res.json({ message: 'Report submitted successfully' });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

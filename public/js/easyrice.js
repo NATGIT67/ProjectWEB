@@ -8,74 +8,120 @@ function updateUserNav() {
     const userRole = localStorage.getItem('role');
     const navContainer = document.querySelector('.navbar .container');
     let signInBtn = document.querySelector('.btn-signin');
-    
+
     if (!navContainer) return;
-    
+
     if (isLoggedIn === 'true' && fullName) {
+        // Try to refresh user data from server correctly to get latest role
+        if (window.api && window.api.getToken() && !window.hasRefreshedUser) {
+            window.hasRefreshedUser = true; // prevent infinite loop if called multiple times
+            api.getCurrentUser().then(user => {
+                if (user && user.role) {
+                    const oldRole = localStorage.getItem('role');
+                    if (oldRole !== user.role) {
+                        localStorage.setItem('role', user.role);
+                        // Re-render nav if role changed
+                        updateUserNav();
+                    }
+                }
+            }).catch(e => console.log('Background user refresh failed', e));
+        }
+
         // ซ่อน sign-in button
         if (signInBtn) {
             signInBtn.style.display = 'none';
         }
-        
+
         // สร้าง user profile section
         let userNav = document.getElementById('userNav');
-        if (!userNav) {
-            userNav = document.createElement('div');
-            userNav.id = 'userNav';
-            userNav.style.cssText = 'display: flex; align-items: center; gap: 15px; justify-content: flex-end;';
-            
-            let adminLink = '';
-            if (userRole === 'admin') {
-                adminLink = `
-                <a href="./pages/admin.html" style="color: #ff5252; text-decoration: none; font-size: 0.9rem; font-weight: 500;">
-                    <i class="fas fa-chart-bar"></i> Admin
-                </a>`;
-            }
-            
-            userNav.innerHTML = `
-                <span style="color: var(--primary-color); font-weight: 500;">👤 ${fullName}</span>
-                ${adminLink}
-                <a href="./pages/profile.html" style="color: var(--primary-color); text-decoration: none; font-size: 0.9rem;">
-                    <i class="fas fa-user"></i> Profile
-                </a>
-                <button onclick="logoutUser()" style="background: #ff5252; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; font-size: 0.9rem;">
-                    ออกจากระบบ
-                </button>
-            `;
-            navContainer.appendChild(userNav);
+        if (userNav) userNav.remove(); // Remove existing to re-render
+
+        userNav = document.createElement('div');
+        userNav.id = 'userNav';
+        userNav.style.cssText = 'display: flex; align-items: center; gap: 15px; justify-content: flex-end;';
+
+        // Determine correct path to admin panel based on current location
+        const currentPath = window.location.pathname;
+        const isInPagesDir = currentPath.includes('/pages/');
+        const adminPath = isInPagesDir ? 'admin-panel.html' : 'pages/admin-panel.html';
+        const profilePath = isInPagesDir ? 'profile.html' : 'pages/profile.html';
+
+        let adminLink = '';
+        if (userRole === 'admin') {
+            adminLink = `
+            <a href="${adminPath}" style="color: #ff5252; text-decoration: none; font-size: 0.9rem; font-weight: 500;">
+                <i class="fas fa-chart-bar"></i> Admin
+            </a>`;
         }
+
+        userNav.innerHTML = `
+            <a href="${profilePath}" style="color: var(--primary-color); text-decoration: none; font-size: 0.9rem; font-weight: 500;">
+                <i class="fas fa-user-circle"></i> โปรไฟล์
+            </a>
+            <span style="color: #333; font-weight: 500;">| ${fullName}</span>
+            ${adminLink}
+            <button onclick="logoutUser()" style="background: #ff5252; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; font-size: 0.9rem;">
+                ออกจากระบบ
+            </button>
+        `;
+        navContainer.appendChild(userNav);
     } else {
         // แสดง sign-in button
         if (signInBtn) {
             signInBtn.style.display = 'block';
         }
-        
+
         // ลบ user nav
         let userNav = document.getElementById('userNav');
-        if (userNav) {
-            userNav.remove();
-        }
+        /* Admin Redirect Removed on User Request */
     }
 }
 
 function logoutUser() {
-    // ลบข้อมูลผู้ใช้
-    localStorage.removeItem('is_logged_in');
-    localStorage.removeItem('user_id');
-    localStorage.removeItem('username');
-    localStorage.removeItem('email');
-    localStorage.removeItem('full_name');
-    localStorage.removeItem('phone');
-    localStorage.removeItem('role');
-    localStorage.removeItem('token');
-    
-    // ล้าง API token
-    if (window.api) {
-        api.clearToken();
+    const confirmLogout = () => {
+        // ลบข้อมูลผู้ใช้
+        localStorage.removeItem('is_logged_in');
+        localStorage.removeItem('user_id');
+        localStorage.removeItem('username');
+        localStorage.removeItem('email');
+        localStorage.removeItem('full_name');
+        localStorage.removeItem('phone');
+        localStorage.removeItem('role');
+        localStorage.removeItem('token');
+
+        // ล้าง API token
+        if (window.api) {
+            api.clearToken();
+        }
+
+        // Determine correct path
+        const currentPath = window.location.pathname;
+        const isInPagesDir = currentPath.includes('/pages/');
+        const targetPath = isInPagesDir ? 'sign-in.html' : 'pages/sign-in.html';
+
+        window.location.href = targetPath;
+    };
+
+    if (typeof Swal !== 'undefined') {
+        Swal.fire({
+            title: 'ออกจากระบบ?',
+            text: "คุณต้องการออกจากระบบใช่หรือไม่?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'ใช่, ออกจากระบบ',
+            cancelButtonText: 'ยกเลิก'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                confirmLogout();
+            }
+        });
+    } else {
+        if (confirm('ยืนยันออกจากระบบ?')) {
+            confirmLogout();
+        }
     }
-    
-    alert('ออกจากระบบเรียบร้อย');
-    window.location.href = './pages/sign-in.html';
 }
 
 // อัปเดต navbar เมื่อหน้าโหลด
@@ -101,13 +147,13 @@ class ShoppingCart {
     static addToCart(product, quantity = 1) {
         const cart = this.loadCart();
         const existing = cart.find(item => item.id === product.id);
-        
+
         if (existing) {
             existing.quantity += quantity;
         } else {
             cart.push({ ...product, quantity });
         }
-        
+
         this.saveCart(cart);
         this.showNotification(`เพิ่ม ${product.name} ลงตะกร้าแล้ว`, 'success');
         return true;
@@ -175,7 +221,7 @@ class FormValidator {
     static validate(form) {
         const errors = [];
         const inputs = form.querySelectorAll('input, textarea, select');
-        
+
         inputs.forEach(input => {
             if (input.hasAttribute('required') && !input.value.trim()) {
                 errors.push(`${input.getAttribute('name') || input.placeholder} ต้องกรอก`);
@@ -354,7 +400,7 @@ class EasyRiceUtils {
         `;
 
         // Set colors based on type
-        switch(type) {
+        switch (type) {
             case 'success':
                 alertDiv.style.backgroundColor = '#4CAF50';
                 break;
@@ -379,21 +425,99 @@ class EasyRiceUtils {
     }
 }
 
+// ============ COOKIE CONSENT ============
+class CookieConsent {
+    static init() {
+        if (!localStorage.getItem('cookie_consent')) {
+            this.showBanner();
+        }
+    }
+
+    static showBanner() {
+        const banner = document.createElement('div');
+        banner.id = 'cookieConsentBanner';
+        banner.style.cssText = `
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(33, 33, 33, 0.95);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            z-index: 10000;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.2);
+            font-family: 'Kanit', sans-serif;
+            flex-wrap: wrap;
+        `;
+
+        banner.innerHTML = `
+            <div style="flex: 1; max-width: 800px; text-align: center; font-size: 0.9rem;">
+                <i class="fas fa-cookie-bite" style="color: #fbc02d; margin-right: 8px;"></i>
+                เว็บไซต์นี้ใช้คุกกี้เพื่อมอบประสบการณ์การใช้งานที่ดีที่สุดแก่ท่าน รวมถึงเพื่อวิเคราะห์การเข้าชมเว็บไซต์และการตลาด
+            </div>
+            <button id="acceptCookies" style="
+                background-color: #4CAF50;
+                color: white;
+                border: none;
+                padding: 8px 25px;
+                border-radius: 20px;
+                cursor: pointer;
+                font-weight: 500;
+                font-family: 'Kanit', sans-serif;
+                transition: transform 0.2s;
+            ">ยอมรับทั้งหมด</button>
+        `;
+
+        document.body.appendChild(banner);
+
+        // Add Hover Effect via JS
+        const btn = document.getElementById('acceptCookies');
+        btn.onmouseover = () => btn.style.transform = 'scale(1.05)';
+        btn.onmouseout = () => btn.style.transform = 'scale(1)';
+
+        document.getElementById('acceptCookies').addEventListener('click', () => {
+            this.accept();
+        });
+    }
+
+    static accept() {
+        localStorage.setItem('cookie_consent', 'true');
+        const banner = document.getElementById('cookieConsentBanner');
+        if (banner) {
+            banner.style.opacity = '0';
+            banner.style.transition = 'opacity 0.5s ease';
+            setTimeout(() => banner.remove(), 500);
+        }
+    }
+}
+
+
 // Initialize when DOM is loaded
-document.addEventListener('DOMContentLoaded', function() {
+// Initialize when DOM is loaded
+document.addEventListener('DOMContentLoaded', function () {
     EasyRiceUtils.updateNavbar();
-    
+
     // Update sign-in button based on login status
     updateSignInButton();
+
+    // Initialize Cart
+    ShoppingCart.init();
+
+    // Initialize Cookie Consent
+    CookieConsent.init();
 });
 
 function updateSignInButton() {
     const isLoggedIn = localStorage.getItem('easyrice_logged_in');
     const isAdmin = localStorage.getItem('easyrice_admin_logged_in');
     const btn = document.querySelector('.btn-signin');
-    
+
     if (!btn) return;
-    
+
     if (isAdmin) {
         // Admin logged in - don't change navbar button for admin pages
         if (!window.location.pathname.includes('admin.html')) {
@@ -426,7 +550,27 @@ function updateSignInButton() {
     }
 }
 
-// Initialize cart on page load
-document.addEventListener('DOMContentLoaded', () => {
-    ShoppingCart.init();
-});
+// Heartbeat for Real-time User Count
+(function () {
+    // Generate visitor ID if not exists
+    let visitorId = localStorage.getItem('visitorId');
+    if (!visitorId) {
+        visitorId = 'v_' + Math.random().toString(36).substr(2, 9);
+        localStorage.setItem('visitorId', visitorId);
+    }
+
+    function sendHeartbeat() {
+        const userId = localStorage.getItem('user_id'); // Optional: Track logged in users specifically
+        // Call backend
+        fetch('/api/heartbeat', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ visitorId, userId })
+        }).catch(e => { }); // Silent fail
+    }
+
+    // Send immediately and then every 15 seconds
+    sendHeartbeat();
+    setInterval(sendHeartbeat, 15000);
+})();
+

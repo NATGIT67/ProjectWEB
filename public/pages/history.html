@@ -1,9 +1,12 @@
 <!DOCTYPE html>
 <html lang="th">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../css/style.css">
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -14,18 +17,22 @@
             font-size: 0.8rem;
             font-weight: 500;
         }
+
         .status-pending {
             background-color: #fff3e0;
             color: #ef6c00;
         }
+
         .status-success {
             background-color: #e8f5e9;
             color: #2e7d32;
         }
+
         .status-error {
             background-color: #ffebee;
             color: #c62828;
         }
+
         .btn-view {
             background: #2196F3;
             color: white;
@@ -35,9 +42,11 @@
             cursor: pointer;
             font-size: 0.8rem;
         }
+
         .btn-view:hover {
             background: #1976D2;
         }
+
         .user-profile {
             display: flex;
             align-items: center;
@@ -45,6 +54,7 @@
         }
     </style>
 </head>
+
 <body>
 
     <header class="navbar">
@@ -56,24 +66,26 @@
                 <span></span>
             </button>
             <nav id="navMenu">
-            <ul>
-                <li><a href="../">หน้าแรก</a></li>
-                <li><a href="product.html">สินค้า</a></li>
-                <li><a href="about.html">ข่าวสาร</a></li>
-                <li><a href="contact.html">ติดต่อ</a></li>
-                <li><a href="history.html" class="active">ประวัติการสั่งซื้อ</a></li>
-            </ul>
-        </nav>
+                <ul>
+                    <li><a href="../">หน้าแรก</a></li>
+                    <li><a href="product.html">สินค้า</a></li>
+                    <li><a href="about.html">ข่าวสาร</a></li>
+                    <li><a href="contact.html">ติดต่อ</a></li>
+                    <li><a href="history.html" class="active">ประวัติการสั่งซื้อ</a></li>
+                </ul>
+            </nav>
             <div class="user-profile">
                 <span>สวัสดี, คุณสมชาย</span>
-                <a href="sign-in.html" class="btn-signin" style="margin-left:10px; background: #ff5252 !important; color: white !important;">ออกจากระบบ</a>
+                <a href="sign-in.html" class="btn-signin"
+                    style="margin-left:10px; background: #ff5252 !important; color: white !important;">ออกจากระบบ</a>
             </div>
         </div>
     </header>
 
     <main class="container" style="margin-top: 50px; margin-bottom: 50px;">
         <div class="login-card" style="max-width: 1000px; width: 100%;">
-            <div class="login-header" style="text-align: left; border-bottom: 2px solid var(--primary-color); padding-bottom: 15px;">
+            <div class="login-header"
+                style="text-align: left; border-bottom: 2px solid var(--primary-color); padding-bottom: 15px;">
                 <h2><i class="fas fa-history"></i> ประวัติการสั่งซื้อ</h2>
                 <p>ตรวจสอบสถานะต้นกล้าและบริการปักดำของคุณ</p>
             </div>
@@ -128,143 +140,185 @@
                 </table>
             </div>
         </div>
-    <script>
-document.addEventListener('DOMContentLoaded', function() {
-    loadOrderHistory();
-});
+        <script src="../js/api-client.js"></script>
+        <script src="../js/easyrice.js"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                loadOrderHistory();
+            });
 
-function loadOrderHistory() {
-    // Get orders from localStorage (in real app, this would come from server)
-    let orders = JSON.parse(localStorage.getItem('easyrice_orders')) || [];
+            async function loadOrderHistory() {
+                const tbody = document.getElementById('historyBody');
+                tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;">กำลังโหลดข้อมูล...</td></tr>';
 
-    // If no orders, create sample data
-    if (orders.length === 0) {
-        orders = [
-            {
-                id: 'ER-2025001',
-                date: '20 ธ.ค. 2025',
-                product: 'ข้าวหอมมะลิ 105',
-                details: 'จำนวน 50 ถาด (รับเอง)',
-                total: 650,
-                deposit: 325,
-                status: 'pending',
-                type: 'seedling'
-            },
-            {
-                id: 'ER-2025002',
-                date: '15 ธ.ค. 2025',
-                product: 'บริการปักดำข้าว (รวมกล้า)',
-                details: 'พื้นที่ 5 ไร่ (จัดส่ง)',
-                total: 9000,
-                deposit: 4500,
-                status: 'paid',
-                type: 'service'
-            },
-            {
-                id: 'ER-2025003',
-                date: '10 ธ.ค. 2025',
-                product: 'ข้าวไรซ์เบอร์รี่',
-                details: 'จำนวน 25 ถาด (จัดส่ง)',
-                total: 1125,
-                deposit: 562.5,
-                status: 'completed',
-                type: 'seedling'
+                try {
+                    const orders = await api.getOrders();
+
+                    if (!orders || orders.length === 0) {
+                        tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding: 20px;">ยังไม่มีประวัติการสั่งซื้อ</td></tr>';
+                        return;
+                    }
+
+                    tbody.innerHTML = '';
+                    orders.forEach(order => {
+                        const statusClass = getStatusClass(order.status);
+                        const statusText = getStatusText(order.status);
+                        // Format date
+                        const dateObj = new Date(order.created_at || order.order_date || order.date);
+                        const dateStr = dateObj.toLocaleDateString('th-TH', { day: 'numeric', month: 'short', year: 'numeric' });
+
+                        // Items logic (if API returns items joined, or if we need to fetch details)
+                        // For summary list, we might just show "สินค้า X รายการ" or first product name
+                        // If items are not in list, we might just show "คลิกดูรายละเอียด"
+                        let productDisplay = 'สินค้าคุณภาพ EasyRice';
+                        if (order.items && order.items.length > 0) {
+                            productDisplay = order.items[0].product_name + (order.items.length > 1 ? ` และอีก ${order.items.length - 1} รายการ` : '');
+                        } else if (order.product_name) {
+                            productDisplay = order.product_name;
+                        }
+
+                        // Deposit logic (assuming 50% if not set)
+                        const total = parseFloat(order.total_price || order.total || 0);
+                        const deposit = total * 0.5;
+
+                        tbody.innerHTML += `
+                            <tr style="border-bottom: 1px solid #eee;">
+                                <td style="padding: 15px;">#${order.order_id || order.id}</td>
+                                <td style="padding: 15px;">${dateStr}</td>
+                                <td style="padding: 15px;">
+                                    <strong>${productDisplay}</strong>
+                                </td>
+                                <td style="padding: 15px;">฿${total.toLocaleString()}</td>
+                                <td style="padding: 15px;">฿${deposit.toLocaleString()}</td>
+                                <td style="padding: 15px;">
+                                    <span class="status-badge ${statusClass}">${statusText}</span>
+                                </td>
+                                <td style="padding: 15px;">
+                                    <button class="btn-view" onclick="viewOrderDetails('${order.order_id || order.id}')">
+                                        <i class="fas fa-search"></i> ดูรายละเอียด
+                                    </button>
+                                </td>
+                            </tr>
+                        `;
+                    });
+                } catch (error) {
+                    console.error('Failed to load history:', error);
+                    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; color:red;">เกิดข้อผิดพลาดในการโหลดข้อมูล</td></tr>';
+                }
             }
-        ];
-        localStorage.setItem('easyrice_orders', JSON.stringify(orders));
-    }
 
-    const tbody = document.getElementById('historyBody');
-    tbody.innerHTML = '';
+            function getStatusClass(status) {
+                switch (status) {
+                    case 'pending': return 'pending';
+                    case 'paid': return 'success';
+                    case 'completed': return 'success';
+                    case 'cancelled': return 'error';
+                    default: return 'pending';
+                }
+            }
 
-    orders.forEach(order => {
-        const statusClass = getStatusClass(order.status);
-        const statusText = getStatusText(order.status);
+            function getStatusText(status) {
+                switch (status) {
+                    case 'pending': return 'รอตรวจสอบสลิป';
+                    case 'paid': return 'ชำระเงินแล้ว';
+                    case 'completed': return 'เสร็จสิ้น';
+                    case 'cancelled': return 'ยกเลิก';
+                    default: return 'รอตรวจสอบสลิป';
+                }
+            }
 
-        tbody.innerHTML += `
-            <tr style="border-bottom: 1px solid #eee;">
-                <td style="padding: 15px;">#${order.id}</td>
-                <td style="padding: 15px;">${order.date}</td>
-                <td style="padding: 15px;">
-                    <strong>${order.product}</strong><br>
-                    <small>${order.details}</small>
-                </td>
-                <td style="padding: 15px;">฿${order.total.toLocaleString()}</td>
-                <td style="padding: 15px;">฿${order.deposit.toLocaleString()}</td>
-                <td style="padding: 15px;">
-                    <span class="status-badge status-${order.status}">${statusText}</span>
-                </td>
-                <td style="padding: 15px;">
-                    <button class="btn-view" onclick="viewOrderDetails('${order.id}')">
-                        <i class="fas fa-search"></i> ดูรายละเอียด
-                    </button>
-                </td>
-            </tr>
-        `;
-    });
-}
+            // Dynamic Username
+            const user = JSON.parse(localStorage.getItem('easyrice_user'));
+            if (user && user.full_name) {
+                document.querySelector('.user-profile span').innerText = `สวัสดี, คุณ${user.full_name}`;
+            } else if (user && user.username) {
+                document.querySelector('.user-profile span').innerText = `สวัสดี, คุณ${user.username}`;
+            }
 
-function getStatusClass(status) {
-    switch(status) {
-        case 'pending': return 'pending';
-        case 'paid': return 'success';
-        case 'completed': return 'success';
-        case 'cancelled': return 'error';
-        default: return 'pending';
-    }
-}
+            async function viewOrderDetails(orderId) {
+                try {
+                    const order = await api.getOrder(orderId);
+                    if (order) {
+                        const dateObj = new Date(order.created_at || order.order_date);
+                        const dateStr = dateObj.toLocaleDateString('th-TH', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' });
 
-function getStatusText(status) {
-    switch(status) {
-        case 'pending': return 'รอตรวจสอบสลิป';
-        case 'paid': return 'ชำระเงินแล้ว';
-        case 'completed': return 'เสร็จสิ้น';
-        case 'cancelled': return 'ยกเลิก';
-        default: return 'รอตรวจสอบสลิป';
-    }
-}
+                        let itemsHtml = '';
+                        if (order.items && order.items.length > 0) {
+                            itemsHtml = order.items.map(i => `<li style="margin-bottom: 5px;">${i.product_name} x ${i.quantity} <span style="float:right;">฿${(i.price * i.quantity).toLocaleString()}</span></li>`).join('');
+                        } else {
+                            itemsHtml = '<li>ไม่ระบุสินค้า</li>';
+                        }
 
-function viewOrderDetails(orderId) {
-    const orders = JSON.parse(localStorage.getItem('easyrice_orders')) || [];
-    const order = orders.find(o => o.id === orderId);
+                        let slipHtml = '';
+                        if (order.payment_slip) {
+                            slipHtml = `
+                                <div style="margin-top: 15px; text-align: center;">
+                                    <p style="font-weight: bold; margin-bottom: 5px;">หลักฐานการโอนเงิน:</p>
+                                    <img src="${order.payment_slip}" style="max-width: 100%; max-height: 300px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.2);">
+                                </div>
+                            `;
+                        } else {
+                            slipHtml = `<p style="text-align: center; color: #888; margin-top: 15px;">ไม่มีหลักฐานการโอนเงิน</p>`;
+                        }
 
-    if (order) {
-        const details = `
-            เลขที่คำสั่งซื้อ: #${order.id}
-            วันที่สั่ง: ${order.date}
-            สินค้า/บริการ: ${order.product}
-            รายละเอียด: ${order.details}
-            ยอดรวม: ฿${order.total.toLocaleString()}
-            มัดจำ (50%): ฿${order.deposit.toLocaleString()}
-            สถานะ: ${getStatusText(order.status)}
-        `;
+                        // Create Modal HTML dynamically
+                        const modalHtml = `
+                            <div id="detailModal" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 1000;">
+                                <div style="background: white; padding: 25px; border-radius: 15px; width: 90%; max-width: 500px; max-height: 90vh; overflow-y: auto;">
+                                    <h3 style="margin-top: 0; color: var(--primary-color); border-bottom: 2px solid #eee; padding-bottom: 10px;">รายละเอียดคำสั่งซื้อ #${order.order_id || order.id}</h3>
+                                    <p><strong>วันที่สั่งซื้อ:</strong> ${dateStr}</p>
+                                    <p><strong>สถานะ:</strong> <span class="status-badge ${getStatusClass(order.status)}">${getStatusText(order.status)}</span></p>
+                                    <p><strong>ที่อยู่จัดส่ง:</strong> ${order.shipping_address || '-'}</p>
+                                    
+                                    <div style="background: #f9f9f9; padding: 10px; border-radius: 8px; margin: 10px 0;">
+                                        <ul style="list-style: none; padding: 0; margin: 0;">
+                                            ${itemsHtml}
+                                        </ul>
+                                        <div style="border-top: 1px dashed #ccc; margin-top: 10px; padding-top: 10px; font-weight: bold; display: flex; justify-content: space-between;">
+                                            <span>ยอดรวมสุทธิ</span>
+                                            <span style="color: var(--primary-color); font-size: 1.2rem;">฿${parseFloat(order.total_price || order.total).toLocaleString()}</span>
+                                        </div>
+                                    </div>
+                                    
+                                    ${slipHtml}
+                                    
+                                    <button onclick="document.getElementById('detailModal').remove()" style="width: 100%; padding: 12px; border: none; background: #ddd; color: #333; font-weight: bold; border-radius: 8px; margin-top: 20px; cursor: pointer;">ปิดหน้าต่าง</button>
+                                </div>
+                            </div>
+                        `;
 
-        alert(details);
-    }
-}
+                        // Append to body
+                        const oldModal = document.getElementById('detailModal');
+                        if (oldModal) oldModal.remove();
+                        document.body.insertAdjacentHTML('beforeend', modalHtml);
+                    }
+                } catch (err) {
+                    alert('ไม่สามารถโหลดรายละเอียดได้: ' + err.message);
+                }
+            }
 
-// Logout functionality
-document.querySelector('.btn-signin').addEventListener('click', function(e) {
-    e.preventDefault();
-    if (confirm('ต้องการออกจากระบบหรือไม่?')) {
-        // In real app, clear session/token
-        window.location.href = 'sign-in.html';
-    }
-});
+            // Logout functionality
+            document.querySelector('.btn-signin').addEventListener('click', function (e) {
+                e.preventDefault();
+                if (confirm('ต้องการออกจากระบบหรือไม่?')) {
+                    // In real app, clear session/token
+                    window.location.href = 'sign-in.html';
+                }
+            });
 
-// Mobile menu toggle
-function toggleMenu() {
-    const hamburger = document.getElementById('hamburger');
-    const navMenu = document.getElementById('navMenu');
-    hamburger.classList.toggle('active');
-    navMenu.classList.toggle('active');
-}
+            // Mobile menu toggle
+            function toggleMenu() {
+                const hamburger = document.getElementById('hamburger');
+                const navMenu = document.getElementById('navMenu');
+                hamburger.classList.toggle('active');
+                navMenu.classList.toggle('active');
+            }
 
-// Close menu when link clicked
-document.querySelectorAll('#navMenu a').forEach(link => {
-    link.addEventListener('click', () => {
-        document.getElementById('hamburger').classList.remove('active');
-        document.getElementById('navMenu').classList.remove('active');
-    });
-});
-</script>
+            // Close menu when link clicked
+            document.querySelectorAll('#navMenu a').forEach(link => {
+                link.addEventListener('click', () => {
+                    document.getElementById('hamburger').classList.remove('active');
+                    document.getElementById('navMenu').classList.remove('active');
+                });
+            });
+        </script>

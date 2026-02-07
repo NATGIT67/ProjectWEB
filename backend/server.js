@@ -7,11 +7,41 @@ const apiRoutes = require('./routes/api');
 
 dotenv.config();
 
+// Auto-Run DB Migration for new columns
+(async () => {
+  try {
+    const pool = require('./config/db');
+    const connection = await pool.getConnection();
+    console.log('Checking database schema...');
+
+    // Check/Add payment_type
+    try {
+      await connection.query("ALTER TABLE orders ADD COLUMN payment_type ENUM('full', 'deposit') DEFAULT 'full'");
+      console.log('Added payment_type column');
+    } catch (e) {
+      // Ignore if exists
+    }
+
+    // Check/Add paid_amount
+    try {
+      await connection.query("ALTER TABLE orders ADD COLUMN paid_amount DECIMAL(10, 2) DEFAULT 0.00");
+      console.log('Added paid_amount column');
+    } catch (e) {
+      // Ignore if exists
+    }
+
+    connection.release();
+  } catch (e) {
+    console.error('DB Schema check failed (non-fatal):', e.message);
+  }
+})();
+
 const app = express();
 
 // Middleware
 app.use(cors());
-app.use(express.json());
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
 // Serve static frontend files from ../public
 app.use(express.static(path.join(__dirname, '../public')));

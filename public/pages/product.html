@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="th">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,30 +11,36 @@
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="../css/style.css">
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <style>
         /* CSS หลัก (ใส่ไว้ให้แสดงผลได้ทันที) */
-        :root { 
-            --primary: #4CAF50; 
-            --dark: #333; 
-            --light: #f9f9f9; 
+        :root {
+            --primary: #4CAF50;
+            --dark: #333;
+            --light: #f9f9f9;
             --dark-color: #212121;
             --light-color: #F5F5F5;
         }
-        body { 
-            font-family: 'Kanit', sans-serif; 
-            margin: 0; 
+
+        body {
+            font-family: 'Kanit', sans-serif;
+            margin: 0;
             background-image: url('../images/background.png');
-           color: var(--dark); 
-         }
-        .container { 
-            max-width: 1200px; 
-            margin: 0 auto; 
-            padding: 0 20px; 
+            color: var(--dark);
         }
-        a { 
-            text-decoration: none; 
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
         }
+
+        a {
+            text-decoration: none;
+        }
+
         .navbar .container {
             max-width: 1200px;
             margin: 0 auto;
@@ -42,50 +49,186 @@
             align-items: center;
             padding: 1rem 20px;
         }
-        .navbar .container { display: flex; justify-content: space-between; align-items: center; }
-        .logo { font-size: 1.5rem; font-weight: bold; color: var(--primary); }
-        nav ul { list-style: none; display: flex; gap: 20px; padding: 0; margin: 0; }
-        nav a { color: var(--dark); transition: 0.3s; }
-        nav a.active { color: var(--primary); font-weight: 500; }
+
+        .navbar .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+            padding: 0;
+            margin: 0;
+        }
+
+        nav a {
+            color: var(--dark);
+            transition: 0.3s;
+        }
+
+        nav a.active {
+            color: var(--primary);
+            font-weight: 500;
+        }
 
 
         /* Page Header */
-        .page-header { 
-            background: #e8f5e9; 
-            padding: 40px 0; 
-            text-align: center; 
-            margin-bottom: 40px; 
+        .page-header {
+            background: #e8f5e9;
+            padding: 40px 0;
+            text-align: center;
+            margin-bottom: 40px;
         }
-        .page-header h1 { margin: 0 0 10px 0; color: #2e7d32; }
-        .page-header p { color: #555; margin: 0; }
+
+        .page-header h1 {
+            margin: 0 0 10px 0;
+            color: #2e7d32;
+        }
+
+        .page-header p {
+            color: #555;
+            margin: 0;
+        }
 
         /* Grid & Card */
-        .seedling-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px; padding-bottom: 60px; }
-        .card { background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05); transition: transform 0.3s; display: flex; flex-direction: column; }
-        .card:hover { transform: translateY(-5px); }
-        .card img { width: 100%; height: 200px; object-fit: cover; }
-        .card-content { padding: 20px; flex-grow: 1; display: flex; flex-direction: column; }
-        .card-content h3 { margin: 0 0 5px 0; font-size: 1.3rem; }
-        .card-content p { color: #666; font-size: 0.9rem; margin-bottom: 15px; height: 40px; overflow: hidden; }
+        .seedling-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+            padding-bottom: 60px;
+        }
+
+        .card {
+            background: #fff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .card-content {
+            padding: 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-content h3 {
+            margin: 0 0 5px 0;
+            font-size: 1.3rem;
+        }
+
+        .card-content p {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+            height: 40px;
+            overflow: hidden;
+        }
 
         /* Product Info List (ตามดีไซน์ใหม่) */
-        .product-info { list-style: none; padding: 0; margin: 0 0 15px 0; font-size: 0.9rem; color: #555; background: #f4f4f4; padding: 10px; border-radius: 8px; }
-        .product-info li { margin-bottom: 5px; display: flex; align-items: center; gap: 8px; }
-        .product-info li:last-child { margin-bottom: 0; }
+        .product-info {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 15px 0;
+            font-size: 0.9rem;
+            color: #555;
+            background: #f4f4f4;
+            padding: 10px;
+            border-radius: 8px;
+        }
 
-        .price { font-size: 1.4rem; color: var(--primary); font-weight: bold; margin-bottom: 10px; }
+        .product-info li {
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .product-info li:last-child {
+            margin-bottom: 0;
+        }
+
+        .price {
+            font-size: 1.4rem;
+            color: var(--primary);
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
 
         /* Stock Status */
-        .stock-info { display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 15px; align-items: center; }
-        .stock-status { padding: 3px 8px; border-radius: 4px; font-weight: 500; }
-        .available { background-color: #e8f5e9; color: #2e7d32; }
-        .low-stock { background-color: #fff3e0; color: #ef6c00; }
-        .out-of-stock { background-color: #ffebee; color: #c62828; }
+        .stock-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            margin-bottom: 15px;
+            align-items: center;
+        }
+
+        .stock-status {
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+
+        .available {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .low-stock {
+            background-color: #fff3e0;
+            color: #ef6c00;
+        }
+
+        .out-of-stock {
+            background-color: #ffebee;
+            color: #c62828;
+        }
 
         /* Button */
-        .btn-reserve { display: block; width: 100%; text-align: center; background: var(--primary); color: white; padding: 12px; border-radius: 6px; font-weight: 500; transition: 0.2s; box-sizing: border-box; }
-        .btn-reserve:hover { background: #43a047; }
-        .btn-reserve.disabled { background: #ccc; pointer-events: none; }
+        .btn-reserve {
+            display: block;
+            width: 100%;
+            text-align: center;
+            background: var(--primary);
+            color: white;
+            padding: 12px;
+            border-radius: 6px;
+            font-weight: 500;
+            transition: 0.2s;
+            box-sizing: border-box;
+        }
+
+        .btn-reserve:hover {
+            background: #43a047;
+        }
+
+        .btn-reserve.disabled {
+            background: #ccc;
+            pointer-events: none;
+        }
 
         footer {
             background-color: var(--dark-color);
@@ -107,13 +250,13 @@
                 <span></span>
             </button>
             <nav id="navMenu">
-            <ul>
-                <li><a href="../">หน้าแรก</a></li>
-                <li><a href="product.html" class="active">สินค้า</a></li>
-                <li><a href="about.html" >ข่าวสาร</a></li>
-                <li><a href="contact.html" >ติดต่อ</a></li>
-            </ul>
-        </nav>
+                <ul>
+                    <li><a href="../">หน้าแรก</a></li>
+                    <li><a href="product.html" class="active">สินค้า</a></li>
+                    <li><a href="about.html">ข่าวสาร</a></li>
+                    <li><a href="contact.html">ติดต่อ</a></li>
+                </ul>
+            </nav>
             <a href="sign-in.html" class="btn-signin">เข้าสู่ระบบ</a>
         </div>
     </header>
@@ -130,7 +273,8 @@
         <section class="container">
             <!-- Search & Filter -->
             <div style="display: flex; gap: 15px; margin-bottom: 25px; flex-wrap: wrap;">
-                <input type="text" id="searchInput" placeholder="ค้นหาสินค้า..." class="form-control" style="flex: 1; min-width: 200px;" onkeyup="filterProducts()">
+                <input type="text" id="searchInput" placeholder="ค้นหาสินค้า..." class="form-control"
+                    style="flex: 1; min-width: 200px;" onkeyup="filterProducts()">
                 <select id="sortSelect" class="form-control" style="min-width: 150px;" onchange="filterProducts()">
                     <option value="">-- เรียงลำดับ --</option>
                     <option value="price-asc">ราคาต่ำสุด</option>
@@ -146,7 +290,7 @@
 
     </main>
 
-     <footer>
+    <footer>
         <div class="container">
             <h3>EasyRice Seedling Hub</h3>
             <p>แหล่งรวมพันธุกรรมข้าวคุณภาพ เพื่อเกษตรกรไทย</p>
@@ -165,47 +309,47 @@
                 // ดึงข้อมูลจาก API
                 const productsData = await api.getProducts();
                 let products = productsData.data || productsData || [];
-                
-                // ถ้าเป็น array ว่าง ให้ใช้ข้อมูลตัวอย่าง
+
+                // 3. บันทึกไว้ใน allProducts สำหรับใช้ใน filterProducts()
+                allProducts = products;
+
+                const container = document.getElementById('productContainer');
+                container.innerHTML = '';
+
                 if (products.length === 0) {
-                    products = [
-                        { id: 1, product_name: 'ข้าวหอมมะลิ 105', description: 'ต้นกล้าข้าวคุณภาพดี มีกลิ่นหอม ให้ผลผลิตข้าวนุ่ม', price: 35, stock: 150, image_url: '../images/jasmine105.png' },
-                        { id: 2, product_name: 'ข้าวไรซ์เบอร์รี่', description: 'ข้าวเพื่อสุขภาพ อุดมด้วยสารต้านอนุมูลอิสระ', price: 45, stock: 25, image_url: '../images/riceberry.png' },
-                        { id: 3, product_name: 'ข้าว RD43', description: 'พันธุ์ข้าวทนโรค ให้ผลผลิตสูง เหมาะสำหรับการปลูกเชิงพาณิชย์', price: 30, stock: 200, image_url: '../images/rd43.png' },
-                        { id: 4, product_name: 'ข้าวปทุมธานี 1', description: 'พันธุ์ข้าวอายุสั้น ให้ผลผลิตดี ข้าวสุกขาวนวล', price: 32, stock: 120, image_url: '../images/pathum1.png' }
-                    ];
-                }
-            
-            // 3. บันทึกไว้ใน allProducts สำหรับใช้ใน filterProducts()
-            allProducts = products;
-
-            const container = document.getElementById('productContainer');
-            container.innerHTML = '';
-
-            products.forEach(p => {
-                // คำนวณสถานะสต็อก
-                let stockClass = 'available';
-                let stockText = '✅ มีสินค้า';
-                let btnState = '';
-                
-                if (parseInt(p.stock) <= 0) {
-                    stockClass = 'out-of-stock';
-                    stockText = '❌ สินค้าหมด';
-                    btnState = 'disabled';
-                } else if (parseInt(p.stock) < 50) {
-                    stockClass = 'low-stock';
-                    stockText = '⚠️ เหลือน้อย';
+                    container.innerHTML = '<p style="text-align:center; width:100%; padding: 40px;">ไม่พบสินค้าในขณะนี้</p>';
+                    return;
                 }
 
-                const productName = p.product_name || p.name;
-                const productDesc = p.description || p.desc;
-                const productPrice = p.price;
-                const productStock = p.stock;
-                const productImg = p.image_url || p.img;
+                products.forEach(p => {
+                    // คำนวณสถานะสต็อก
+                    let stock = parseInt(p.stock || 0);
+                    let stockClass = 'available';
+                    let stockText = '✅ มีสินค้า';
+                    let btnState = '';
 
-                const html = `
+                    if (stock <= 0) {
+                        stockClass = 'out-of-stock';
+                        stockText = '❌ หมด';
+                        btnState = 'disabled';
+                    } else if (stock < 50) {
+                        stockClass = 'low-stock';
+                        stockText = '⚠️ เหลือน้อย';
+                    }
+
+                    const productName = p.product_name || p.name;
+                    const productDesc = p.description || p.desc || 'สินค้าคุณภาพ';
+                    const productPrice = p.price;
+                    const productImg = p.image_url || p.img || 'https://via.placeholder.com/300?text=No+Image';
+
+                    // Fix relative path if needed
+                    let displayImg = productImg;
+                    if (displayImg.startsWith('../')) displayImg = displayImg.substring(3);
+
+
+                    const html = `
                 <div class="card">
-                    <img src="${productImg}" alt="${productName}">
+                    <img src="${displayImg}" alt="${productName}" onerror="this.src='https://via.placeholder.com/300?text=Image+Error'">
                     <div class="card-content">
                         <h3>${productName}</h3>
                         <p>${productDesc}</p>
@@ -213,16 +357,17 @@
                         <div class="stock-info">
                             <span class="stock-status ${stockClass}">${stockText}</span>
                         </div>
-                        <button class="btn-reserve ${btnState}" onclick="goToCheckout(${p.id})" ${btnState ? 'disabled' : ''}>เลือกสินค้า</button>
+                        <button class="btn-reserve ${btnState}" onclick="goToCheckout(${p.id || p.product_id})" ${btnState ? 'disabled' : ''}>เลือกสินค้า</button>
                     </div>
                 </div>
                 `;
-                container.innerHTML += html;
-            });
-        } catch (error) {
-            console.error('Error loading products:', error);
-            const container = document.getElementById('productContainer');
-            container.innerHTML = '<p style="text-align:center; color: red;">เกิดข้อผิดพลาด: ' + error.message + '</p>';
+                    container.innerHTML += html;
+                });
+            } catch (error) {
+                console.error('Error loading products:', error);
+                const container = document.getElementById('productContainer');
+                container.innerHTML = '<p style="text-align:center; color: red;">เกิดข้อผิดพลาด: ' + (error.message || 'ไม่สามารถโหลดข้อมูลได้') + '</p>';
+            }
         }
 
         function goToCheckout(productId) {
@@ -267,7 +412,7 @@
 
             products.forEach(p => {
                 const btnState = parseInt(p.stock) === 0 ? 'disabled' : '';
-                
+
                 let stockClass = 'available';
                 let stockText = '✅ มีสินค้า';
                 if (parseInt(p.stock) === 0) {
@@ -321,4 +466,5 @@
     </script>
     <script src="../js/easyrice.js"></script>
 </body>
+
 </html>

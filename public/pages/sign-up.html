@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="th">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,8 +8,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+
 </head>
+
 <body class="login-page-body">
 
     <header class="navbar">
@@ -20,13 +22,13 @@
                 <span></span>
             </button>
             <nav id="navMenu">
-            <ul>
-                <li><a href="../">หน้าแรก</a></li>
-                <li><a href="product.html">สินค้า</a></li>
-                <li><a href="about.html">ข่าวสาร</a></li>
-                <li><a href="contact.html">ติดต่อ</a></li>
-            </ul>
-        </nav>
+                <ul>
+                    <li><a href="../">หน้าแรก</a></li>
+                    <li><a href="product.html">สินค้า</a></li>
+                    <li><a href="about.html">ข่าวสาร</a></li>
+                    <li><a href="contact.html">ติดต่อ</a></li>
+                </ul>
+            </nav>
             <a href="sign-in.html" class="btn-signin active">เข้าสู่ระบบ</a>
         </div>
     </header>
@@ -56,132 +58,186 @@
 
                 <div class="form-group">
                     <label for="password">รหัสผ่าน</label>
-                    <input type="password" id="password" class="form-control" placeholder="สร้างรหัสผ่านของคุณ" required>
+                    <input type="password" id="password" class="form-control" placeholder="สร้างรหัสผ่านของคุณ"
+                        required>
                 </div>
 
                 <div class="form-group">
                     <label for="confirm-password">ยืนยันรหัสผ่าน</label>
-                    <input type="password" id="confirm-password" class="form-control" placeholder="พิมพ์รหัสผ่านอีกครั้ง" required>
+                    <input type="password" id="confirm-password" class="form-control"
+                        placeholder="พิมพ์รหัสผ่านอีกครั้ง" required>
                 </div>
 
                 <div class="form-options">
                     <div class="remember-me">
                         <input type="checkbox" id="terms" required>
-                        <label for="terms" style="font-size: 0.85rem;">ฉันยอมรับ <a href="#" style="color:#2e7d32;">เงื่อนไขและข้อกำหนด</a></label>
+                        <label for="terms" style="font-size: 0.85rem;">ฉันยอมรับ <a href="#"
+                                onclick="openTermsModal(event)" style="color:#2e7d32;">เงื่อนไขและข้อกำหนด</a></label>
                     </div>
                 </div>
 
                 <button type="submit" class="btn-primary full-width">สมัครสมาชิก</button>
             </form>
-            
+
             <div class="sign-in-link" style="text-align:center; margin-top:15px;">
                 <span>มีบัญชีอยู่แล้ว?</span>
                 <a href="sign-in.html" style="color:#2e7d32; font-weight:500;"> เข้าสู่ระบบ</a>
             </div>
 
-            <div class="divider"><span>หรือ</span></div>
-
-            <div class="social-login">
-                <button class="social-btn"><i class="fab fa-google"></i> Google</button>
-                <button class="social-btn"><i class="fab fa-line"></i> LINE</button>
-            </div>
+            <!-- Social Login Removed -->
         </div>
     </main>
 
+    <!-- Terms Modal -->
+    <div id="termsModal" class="terms-modal">
+        <div class="terms-modal-content">
+            <span class="close-terms-modal" onclick="closeTermsModal()">&times;</span>
+            <h2 style="margin-top: 0; color: #2e7d32; margin-bottom: 20px;">เงื่อนไขและข้อกำหนด</h2>
+            <div style="max-height: 400px; overflow-y: auto; line-height: 1.6; color: #555; padding-right: 10px;">
+                <p><strong>1. บทนำ</strong><br>
+                    ยินดีต้อนรับสู่เว็บไซต์ EasyRice
+                    การเข้าใช้บริการเว็บไซต์นี้ถือว่าท่านยอมรับข้อตกลงและเงื่อนไขทั้งหมดที่ระบุไว้
+                    หากท่านไม่ยอมรับเงื่อนไขเหล่านี้ กรุณาระงับการใช้งานเว็บไซต์</p>
+
+                <p><strong>2. การใช้งานเว็บไซต์</strong><br>
+                    ผู้ใช้งานต้องมีอายุไม่ต่ำกว่า 18 ปีบริบูรณ์ หรือได้รับความยินยอมจากผู้ปกครอง
+                    ข้อมูลที่ใช้ในการสมัครสมาชิกจะต้องเป็นข้อมูลจริงและเป็นปัจจุบัน</p>
+
+                <p><strong>3. การสั่งซื้อและชำระเงิน</strong><br>
+                    การสั่งซื้อสินค้าจะถือว่าสมบูรณ์เมื่อท่านได้รับการยืนยันจากทางบริษัท
+                    การชำระเงินต้องดำเนินการผ่านช่องทางที่กำหนดเท่านั้น</p>
+
+                <p><strong>4. การจัดส่งสินค้า</strong><br>
+                    บริษัทจะจัดส่งสินค้าตามที่อยู่ที่ท่านระบุไว้
+                    ระยะเวลาการจัดส่งอาจเปลี่ยนแปลงได้ตามสถานการณ์และพื้นที่การจัดส่ง</p>
+
+                <p><strong>5. นโยบายการคืนสินค้า</strong><br>
+                    ผู้ซื้อสามารถขอคืนสินค้าได้ในกรณีที่สินค้าชำรุดหรือส่งผิดพลาด ภายใน 7 วันหลังจากได้รับสินค้า
+                    โดยต้องมีหลักฐานยืนยันชัดเจน</p>
+
+                <p><strong>6. ทรัพย์สินทางปัญญา</strong><br>
+                    เนื้อหาทั้งหมดในเว็บไซต์นี้เป็นลิขสิทธิ์ของ EasyRice ห้ามคัดลอก ดัดแปลง
+                    หรือนำไปใช้ในเชิงพาณิชย์โดยไม่ได้รับอนุญาต</p>
+            </div>
+            <div style="text-align: right; margin-top: 20px; border-top: 1px solid #eee; padding-top: 15px;">
+                <button class="btn-primary" onclick="closeTermsModal()" style="padding: 8px 25px;">รับทราบ</button>
+            </div>
+        </div>
+    </div>
+
     <script src="../js/api-client.js"></script>
     <script>
-document.getElementById('signUpForm').addEventListener('submit', async function(e) {
-    e.preventDefault();
+        document.getElementById('signUpForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
 
-    const fullname = document.getElementById('fullname').value.trim();
-    const email = document.getElementById('email').value.trim();
-    const phone = document.getElementById('phone').value.trim();
-    const password = document.getElementById('password').value;
-    const confirmPassword = document.getElementById('confirm-password').value;
-    const terms = document.getElementById('terms').checked;
-    const username = email.split('@')[0]; // แยกชื่อผู้ใช้จากอีเมล
+            const fullname = document.getElementById('fullname').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirm-password').value;
+            const terms = document.getElementById('terms').checked;
+            const username = email.split('@')[0]; // แยกชื่อผู้ใช้จากอีเมล
 
-    // ตรวจสอบความถูกต้อง
-    if (!fullname || !email || !phone || !password || !confirmPassword) {
-        showMessage('กรุณากรอกข้อมูลให้ครบถ้วน', false);
-        return;
-    }
+            // ตรวจสอบความถูกต้อง
+            if (!fullname || !email || !phone || !password || !confirmPassword) {
+                showMessage('กรุณากรอกข้อมูลให้ครบถ้วน', false);
+                return;
+            }
 
-    if (password !== confirmPassword) {
-        showMessage('รหัสผ่านไม่ตรงกัน กรุณาตรวจสอบอีกครั้ง', false);
-        return;
-    }
+            if (password !== confirmPassword) {
+                showMessage('รหัสผ่านไม่ตรงกัน กรุณาตรวจสอบอีกครั้ง', false);
+                return;
+            }
 
-    if (password.length < 6) {
-        showMessage('รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร', false);
-        return;
-    }
+            if (password.length < 6) {
+                showMessage('รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร', false);
+                return;
+            }
 
-    if (!terms) {
-        showMessage('กรุณายอมรับเงื่อนไขและข้อกำหนด', false);
-        return;
-    }
+            if (!terms) {
+                showMessage('กรุณายอมรับเงื่อนไขและข้อกำหนด', false);
+                return;
+            }
 
-    try {
-        // ลงทะเบียนผ่าน API
-        const response = await api.register(username, email, password, fullname, phone);
-        
-        // บันทึก token
-        api.setToken(response.token);
-        
-        // บันทึกข้อมูลผู้ใช้
-        localStorage.setItem('user_id', response.user_id);
-        localStorage.setItem('username', username);
-        localStorage.setItem('email', email);
-        localStorage.setItem('full_name', fullname);
-        localStorage.setItem('phone', phone);
-        localStorage.setItem('role', 'user'); // Default role for new users
-        localStorage.setItem('is_logged_in', 'true');
+            try {
+                // ลงทะเบียนผ่าน API
+                const response = await api.register(username, email, password, fullname, phone);
 
-        showMessage('สมัครสมาชิกสำเร็จ! กำลังนำทางไปหน้าแรก...', true);
-        setTimeout(() => {
-            window.location.href = '../';
-        }, 1500);
-    } catch (error) {
-        showMessage(error.message || 'เกิดข้อผิดพลาด กรุณาลองใหม่', false);
-    }
-});
+                // บันทึก token
+                api.setToken(response.token);
 
-function showMessage(message, success) {
-    let msgDiv = document.getElementById('signup-message');
-    if (!msgDiv) {
-        msgDiv = document.createElement('div');
-        msgDiv.id = 'signup-message';
-        document.getElementById('signUpForm').prepend(msgDiv);
-    }
+                // บันทึกข้อมูลผู้ใช้
+                localStorage.setItem('user_id', response.user_id);
+                localStorage.setItem('username', username);
+                localStorage.setItem('email', email);
+                localStorage.setItem('full_name', fullname);
+                localStorage.setItem('phone', phone);
+                localStorage.setItem('role', 'user'); // Default role for new users
+                localStorage.setItem('is_logged_in', 'true');
 
-    msgDiv.style.display = 'block';
-    msgDiv.innerHTML = message;
-    msgDiv.style.background = success ? '#e8f5e9' : '#ffebee';
-    msgDiv.style.color = success ? '#2e7d32' : '#c62828';
-    msgDiv.style.border = success ? '1px solid #81c784' : '1px solid #e57373';
-    msgDiv.style.padding = '10px 15px';
-    msgDiv.style.borderRadius = '6px';
-    msgDiv.style.marginBottom = '15px';
-    msgDiv.style.textAlign = 'center';
-}
+                showMessage('สมัครสมาชิกสำเร็จ! กำลังนำทางไปหน้าแรก...', true);
+                setTimeout(() => {
+                    window.location.href = '../';
+                }, 1500);
+            } catch (error) {
+                showMessage(error.message || 'เกิดข้อผิดพลาด กรุณาลองใหม่', false);
+            }
+        });
 
-// แสดง/ซ่อนเมนู
-function toggleMenu() {
-    const hamburger = document.getElementById('hamburger');
-    const navMenu = document.getElementById('navMenu');
-    hamburger.classList.toggle('active');
-    navMenu.classList.toggle('active');
-}
+        function showMessage(message, success) {
+            let msgDiv = document.getElementById('signup-message');
+            if (!msgDiv) {
+                msgDiv = document.createElement('div');
+                msgDiv.id = 'signup-message';
+                document.getElementById('signUpForm').prepend(msgDiv);
+            }
 
-// ปิดเมนูเมื่อคลิกลิงก์
-document.querySelectorAll('#navMenu a').forEach(link => {
-    link.addEventListener('click', () => {
-        document.getElementById('hamburger').classList.remove('active');
-        document.getElementById('navMenu').classList.remove('active');
-    });
-});
-</script>
-<script src="../js/easyrice.js"></script>
+            msgDiv.style.display = 'block';
+            msgDiv.innerHTML = message;
+            msgDiv.style.background = success ? '#e8f5e9' : '#ffebee';
+            msgDiv.style.color = success ? '#2e7d32' : '#c62828';
+            msgDiv.style.border = success ? '1px solid #81c784' : '1px solid #e57373';
+            msgDiv.style.padding = '10px 15px';
+            msgDiv.style.borderRadius = '6px';
+            msgDiv.style.marginBottom = '15px';
+            msgDiv.style.textAlign = 'center';
+        }
+
+        // แสดง/ซ่อนเมนู
+        function toggleMenu() {
+            const hamburger = document.getElementById('hamburger');
+            const navMenu = document.getElementById('navMenu');
+            hamburger.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        }
+
+        // ปิดเมนูเมื่อคลิกลิงก์
+        document.querySelectorAll('#navMenu a').forEach(link => {
+            link.addEventListener('click', () => {
+                document.getElementById('hamburger').classList.remove('active');
+                document.getElementById('navMenu').classList.remove('active');
+            });
+        });
+
+        // Terms Modal Functions
+        function openTermsModal(e) {
+            if (e) e.preventDefault();
+            document.getElementById('termsModal').style.display = 'block';
+        }
+
+        function closeTermsModal() {
+            document.getElementById('termsModal').style.display = 'none';
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function (event) {
+            const modal = document.getElementById('termsModal');
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
+    <script src="../js/easyrice.js"></script>
 </body>
+
 </html>

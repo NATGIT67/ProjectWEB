@@ -164,10 +164,14 @@ class APIClient {
     });
   }
 
-  async createOrder(shippingAddress) {
+  async createOrder(shippingAddress, paymentSlip = null, paymentType = 'full') {
     return this.request('/orders', {
       method: 'POST',
-      body: JSON.stringify({ shipping_address: shippingAddress }),
+      body: JSON.stringify({
+        shipping_address: shippingAddress,
+        payment_slip: paymentSlip,
+        payment_type: paymentType
+      }),
     });
   }
 
@@ -221,6 +225,39 @@ class APIClient {
       method: 'PUT',
       body: JSON.stringify({ role }),
     });
+  }
+
+  async deleteUser(userId) {
+    return this.request(`/admin/users/${userId}`, {
+      method: 'DELETE',
+    });
+  }
+
+  async getReports() {
+    return this.request('/admin/reports', {
+      method: 'GET',
+    });
+  }
+
+  async getStats() {
+    return this.request('/admin/stats', { method: 'GET' });
+  }
+
+  async sendReport(data) {
+    // This is a public endpoint, but request() helper might add auth header which is fine
+    const response = await fetch(`${this.baseUrl}/contact`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.error || 'Something went wrong');
+    }
+    return response.json();
   }
 }
 

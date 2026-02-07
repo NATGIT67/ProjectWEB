@@ -1,17 +1,20 @@
 <!DOCTYPE html>
 <html lang="th">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EasyRice - ระบบซื้อขายต้นกล้าและบริการปักดำข้าว</title>
-    
+
     <link rel="stylesheet" href="css/style.css">
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-<body> 
+<body>
     <header class="navbar">
         <div class="container">
             <a href="./" class="logo">🌾 EasyRice</a>
@@ -21,13 +24,13 @@
                 <span></span>
             </button>
             <nav id="navMenu">
-            <ul>
-                <li><a href="./" class="active">หน้าแรก</a></li>
-                <li><a href="pages/product.html">สินค้า</a></li>
-                <li><a href="pages/about.html">ข่าวสาร</a></li>
-                <li><a href="pages/contact.html">ติดต่อ</a></li>
-            </ul>
-        </nav>
+                <ul>
+                    <li><a href="./" class="active">หน้าแรก</a></li>
+                    <li><a href="pages/product.html">สินค้า</a></li>
+                    <li><a href="pages/about.html">ข่าวสาร</a></li>
+                    <li><a href="pages/contact.html">ติดต่อ</a></li>
+                </ul>
+            </nav>
             <a href="pages/sign-in.html" class="btn-signin">เข้าสู่ระบบ</a>
         </div>
     </header>
@@ -44,7 +47,7 @@
                 </div>
             </div>
         </section>
-        
+
         <section class="how-it-works" style="background-color: var(--light-color);">
             <div class="container">
                 <h2>ขั้นตอนการสั่งซื้อสินค้า</h2>
@@ -74,9 +77,10 @@
                 <div class="seedling-grid" id="productContainer">
                     <p style="text-align:center; width:100%;">กำลังโหลดข้อมูลสินค้า...</p>
                 </div>
-                
+
                 <div style="text-align: center; margin-top: 40px;">
-                    <a href="pages/product.html" class="btn-secondary" style="border-color:var(--border-color); color:var(--dark-color);">ดูสินค้าทั้งหมด</a>
+                    <a href="pages/product.html" class="btn-secondary"
+                        style="border-color:var(--border-color); color:var(--dark-color);">ดูสินค้าทั้งหมด</a>
                 </div>
             </div>
         </section>
@@ -93,7 +97,8 @@
                             <div class="news-date"><i class="far fa-calendar-alt"></i> 10 ม.ค. 2567</div>
                             <h3>ทำไมต้องใช้ต้นกล้าอายุ 20 วัน?</h3>
                             <p>ต้นกล้าในวัยนี้รากกำลังเดินดี เมื่อนำไปปักดำจะฟื้นตัวเร็ว แตกกอได้ดีกว่าต้นกล้าแก่...</p>
-                            <a href="pages/about.html" class="read-more-btn">อ่านต่อ <i class="fas fa-arrow-right"></i></a>
+                            <a href="pages/about.html" class="read-more-btn">อ่านต่อ <i
+                                    class="fas fa-arrow-right"></i></a>
                         </div>
                     </div>
                     <div class="news-card">
@@ -103,8 +108,10 @@
                         <div class="news-content">
                             <div class="news-date"><i class="far fa-calendar-alt"></i> 12 ม.ค. 2567</div>
                             <h3>วิธีเลือกพันธุ์ข้าวให้เหมาะกับดิน</h3>
-                            <p>ดินเค็ม ดินเปรี้ยว หรือพื้นที่ลุ่มน้ำท่วมถึง การเลือกพันธุ์ข้าวให้ถูกโฉลกกับดินจะช่วยเพิ่มผลผลิต...</p>
-                            <a href="pages/about.html" class="read-more-btn">อ่านต่อ <i class="fas fa-arrow-right"></i></a>
+                            <p>ดินเค็ม ดินเปรี้ยว หรือพื้นที่ลุ่มน้ำท่วมถึง
+                                การเลือกพันธุ์ข้าวให้ถูกโฉลกกับดินจะช่วยเพิ่มผลผลิต...</p>
+                            <a href="pages/about.html" class="read-more-btn">อ่านต่อ <i
+                                    class="fas fa-arrow-right"></i></a>
                         </div>
                     </div>
                     <div class="news-card">
@@ -114,14 +121,16 @@
                         <div class="news-content">
                             <div class="news-date"><i class="far fa-calendar-alt"></i> 15 ม.ค. 2567</div>
                             <h3>เทคนิคเตรียมดินก่อนรถดำลง</h3>
-                            <p>การปรับหน้าดินให้เรียบเสมอและการรักษาระดับน้ำ เป็นหัวใจสำคัญที่จะทำให้รถดำทำงานได้ราบรื่น...</p>
-                            <a href="pages/about.html" class="read-more-btn">อ่านต่อ <i class="fas fa-arrow-right"></i></a>
+                            <p>การปรับหน้าดินให้เรียบเสมอและการรักษาระดับน้ำ
+                                เป็นหัวใจสำคัญที่จะทำให้รถดำทำงานได้ราบรื่น...</p>
+                            <a href="pages/about.html" class="read-more-btn">อ่านต่อ <i
+                                    class="fas fa-arrow-right"></i></a>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
-       
+
         <section class="faq-section" style="background-color: var(--light-color);">
             <div class="container">
                 <div class="faq-slider">
@@ -130,17 +139,23 @@
                         <div class="faq-slide" style="background-color: var(--white-color);">
                             <h2><i class="fas fa-shipping-fast"></i> วิธีการจัดส่งและแพ็คต้นกล้า</h2>
                             <ul>
-                                <li><i class="fas fa-check" style="color:var(--primary-color);"></i> คัดเลือกต้นกล้าแข็งแรง อายุ 20–30 วัน</li>
-                                <li><i class="fas fa-check" style="color:var(--primary-color);"></i> มัดเป็นกำเล็กๆ ห่อโคนรักษาความชื้น</li>
-                                <li><i class="fas fa-check" style="color:var(--primary-color);"></i> จัดส่งถึงที่ภายใน 24 ชม.</li>
+                                <li><i class="fas fa-check" style="color:var(--primary-color);"></i>
+                                    คัดเลือกต้นกล้าแข็งแรง อายุ 20–30 วัน</li>
+                                <li><i class="fas fa-check" style="color:var(--primary-color);"></i> มัดเป็นกำเล็กๆ
+                                    ห่อโคนรักษาความชื้น</li>
+                                <li><i class="fas fa-check" style="color:var(--primary-color);"></i> จัดส่งถึงที่ภายใน
+                                    24 ชม.</li>
                             </ul>
                         </div>
                         <div class="faq-slide">
                             <h2><i class="fas fa-seedling"></i> หลักการเลือกพันธุ์ข้าว</h2>
                             <ul>
-                                <li><i class="fas fa-check" style="color:var(--primary-color);"></i> พิจารณาพื้นที่ (นาลุ่ม/นาดอน)</li>
-                                <li><i class="fas fa-check" style="color:var(--primary-color);"></i> ดูช่วงเวลาเก็บเกี่ยว (นาปี/นาปรัง)</li>
-                                <li><i class="fas fa-check" style="color:var(--primary-color);"></i> เลือกพันธุ์ที่ต้านทานโรค</li>
+                                <li><i class="fas fa-check" style="color:var(--primary-color);"></i> พิจารณาพื้นที่
+                                    (นาลุ่ม/นาดอน)</li>
+                                <li><i class="fas fa-check" style="color:var(--primary-color);"></i>
+                                    ดูช่วงเวลาเก็บเกี่ยว (นาปี/นาปรัง)</li>
+                                <li><i class="fas fa-check" style="color:var(--primary-color);"></i>
+                                    เลือกพันธุ์ที่ต้านทานโรค</li>
                             </ul>
                         </div>
                     </div>
@@ -159,51 +174,84 @@
         </div>
     </footer>
 
+    <script src="js/api-client.js"></script>
     <script>
-        // --- 1. โหลดข้อมูลสินค้า (ใช้ข้อมูลชุดสาธิต เพื่อให้หน้าเว็บไม่ว่าง) ---
-        function initData() {
-            // เช็คว่ามีข้อมูลใน LocalStorage หรือไม่ ถ้าไม่มีให้ใช้ข้อมูลตัวอย่าง
-            let products = localStorage.getItem('easyrice_db');
-            if (!products) {
-                const demoProducts = [
-                    { id: 1, name: 'ข้าวหอมมะลิ 105', desc: 'ต้นกล้าข้าวหอมมะลิแท้ กลิ่นหอม นุ่มนวล', price: 35, stock: 150, img: 'https://images.unsplash.com/photo-1586201375761-83865001e31c?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80' },
-                    { id: 2, name: 'ข้าวไรซ์เบอร์รี่', desc: 'ข้าวเพื่อสุขภาพ สีม่วงเข้ม สารต้านอนุมูลอิสระสูง', price: 45, stock: 25, img: 'https://images.unsplash.com/photo-1620027727192-3c824c641269?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80' },
-                    { id: 3, name: 'ข้าว RD43', desc: 'ข้าวดัชนีน้ำตาลต่ำ เหมาะสำหรับผู้รักสุขภาพ', price: 30, stock: 200, img: 'https://images.unsplash.com/photo-1599940778173-e276d4acb2be?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80' },
-                    { id: 4, name: 'ข้าวปทุมธานี 1', desc: 'ข้าวหอมนุ่ม ราคาประหยัด ผลผลิตต่อไร่สูง', price: 32, stock: 0, img: 'https://images.unsplash.com/photo-1533241240368-12d2eb73602d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80' }
-                ];
-                localStorage.setItem('easyrice_db', JSON.stringify(demoProducts));
-                return demoProducts;
-            }
-            return JSON.parse(products);
-        }
+        // Initialize API
+        // const api = new APIClient(); // Already initialized in api-client.js
 
-        function displayProducts() {
-            const products = initData();
+        // --- 1. โหลดข้อมูลสินค้าจาก API ---
+        async function displayProducts() {
             const container = document.getElementById('productContainer');
-            container.innerHTML = ''; 
+            container.innerHTML = '<p style="text-align:center; width:100%;">กำลังโหลดข้อมูลสินค้า...</p>';
 
-            // แสดงเฉพาะ 4 รายการแรก
-            products.slice(0, 4).forEach(p => {
-                let stockClass = p.stock > 0 ? 'available' : 'out-of-stock';
-                let stockText = p.stock > 0 ? `มีสินค้า (${p.stock})` : 'สินค้าหมด';
-                let btnState = p.stock > 0 ? '' : 'disabled';
-                let btnStyle = p.stock > 0 ? '' : 'background-color:#ccc; cursor:not-allowed;';
+            try {
+                // Fetch products using API Client
+                const productsData = await api.getProducts();
+                // Handle different response structures (array or object with data property)
+                const products = Array.isArray(productsData) ? productsData : (productsData.data || []);
 
-                container.innerHTML += `
-                    <div class="card">
-                        <img src="${p.img}" alt="${p.name}">
-                        <div class="card-content">
-                            <h3>${p.name}</h3>
-                            <p style="flex-grow:1; color:#666; font-size:0.9rem;">${p.desc}</p>
-                            <div class="price">฿${p.price} / ถาด</div>
-                            <div class="stock-info">
-                                <span class="stock-status ${stockClass}">${stockText}</span>
+                container.innerHTML = '';
+
+                if (products.length === 0) {
+                    container.innerHTML = '<p style="text-align:center; width:100%;">ไม่พบสินค้าในขณะนี้</p>';
+                    return;
+                }
+
+                // เรียงลำดับสินค้า: เอา "หอมมะลิ" ขึ้นก่อน
+                products.sort((a, b) => {
+                    const nameA = (a.product_name || a.name || '').toLowerCase();
+                    const nameB = (b.product_name || b.name || '').toLowerCase();
+                    const isJasmineA = nameA.includes('หอมมะลิ') || nameA.includes('jasmine');
+                    const isJasmineB = nameB.includes('หอมมะลิ') || nameB.includes('jasmine');
+
+                    if (isJasmineA && !isJasmineB) return -1;
+                    if (!isJasmineA && isJasmineB) return 1;
+                    return 0;
+                });
+
+                // แสดงเฉพาะ 3 รายการแรก
+                products.slice(0, 3).forEach(p => {
+                    // Normalize data structure (Product object might have different keys depending on backend)
+                    // Assuming keys based on viewed product.html/admin-panel.html usage logic
+                    const name = p.product_name || p.name;
+                    const desc = p.description || p.desc || 'สินค้าคุณภาพจาก EasyRice';
+                    const price = p.price;
+                    const stock = p.stock || 0;
+                    // Fix image path if it's a relative path starting with ../
+                    let img = p.image_url || 'images/logo.png';
+                    if (img.startsWith('../')) {
+                        img = img.substring(3); // Remove ../ to make it relative to index.html key or adjust as needed
+                    }
+
+                    let stockClass = stock > 0 ? 'available' : 'out-of-stock';
+                    let stockText = stock > 0 ? `มีสินค้า (${stock})` : 'สินค้าหมด';
+                    let btnState = stock > 0 ? '' : 'disabled';
+                    let btnStyle = stock > 0 ? '' : 'background-color:#ccc; cursor:not-allowed;';
+
+                    container.innerHTML += `
+                        <div class="card">
+                            <img src="${img}" alt="${name}" onerror="this.src='images/logo.png'">
+                            <div class="card-content">
+                                <h3>${name}</h3>
+                                <p style="flex-grow:1; color:#666; font-size:0.9rem;">${desc}</p>
+                                <div class="price">฿${price} / ถาด</div>
+                                <div class="stock-info">
+                                    <span class="stock-status ${stockClass}">${stockText}</span>
+                                </div>
+                                <a href="pages/product.html" class="btn-reserve" style="width:100%; text-decoration:none; ${btnStyle}">ดูรายละเอียด</a>
                             </div>
-                            <a href="pages/checkout.html" class="btn-reserve" style="width:100%; text-decoration:none; ${btnStyle}">ซื้อเลย</a>
                         </div>
-                    </div>
-                `;
-            });
+                    `;
+                });
+            } catch (error) {
+                console.error('Failed to load products:', error);
+                container.innerHTML = `<div style="text-align:center; width:100%; padding:20px;">
+                    <p style="color: red;">เกิดข้อผิดพลาดในการโหลดข้อมูลสินค้า</p>
+                    <small style="color: #666;">${error.message || 'Server connection failed'}</small>
+                    <br><br>
+                    <button onclick="location.reload()" class="btn-secondary" style="padding:5px 15px; font-size:0.8rem;">ลองใหม่</button>
+                    </div>`;
+            }
         }
 
         // --- 2. FAQ Slider Script ---
@@ -240,4 +288,5 @@
     </script>
     <script src="js/easyrice.js"></script>
 </body>
+
 </html>

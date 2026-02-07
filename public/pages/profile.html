@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EasyRice - โปรไฟล์ของฉัน</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background-color: #f5f5f5;
+        }
+
+        .profile-container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile-header {
+            text-align: center;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+            margin-bottom: 30px;
+        }
+
+        .profile-avatar {
+            width: 100px;
+            height: 100px;
+            background: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            margin: 0 auto 15px;
+        }
+
+        .info-group {
+            margin-bottom: 20px;
+        }
+
+        .info-label {
+            font-weight: 500;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .info-value {
+            font-size: 1.1rem;
+            color: #333;
+            padding: 10px;
+            background: #f9f9f9;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-edit {
+            background: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+            width: 100%;
+        }
+    </style>
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+
+<body>
+
+    <header class="navbar">
+        <div class="container">
+            <a href="../" class="logo">🌾 EasyRice</a>
+            <button class="hamburger" id="hamburger" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <nav id="navMenu">
+                <ul>
+                    <li><a href="../">หน้าแรก</a></li>
+                    <li><a href="product.html">สินค้า</a></li>
+                    <li><a href="about.html">ข่าวสาร</a></li>
+                    <li><a href="contact.html">ติดต่อ</a></li>
+                </ul>
+            </nav>
+            <a href="sign-in.html" class="btn-signin">เข้าสู่ระบบ</a>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="profile-container">
+            <div class="profile-header">
+                <div class="profile-avatar"><i class="fas fa-user"></i></div>
+                <h2 id="displayName">กำลังโหลด...</h2>
+                <p id="displayRole" style="color: #666;">User</p>
+            </div>
+
+            <div class="info-group">
+                <div class="info-label">ชื่อผู้ใช้งาน</div>
+                <div class="info-value"><i class="fas fa-user-tag"></i> <span id="username">...</span></div>
+            </div>
+
+            <div class="info-group">
+                <div class="info-label">อีเมล</div>
+                <div class="info-value"><i class="fas fa-envelope"></i> <span id="email">...</span></div>
+            </div>
+
+            <div class="info-group">
+                <div class="info-label">ชื่อ-นามสกุล</div>
+                <div class="info-value"><i class="fas fa-id-card"></i> <span id="fullName">...</span></div>
+            </div>
+
+            <div class="info-group">
+                <div class="info-label">เบอร์โทรศัพท์</div>
+                <div class="info-value"><i class="fas fa-phone"></i> <span id="phone">...</span></div>
+            </div>
+
+            <!-- Order History Section -->
+            <div class="profile-header" style="margin-top: 40px; border-bottom: 1px solid #eee; padding-bottom: 15px;">
+                <h3><i class="fas fa-history"></i> ประวัติการสั่งซื้อ</h3>
+            </div>
+
+            <div class="order-history-table" style="overflow-x: auto;">
+                <table style="width: 100%; border-collapse: collapse; text-align: left; min-width: 600px;">
+                    <thead>
+                        <tr style="background: #f9f9f9; color: #555;">
+                            <th style="padding: 12px;">เลขที่คำสั่งซื้อ</th>
+                            <th style="padding: 12px;">วันที่</th>
+                            <th style="padding: 12px;">รายการ</th>
+                            <th style="padding: 12px;">ยอดรวม</th>
+                            <th style="padding: 12px;">สถานะ</th>
+                        </tr>
+                    </thead>
+                    <tbody id="historyBody">
+                        <tr>
+                            <td colspan="5" style="text-align:center; padding: 20px;">กำลังโหลดข้อมูล...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+    </main>
+
+    <script src="../js/api-client.js"></script>
+    <script src="../js/easyrice.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                window.location.href = 'sign-in.html';
+                return;
+            }
+
+            try {
+                const user = await api.getCurrentUser();
+                document.getElementById('displayName').innerText = user.full_name || user.username;
+                document.getElementById('displayRole').innerText = user.role === 'admin' ? 'Administrator' : 'General User';
+                document.getElementById('username').innerText = user.username;
+                document.getElementById('email').innerText = user.email;
+                document.getElementById('fullName').innerText = user.full_name || '-';
+                document.getElementById('phone').innerText = user.phone || '-';
+
+                // Load Orders
+                loadUserOrders();
+
+            } catch (error) {
+                console.error('Failed to load profile:', error);
+                alert('Session หมดอายุ กรุณาเข้าสู่ระบบใหม่');
+                api.clearToken(); // Clear invalid token
+                window.location.href = 'sign-in.html';
+            }
+        });
+
+        async function loadUserOrders() {
+            const tbody = document.getElementById('historyBody');
+            try {
+                // Fetch orders from API
+                const orders = await api.getOrders(); // Assuming this endpoint returns user's orders
+
+                if (!orders || orders.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding: 20px;">ยังไม่มีประวัติการสั่งซื้อ</td></tr>';
+                    return;
+                }
+
+                tbody.innerHTML = '';
+                orders.forEach(order => {
+                    const statusInfo = getStatusInfo(order.status);
+                    // Format date
+                    const dateObj = new Date(order.created_at || order.date);
+                    const dateStr = dateObj.toLocaleDateString('th-TH', { day: 'numeric', month: 'short', year: 'numeric' });
+
+                    const productName = order.items && order.items.length > 0 ? order.items[0].product_name : (order.product_name || 'สินค้าทั่วไป');
+                    const total = order.total_amount || order.total || 0;
+
+                    tbody.innerHTML += `
+                        <tr style="border-bottom: 1px solid #eee;">
+                            <td style="padding: 12px;">#${order.id}</td>
+                            <td style="padding: 12px;">${dateStr}</td>
+                            <td style="padding: 12px;">${productName}</td>
+                            <td style="padding: 12px;">฿${parseFloat(total).toLocaleString()}</td>
+                            <td style="padding: 12px;">
+                                <span class="status-badge" style="background:${statusInfo.bg}; color:${statusInfo.color}; padding: 4px 8px; border-radius: 4px; font-size: 0.85rem;">
+                                    ${statusInfo.text}
+                                </span>
+                            </td>
+                        </tr>
+                    `;
+                });
+
+            } catch (error) {
+                console.error('Failed to load orders:', error);
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; color:red; padding: 20px;">โหลดข้อมูลล้มเหลว</td></tr>';
+            }
+        }
+
+        function getStatusInfo(status) {
+            switch (status) {
+                case 'pending': return { text: 'รอตรวจสอบ', bg: '#fff3e0', color: '#ef6c00' };
+                case 'paid': return { text: 'ชำระแล้ว', bg: '#e8f5e9', color: '#2e7d32' };
+                case 'shipped': return { text: 'จัดส่งแล้ว', bg: '#e3f2fd', color: '#1565c0' };
+                case 'completed': return { text: 'สำเร็จ', bg: '#e8f5e9', color: '#2e7d32' };
+                case 'cancelled': return { text: 'ยกเลิก', bg: '#ffebee', color: '#c62828' };
+                default: return { text: status || 'อื่นๆ', bg: '#f5f5f5', color: '#666' };
+            }
+        }
+
+        function toggleMenu() {
+            const hamburger = document.getElementById('hamburger');
+            const navMenu = document.getElementById('navMenu');
+            hamburger.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        }
+    </script>
+</body>
+
+</html>

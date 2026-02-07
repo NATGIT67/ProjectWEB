@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="th">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
+
 <body class="login-page-body">
 
     <header class="navbar">
@@ -19,13 +21,13 @@
                 <span></span>
             </button>
             <nav id="navMenu">
-            <ul>
-                <li><a href="../">หน้าแรก</a></li>
-                <li><a href="product.html">สินค้า</a></li>
-                <li><a href="about.html">ข่าวสาร</a></li>
-                <li><a href="contact.html">ติดต่อ</a></li>
-            </ul>
-        </nav>
+                <ul>
+                    <li><a href="../">หน้าแรก</a></li>
+                    <li><a href="product.html">สินค้า</a></li>
+                    <li><a href="about.html">ข่าวสาร</a></li>
+                    <li><a href="contact.html">ติดต่อ</a></li>
+                </ul>
+            </nav>
             <a href="sign-in.html" class="btn-signin active">เข้าสู่ระบบ</a>
         </div>
     </header>
@@ -41,11 +43,13 @@
                 <div id="login-message" style="display:none; margin-bottom:15px;"></div>
                 <div class="form-group">
                     <label for="username">อีเมลหรือเบอร์โทรศัพท์</label>
-                    <input type="text" id="username" class="form-control" placeholder="กรอกอีเมลหรือเบอร์โทรศัพท์" required autocomplete="username">
+                    <input type="text" id="username" class="form-control" placeholder="กรอกอีเมลหรือเบอร์โทรศัพท์"
+                        required autocomplete="username">
                 </div>
                 <div class="form-group">
                     <label for="password">รหัสผ่าน</label>
-                    <input type="password" id="password" class="form-control" placeholder="กรอกรหัสผ่าน" required autocomplete="current-password">
+                    <input type="password" id="password" class="form-control" placeholder="กรอกรหัสผ่าน" required
+                        autocomplete="current-password">
                 </div>
                 <div class="form-options">
                     <div class="remember-me">
@@ -56,115 +60,127 @@
                 </div>
                 <button type="submit" class="btn-primary full-width">เข้าสู่ระบบ</button>
             </form>
-            
+
             <div class="sign-in-link" style="text-align:center; margin-top:15px;">
-    <span>ยังไม่มีบัญชี?</span>
-    <a href="sign-up.html" style="color:#2e7d32; font-weight:500;">
-        สมัครสมาชิก
-    </a>
-</div>
-
-            <div class="divider"><span>หรือ</span></div>
-
-            <div class="social-login">
-                <button class="social-btn"><i class="fab fa-google"></i> Google</button>
-                <button class="social-btn"><i class="fab fa-line"></i> LINE</button>
+                <span>ยังไม่มีบัญชี?</span>
+                <a href="sign-up.html" style="color:#2e7d32; font-weight:500;">
+                    สมัครสมาชิก
+                </a>
             </div>
-        </div>
+
+            <!-- Social Login Removed -->
     </main>
 
 
     <script src="../js/api-client.js"></script>
     <script>
-const loginForm = document.getElementById('loginForm');
-const loginMsg = document.getElementById('login-message');
-
-loginForm.addEventListener('submit', async function(e) {
-    e.preventDefault();
-    loginMsg.style.display = 'none';
-    loginMsg.innerHTML = '';
-
-    const email = document.getElementById('username').value.trim();
-    const password = document.getElementById('password').value.trim();
-
-    // ตรวจสอบข้อมูล
-    if (!email || !password) {
-        showMsg('กรุณากรอกข้อมูลให้ครบถ้วน', false);
-        return;
-    }
-
-    try {
-        // เข้าสู่ระบบผ่าน API
-        const response = await api.login(email, password);
-        
-        // บันทึก token
-        api.setToken(response.token);
-
-        // Decode JWT to get role
-        let userRole = 'user';
-        try {
-            const parts = response.token.split('.');
-            if (parts.length === 3) {
-                let payload = parts[1];
-                // Add padding if needed
-                const padding = 4 - (payload.length % 4);
-                if (padding !== 4) {
-                    payload += '='.repeat(padding);
+        // Check if already logged in
+        document.addEventListener('DOMContentLoaded', () => {
+            const isLoggedIn = localStorage.getItem('is_logged_in');
+            const role = localStorage.getItem('role');
+            if (isLoggedIn === 'true') {
+                if (role === 'admin') {
+                    window.location.href = 'admin-panel.html';
+                } else {
+                    window.location.href = '../index.html';
                 }
-                const decoded = JSON.parse(atob(payload));
-                userRole = decoded.role || 'user';
             }
-        } catch (e) {
-            console.log('Could not decode role from token');
+        });
+
+        const loginForm = document.getElementById('loginForm');
+        const loginMsg = document.getElementById('login-message');
+
+        loginForm.addEventListener('submit', async function (e) {
+            e.preventDefault();
+            loginMsg.style.display = 'none';
+            loginMsg.innerHTML = '';
+
+            const email = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value.trim();
+
+            // ตรวจสอบข้อมูล
+            if (!email || !password) {
+                showMsg('กรุณากรอกข้อมูลให้ครบถ้วน', false);
+                return;
+            }
+
+            try {
+                // เข้าสู่ระบบผ่าน API
+                const response = await api.login(email, password);
+
+                // บันทึก token
+                api.setToken(response.token);
+
+                // Decode JWT to get role
+                let userRole = 'user';
+                try {
+                    const parts = response.token.split('.');
+                    if (parts.length === 3) {
+                        let payload = parts[1];
+                        // Add padding if needed
+                        const padding = 4 - (payload.length % 4);
+                        if (padding !== 4) {
+                            payload += '='.repeat(padding);
+                        }
+                        const decoded = JSON.parse(atob(payload));
+                        userRole = decoded.role || 'user';
+                    }
+                } catch (e) {
+                    console.log('Could not decode role from token');
+                }
+
+                // บันทึกข้อมูลผู้ใช้
+                if (response.user) {
+                    localStorage.setItem('user_id', response.user.user_id || response.user.id);
+                    localStorage.setItem('username', response.user.username);
+                    localStorage.setItem('email', response.user.email);
+                    localStorage.setItem('full_name', response.user.full_name || response.user.username);
+                    localStorage.setItem('phone', response.user.phone || '');
+                    localStorage.setItem('role', userRole);
+                    localStorage.setItem('is_logged_in', 'true');
+                }
+
+                showMsg('เข้าสู่ระบบสำเร็จ กำลังนำทาง...', true);
+                setTimeout(() => {
+                    if (userRole === 'admin') {
+                        window.location.href = 'admin-panel.html';
+                    } else {
+                        window.location.href = '../';
+                    }
+                }, 1200);
+            } catch (error) {
+                showMsg(error.message || 'อีเมลหรือรหัสผ่านไม่ถูกต้อง', false);
+            }
+        });
+
+        function showMsg(msg, success) {
+            loginMsg.style.display = 'block';
+            loginMsg.innerHTML = msg;
+            loginMsg.style.background = success ? '#e8f5e9' : '#ffebee';
+            loginMsg.style.color = success ? '#2e7d32' : '#c62828';
+            loginMsg.style.border = success ? '1px solid #81c784' : '1px solid #e57373';
+            loginMsg.style.padding = '10px 15px';
+            loginMsg.style.borderRadius = '6px';
+            loginMsg.style.textAlign = 'center';
         }
 
-        // บันทึกข้อมูลผู้ใช้
-        if (response.user) {
-            localStorage.setItem('user_id', response.user.user_id || response.user.id);
-            localStorage.setItem('username', response.user.username);
-            localStorage.setItem('email', response.user.email);
-            localStorage.setItem('full_name', response.user.full_name || response.user.username);
-            localStorage.setItem('phone', response.user.phone || '');
-            localStorage.setItem('role', userRole);
-            localStorage.setItem('is_logged_in', 'true');
+        // แสดง/ซ่อนเมนู
+        function toggleMenu() {
+            const hamburger = document.getElementById('hamburger');
+            const navMenu = document.getElementById('navMenu');
+            hamburger.classList.toggle('active');
+            navMenu.classList.toggle('active');
         }
 
-        showMsg('เข้าสู่ระบบสำเร็จ กำลังนำทาง...', true);
-        setTimeout(() => { 
-            window.location.href = '../'; 
-        }, 1200);
-    } catch (error) {
-        showMsg(error.message || 'อีเมลหรือรหัสผ่านไม่ถูกต้อง', false);
-    }
-});
-
-function showMsg(msg, success) {
-    loginMsg.style.display = 'block';
-    loginMsg.innerHTML = msg;
-    loginMsg.style.background = success ? '#e8f5e9' : '#ffebee';
-    loginMsg.style.color = success ? '#2e7d32' : '#c62828';
-    loginMsg.style.border = success ? '1px solid #81c784' : '1px solid #e57373';
-    loginMsg.style.padding = '10px 15px';
-    loginMsg.style.borderRadius = '6px';
-    loginMsg.style.textAlign = 'center';
-}
-
-// แสดง/ซ่อนเมนู
-function toggleMenu() {
-    const hamburger = document.getElementById('hamburger');
-    const navMenu = document.getElementById('navMenu');
-    hamburger.classList.toggle('active');
-    navMenu.classList.toggle('active');
-}
-
-// ปิดเมนูเมื่อคลิกลิงก์
-document.querySelectorAll('#navMenu a').forEach(link => {
-    link.addEventListener('click', () => {
-        document.getElementById('hamburger').classList.remove('active');
-        document.getElementById('navMenu').classList.remove('active');
-    });
-});
-</script>
-<script src="../js/easyrice.js"></script>
+        // ปิดเมนูเมื่อคลิกลิงก์
+        document.querySelectorAll('#navMenu a').forEach(link => {
+            link.addEventListener('click', () => {
+                document.getElementById('hamburger').classList.remove('active');
+                document.getElementById('navMenu').classList.remove('active');
+            });
+        });
+    </script>
+    <script src="../js/easyrice.js"></script>
 </body>
+
 </html>
