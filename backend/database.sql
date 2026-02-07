@@ -36,7 +36,7 @@ CREATE TABLE orders (
   total_price DECIMAL(10, 2) NOT NULL,
   payment_type ENUM('full', 'deposit') DEFAULT 'full',
   paid_amount DECIMAL(10, 2) DEFAULT 0.00,
-  status ENUM('pending', 'confirmed', 'shipped', 'delivered', 'cancelled') DEFAULT 'pending',
+  status ENUM('pending', 'confirmed', 'shipped', 'delivered', 'cancelled', 'completed') DEFAULT 'pending',
   shipping_address TEXT,
   payment_slip LONGTEXT,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
