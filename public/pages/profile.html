@@ -74,6 +74,60 @@
             margin-top: 20px;
             width: 100%;
         }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 30px;
+            border-radius: 15px;
+            width: 500px;
+            max-width: 90%;
+            position: relative;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #aaa;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
     </style>
     <!-- SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -129,6 +183,41 @@
                 <div class="info-value"><i class="fas fa-phone"></i> <span id="phone">...</span></div>
             </div>
 
+            <button class="btn-edit" onclick="openEditModal()">แก้ไขข้อมูลส่วนตัว</button>
+
+            <!-- Edit Profile Modal -->
+            <div id="editProfileModal" class="modal">
+                <div class="modal-content">
+                    <span class="close-btn" onclick="closeEditModal()">&times;</span>
+                    <h2>แก้ไขข้อมูลส่วนตัว</h2>
+                    <form id="editProfileForm" onsubmit="handleProfileUpdate(event)">
+                        <div class="form-group">
+                            <label>รูปโปรไฟล์</label>
+                            <input type="file" id="editAvatar" accept="image/*">
+                        </div>
+                        <div class="form-group">
+                            <label>ชื่อ-นามสกุล</label>
+                            <input type="text" id="editFullName" required>
+                        </div>
+                        <div class="form-group">
+                            <label>เบอร์โทรศัพท์</label>
+                            <input type="text" id="editPhone">
+                        </div>
+                        <div class="form-group">
+                            <label>ที่อยู่</label>
+                            <input type="text" id="editAddress">
+                        </div>
+                        <hr style="margin: 20px 0; border: 0; border-top: 1px solid #eee;">
+                        <div class="form-group">
+                            <label>เปลี่ยนรหัสผ่าน (เว้นว่างหากไม่ต้องการเปลี่ยน)</label>
+                            <input type="password" id="editPassword" placeholder="รหัสผ่านใหม่">
+                        </div>
+                        <button type="submit" class="btn-edit"
+                            style="background: var(--primary-color);">บันทึกการเปลี่ยนแปลง</button>
+                    </form>
+                </div>
+            </div>
+
             <!-- Order History Section -->
             <div class="profile-header" style="margin-top: 40px; border-bottom: 1px solid #eee; padding-bottom: 15px;">
                 <h3><i class="fas fa-history"></i> ประวัติการสั่งซื้อ</h3>
@@ -166,12 +255,20 @@
 
             try {
                 const user = await api.getCurrentUser();
+                window.currentUser = user; // Store for edit modal
+
                 document.getElementById('displayName').innerText = user.full_name || user.username;
                 document.getElementById('displayRole').innerText = user.role === 'admin' ? 'Administrator' : 'General User';
                 document.getElementById('username').innerText = user.username;
                 document.getElementById('email').innerText = user.email;
                 document.getElementById('fullName').innerText = user.full_name || '-';
                 document.getElementById('phone').innerText = user.phone || '-';
+
+                // Update Avatar if exists
+                if (user.profile_picture) {
+                    const avatarEl = document.querySelector('.profile-avatar');
+                    avatarEl.innerHTML = `<img src="${user.profile_picture}" style="width:100%; height:100%; object-fit:cover; border-radius:50%;">`;
+                }
 
                 // Load Orders
                 loadUserOrders();
@@ -186,74 +283,238 @@
 
         async function loadUserOrders() {
             const tbody = document.getElementById('historyBody');
+
+            // Check and update table header if needed
+            const theadRow = document.querySelector('.order-history-table thead tr');
+            if (theadRow && theadRow.children.length === 5) {
+                const th = document.createElement('th');
+                th.style.padding = '12px';
+                th.innerText = 'รายละเอียด';
+                theadRow.appendChild(th);
+            }
+
             try {
                 // Fetch orders from API
                 const orders = await api.getOrders();
 
                 if (!orders || orders.length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding: 20px;">ยังไม่มีประวัติการสั่งซื้อ</td></tr>';
+                    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding: 20px;">ยังไม่มีประวัติการสั่งซื้อ</td></tr>';
                     return;
                 }
 
                 tbody.innerHTML = '';
                 orders.forEach(order => {
                     const statusInfo = getStatusInfo(order.status);
-                    // Format date
                     const dateObj = new Date(order.created_at || order.order_date);
                     const dateStr = dateObj.toLocaleDateString('th-TH', { day: 'numeric', month: 'short', year: 'numeric' });
 
-                    // Product Name Logic (using new API fields)
-                    let productName = 'สินค้าทั่วไป';
-                    if (order.first_product_name) {
-                        productName = order.first_product_name;
-                        if (order.item_count > 1) {
-                            productName += ` (และอีก ${order.item_count - 1} รายการ)`;
-                        }
-                    } else if (order.items && order.items.length > 0) {
-                        productName = order.items[0].product_name;
+                    let itemsStr = 'สินค้าคุณภาพ EasyRice';
+                    if (order.items && order.items.length > 0) {
+                        itemsStr = order.items.map(i => `${i.product_name} x${i.quantity}`).join(', ');
+                    } else if (order.item_count) {
+                        itemsStr = `${order.first_product_name}` + (order.item_count > 1 ? ` และอีก ${order.item_count - 1} รายการ` : '');
                     }
 
-                    // Robust ID and Price
-                    const orderId = order.order_id || order.id || '#Unknown';
-                    const total = parseFloat(order.total_price || order.total || 0);
+                    const tr = document.createElement('tr');
+                    tr.style.borderBottom = '1px solid #eee';
 
-                    tbody.innerHTML += `
-                        <tr style="border-bottom: 1px solid #eee;">
-                            <td style="padding: 12px;">#${orderId}</td>
-                            <td style="padding: 12px;">${dateStr}</td>
-                            <td style="padding: 12px;">${productName}</td>
-                            <td style="padding: 12px;">฿${total.toLocaleString()}</td>
-                            <td style="padding: 12px;">
-                                <span class="status-badge" style="background:${statusInfo.bg}; color:${statusInfo.color}; padding: 4px 8px; border-radius: 4px; font-size: 0.85rem;">
-                                    ${statusInfo.text}
-                                </span>
-                            </td>
-                        </tr>
+                    // Safe JSON stringify for onclick
+                    const orderJson = JSON.stringify(order).replace(/'/g, "&#39;").replace(/"/g, "&quot;");
+
+                    tr.innerHTML = `
+                        <td style="padding: 12px;">#${order.order_id || order.id}</td>
+                        <td style="padding: 12px;">${dateStr}</td>
+                        <td style="padding: 12px;">${itemsStr}</td>
+                        <td style="padding: 12px;">฿${parseFloat(order.total_price || order.total).toLocaleString()}</td>
+                        <td style="padding: 12px;">${statusInfo}</td>
+                        <td style="padding: 12px;">
+                            <button class="btn-view" onclick='viewOrderDetails(${orderJson})' style="background: #2196F3; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; display: flex; align-items: center; gap: 5px;">
+                                <i class="fas fa-eye"></i> ดูข้อมูล
+                            </button>
+                        </td>
                     `;
+                    tbody.appendChild(tr);
+
+                    // Keep the inline remark for immediate visibility
+                    if (order.status === 'cancelled' && order.remark) {
+                        const remarkTr = document.createElement('tr');
+                        remarkTr.style.background = '#fff8f8';
+                        remarkTr.innerHTML = `
+                            <td colspan="6" style="padding: 10px 15px; color: #d32f2f; font-size: 0.9em; border-bottom: 1px solid #eee;">
+                                <i class="fas fa-exclamation-circle"></i> <strong>เหตุผลที่ยกเลิก:</strong> ${order.remark}
+                            </td>
+                        `;
+                        tbody.appendChild(remarkTr);
+                    }
                 });
 
             } catch (error) {
-                console.error('Failed to load orders:', error);
-                tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:red; padding: 20px;">โหลดข้อมูลล้มเหลว: ${error.message}</td></tr>`;
+                console.error("History error:", error);
+                tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:red;">โหลดข้อมูลไม่สำเร็จ: ${error.message}</td></tr>`;
             }
         }
 
-        function getStatusInfo(status) {
-            switch (status) {
-                case 'pending': return { text: 'รอตรวจสอบ', bg: '#fff3e0', color: '#ef6c00' };
-                case 'paid': return { text: 'ชำระแล้ว', bg: '#e8f5e9', color: '#2e7d32' };
-                case 'shipped': return { text: 'จัดส่งแล้ว', bg: '#e3f2fd', color: '#1565c0' };
-                case 'completed': return { text: 'สำเร็จ', bg: '#e8f5e9', color: '#2e7d32' };
-                case 'cancelled': return { text: 'ยกเลิก', bg: '#ffebee', color: '#c62828' };
-                default: return { text: status || 'อื่นๆ', bg: '#f5f5f5', color: '#666' };
+        function viewOrderDetails(order) {
+            // Create modal dynamically if distinct
+            let modal = document.getElementById('orderDetailModal');
+            if (!modal) {
+                modal = document.createElement('div');
+                modal.id = 'orderDetailModal';
+                modal.className = 'modal';
+                // Add modal HTML structure
+                modal.innerHTML = `
+                    <div class="modal-content" style="max-width: 600px;">
+                        <span class="close-btn" onclick="document.getElementById('orderDetailModal').classList.remove('active')">&times;</span>
+                        <h2 style="border-bottom:1px solid #eee; padding-bottom:10px; margin-top:0;">รายละเอียดคำสั่งซื้อ</h2>
+                        <div id="orderDetailBody"></div>
+                        <button onclick="document.getElementById('orderDetailModal').classList.remove('active')" style="width:100%; margin-top:15px; padding:10px; background:#ddd; border:none; border-radius:5px; cursor:pointer;">ปิด</button>
+                    </div>
+                `;
+                document.body.appendChild(modal);
             }
+
+            const body = document.getElementById('orderDetailBody');
+
+            // Items List
+            let itemsHtml = '';
+            if (order.items && order.items.length) {
+                itemsHtml = order.items.map(i => `
+                    <div style="display:flex; justify-content:space-between; padding:5px 0; border-bottom:1px dashed #eee;">
+                        <span>${i.product_name} x ${i.quantity}</span>
+                        <span>฿${(i.price * i.quantity).toLocaleString()}</span>
+                    </div>
+                `).join('');
+            } else {
+                itemsHtml = '<p>ไม่ระบุรายการสินค้า</p>';
+            }
+
+            // Slip
+            let slipHtml = '';
+            if (order.payment_slip) {
+                slipHtml = `
+                    <div style="margin-top:15px; text-align:center;">
+                        <p style="font-weight:bold; margin-bottom:5px;">หลักฐานการโอนเงิน</p>
+                        <a href="${order.payment_slip}" target="_blank">
+                            <img src="${order.payment_slip}" style="max-width:100%; max-height:200px; border-radius:5px; border:1px solid #ddd;">
+                        </a>
+                    </div>
+                `;
+            } else {
+                slipHtml = '<p style="text-align:center; color:#888; margin-top:10px;">ไม่มีหลักฐานการโอนเงิน</p>';
+            }
+
+            // Remark in Modal
+            let remarkHtml = '';
+            if (order.status === 'cancelled' && order.remark) {
+                remarkHtml = `
+                    <div style="margin-top:15px; padding:10px; background:#ffebee; color:#c62828; border-radius:5px; border:1px solid #ffcdd2;">
+                        <strong><i class="fas fa-exclamation-circle"></i> ยกเลิกเนื่องจาก:</strong> ${order.remark}
+                    </div>
+                `;
+            }
+
+            body.innerHTML = `
+                <div style="margin-bottom:10px;">
+                    <strong>เลขที่:</strong> #${order.order_id || order.id} <br>
+                    <strong>วันที่:</strong> ${new Date(order.created_at || order.order_date).toLocaleString('th-TH')} <br>
+                    <strong>สถานะ:</strong> ${getStatusInfo(order.status)}
+                </div>
+                <div style="background:#f9f9f9; padding:10px; border-radius:5px;">
+                    <strong>รายการสินค้า:</strong>
+                    ${itemsHtml}
+                    <div style="display:flex; justify-content:space-between; margin-top:10px; font-weight:bold;">
+                        <span>รวมทั้งสิ้น</span>
+                        <span style="color:var(--primary-color);">฿${parseFloat(order.total_price || order.total).toLocaleString()}</span>
+                    </div>
+                </div>
+                ${remarkHtml}
+                ${slipHtml}
+            `;
+
+            modal.classList.add('active');
         }
+
+        function getStatusInfo(status) {
+            let statusBadge = `<span class="status-pending" style="background:#FFF3E0; color:#E65100; padding:4px 8px; border-radius:4px;">รอตรวจสอบ</span>`;
+            if (status === 'confirmed') statusBadge = `<span class="status-paid" style="background:#E8F5E9; color:#2E7D32; padding:4px 8px; border-radius:4px;">ที่ต้องได้รับ</span>`;
+            if (status === 'shipped') statusBadge = `<span class="status-shipped" style="background:#E3F2FD; color:#1565C0; padding:4px 8px; border-radius:4px;">จัดส่งแล้ว</span>`;
+            if (status === 'completed') statusBadge = `<span class="status-completed" style="background:#E8F5E9; color:#2E7D32; padding:4px 8px; border-radius:4px;">สำเร็จ</span>`;
+            if (status === 'cancelled') statusBadge = `<span class="status-cancelled" style="background:#ffebee; color:#c62828; border:1px solid #ffcdd2; padding:4px 8px; border-radius:4px;">ยกเลิกแล้ว</span>`;
+            return statusBadge;
+        }
+
+
 
         function toggleMenu() {
             const hamburger = document.getElementById('hamburger');
             const navMenu = document.getElementById('navMenu');
             hamburger.classList.toggle('active');
             navMenu.classList.toggle('active');
+        }
+
+        // Edit Profile Logic
+        function openEditModal() {
+            const userFullName = document.getElementById('fullName').innerText;
+            const userPhone = document.getElementById('phone').innerText;
+            // Address not currently shown in main view, let's assume we can fetch it or it's not critical to pre-fill if not valid
+            // But better to fetch fresh user data or store it.
+            // For now, let's pre-fill with what we have.
+            document.getElementById('editFullName').value = userFullName !== '-' ? userFullName : '';
+            document.getElementById('editPhone').value = userPhone !== '-' ? userPhone : '';
+            // Address logic: we might need to fetch user again or store object.
+            // Let's use the object stored in window if possible.
+            if (window.currentUser) {
+                document.getElementById('editAddress').value = window.currentUser.address || '';
+            }
+
+            document.getElementById('editProfileModal').classList.add('active');
+        }
+
+        function closeEditModal() {
+            document.getElementById('editProfileModal').classList.remove('active');
+        }
+
+        async function handleProfileUpdate(e) {
+            e.preventDefault();
+
+            const formData = new FormData();
+            formData.append('full_name', document.getElementById('editFullName').value);
+            formData.append('phone', document.getElementById('editPhone').value);
+            formData.append('address', document.getElementById('editAddress').value);
+
+            const password = document.getElementById('editPassword').value;
+            if (password) {
+                formData.append('password', password);
+            }
+
+            const avatarFile = document.getElementById('editAvatar').files[0];
+            if (avatarFile) {
+                formData.append('profile_picture', avatarFile);
+            }
+
+            try {
+                const result = await api.updateProfile(formData);
+                console.log('Update result:', result);
+
+                await Swal.fire({
+                    icon: 'success',
+                    title: 'บันทึกสำเร็จ',
+                    text: 'ข้อมูลโปรไฟล์ถูกอัปเดตแล้ว',
+                    timer: 1500,
+                    showConfirmButton: false
+                });
+
+                closeEditModal();
+                // Reload page to refresh data
+                window.location.reload();
+            } catch (error) {
+                console.error('Update failed:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'เกิดข้อผิดพลาด',
+                    text: error.message
+                });
+            }
         }
     </script>
 </body>

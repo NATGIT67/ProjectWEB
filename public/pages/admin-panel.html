@@ -408,6 +408,27 @@
         }
 
         /* View Details */
+        .btn-view {
+            background: linear-gradient(135deg, #1976d2, #42a5f5);
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: 'Kanit', sans-serif;
+            font-size: 0.9em;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: all 0.2s;
+        }
+
+        .btn-view:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
         .btn-orange {
             background: linear-gradient(135deg, #FF6F00, #FF8F00);
         }
@@ -539,6 +560,73 @@
             white-space: pre-wrap;
             /* Preserve line breaks */
             line-height: 1.6;
+        }
+
+        /* Modal Styles - Redundant ensure */
+        .modal {
+            display: none;
+            /* Hidden by default */
+            position: fixed;
+            /* Stay in place */
+            z-index: 1000;
+            /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%;
+            /* Full width */
+            height: 100%;
+            /* Full height */
+            overflow: auto;
+            /* Enable scroll if needed */
+            background-color: rgba(0, 0, 0, 0.4);
+            /* Black w/ opacity */
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+            /* Flex to center */
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 90%;
+            max-width: 500px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            position: relative;
+            animation: fadeIn 0.3s;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .close-btn {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close-btn:hover,
+        .close-btn:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
         }
     </style>
     <!-- SweetAlert2 CSS -->
@@ -758,38 +846,7 @@
 
     <!-- Floating Button removed as per request -->
 
-    <!-- Report Details Modal -->
-    <div id="reportDetailsModal" class="modal-overlay">
-        <div class="modal-content" style="max-width: 600px;">
-            <div class="modal-header">
-                <h3><i class="fas fa-envelope-open-text"></i> รายละเอียดข้อความ</h3>
-                <button class="close-modal" onclick="closeModals()">&times;</button>
-            </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <label>ผู้ส่ง</label>
-                    <div id="reportSenderName" class="info-box"></div>
-                </div>
-                <div class="form-group">
-                    <label>ข้อมูลติดต่อ (อีเมล/โทรศัพท์)</label>
-                    <div id="reportContact" class="info-box"></div>
-                </div>
-                <div class="form-group">
-                    <label>หมวดหมู่</label>
-                    <div id="reportCategory" class="info-box"></div>
-                </div>
-                <div class="form-group">
-                    <label>ข้อความ</label>
-                    <div id="reportMessage" class="info-box scrollable-text"></div>
-                </div>
-                <!-- Date info -->
-                <p id="reportDate" style="font-size: 0.85rem; color: #888; text-align: right; margin-top: 10px;"></p>
-            </div>
-            <div class="modal-footer">
-                <button class="btn-cancel" onclick="closeModals()">ปิดหน้าต่าง</button>
-            </div>
-        </div>
-    </div>
+    <!-- Report Details Modal Removed (Duplicate) -->
     <!-- Order Details Modal -->
     <div id="orderModal" class="modal">
         <div class="modal-content">
@@ -822,6 +879,26 @@
                 <div style="text-align:right; margin-top:20px;">
                     <button type="button" class="btn-action btn-red" onclick="closeModals()">ยกเลิก</button>
                     <button type="submit" class="btn-action btn-green">บันทึก</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Reject Order Modal -->
+    <div id="rejectOrderModal" class="modal">
+        <div class="modal-content">
+            <h2>ระบุเหตุผลที่ยกเลิก / ไม่ผ่านการตรวจสอบ</h2>
+            <form id="rejectOrderForm" onsubmit="handleRejectSubmit(event)">
+                <input type="hidden" id="rejectOrderId">
+                <div class="form-group">
+                    <label>หมายเหตุ (จะแสดงให้ลูกค้าเห็น):</label>
+                    <textarea id="rejectRemark" rows="4"
+                        style="width:100%; padding:10px; border-radius:8px; border:1px solid #ddd;"
+                        placeholder="เช่น สลิปไม่ชัดเจน, ยอดเงินไม่ครบ, สินค้าหมด" required></textarea>
+                </div>
+                <div style="text-align:right;">
+                    <button type="button" class="btn-action btn-blue" onclick="closeModals()">ปิด</button>
+                    <button type="submit" class="btn-action btn-red">ยืนยันการยกเลิก</button>
                 </div>
             </form>
         </div>
@@ -866,12 +943,54 @@
         </div>
     </div>
 
+    <!-- Report Details Modal -->
+    <div id="reportDetailsModal" class="modal">
+        <div class="modal-content" style="max-width: 600px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+                <h2 style="margin:0;">รายละเอียดข้อความ</h2>
+                <span style="font-size:24px; cursor:pointer;" onclick="closeModals()">&times;</span>
+            </div>
+
+            <div class="report-detail-group" style="margin-bottom:15px;">
+                <label style="font-weight:bold; color:#666;">ผู้ส่ง:</label>
+                <div id="reportSenderName" style="font-size:1.1em;"></div>
+            </div>
+
+            <div class="report-detail-group" style="margin-bottom:15px;">
+                <label style="font-weight:bold; color:#666;">ข้อมูลติดต่อ:</label>
+                <div id="reportContact"></div>
+            </div>
+
+            <div class="report-detail-group" style="margin-bottom:15px;">
+                <label style="font-weight:bold; color:#666;">หัวข้อเรื่อง:</label>
+                <div id="reportCategory"
+                    style="display:inline-block; padding:4px 8px; background:#e3f2fd; color:#1976d2; border-radius:4px; font-size:0.9em;">
+                </div>
+            </div>
+
+            <div class="report-detail-group" style="margin-bottom:15px;">
+                <label style="font-weight:bold; color:#666;">วันที่ส่ง:</label>
+                <div id="reportDate" style="font-size:0.9em; color:#888;"></div>
+            </div>
+
+            <div class="report-detail-group"
+                style="background:#f9f9f9; padding:15px; border-radius:8px; border:1px solid #eee;">
+                <label style="font-weight:bold; color:#666; display:block; margin-bottom:5px;">ข้อความ:</label>
+                <div id="reportMessage" style="white-space: pre-wrap; line-height:1.6;"></div>
+            </div>
+
+            <div style="text-align:right; margin-top:20px;">
+                <button type="button" class="btn-action btn-blue" onclick="closeModals()">ปิด</button>
+            </div>
+        </div>
+    </div>
+
     <script src="../js/api-client.js"></script>
     <script>
-        // State
         let allOrders = [];
         let allProducts = [];
         let allUsers = [];
+        let allReports = [];
 
         // Initialization
         document.addEventListener('DOMContentLoaded', async () => {
@@ -1042,7 +1161,8 @@
                     <td>
                         <button class="btn-action btn-blue" onclick="viewOrderDetails(${order.order_id})">ดูรายละเอียด</button>
                         ${order.status === 'pending' ?
-                        `<button class="btn-action btn-orange" onclick="updateStatus(${order.order_id}, 'confirmed')">ยืนยันคำสั่งซื้อ</button>` :
+                        `<button class="btn-action btn-orange" onclick="updateStatus(${order.order_id}, 'confirmed')">ยืนยันคำสั่งซื้อ</button>
+                         <button class="btn-action btn-red" onclick="updateStatus(${order.order_id}, 'cancelled')">ยกเลิก/ไม่ผ่าน</button>` :
                         (order.status === 'confirmed' || order.status === 'shipped' ?
                             `<button class="btn-action btn-green" onclick="handleCompleteSale(${order.order_id})">จบการขาย</button>` :
                             (order.status === 'cancelled' ? `<button class="btn-action btn-brown" disabled>ยกเลิกแล้ว</button>` : '')
@@ -1151,7 +1271,8 @@
                     <td>
                         <button class="btn-action btn-blue" onclick="viewOrderDetails(${o.order_id})">ดู</button>
                         ${o.status === 'pending' ?
-                        `<button class="btn-action btn-orange" onclick="updateStatus(${o.order_id}, 'confirmed')">ยืนยัน</button>` :
+                        `<button class="btn-action btn-orange" onclick="updateStatus(${o.order_id}, 'confirmed')">ยืนยัน</button>
+                         <button class="btn-action btn-red" onclick="updateStatus(${o.order_id}, 'cancelled')">ยกเลิก</button>` :
                         (o.status === 'confirmed' || o.status === 'shipped' ?
                             `<button class="btn-action btn-green" onclick="handleCompleteSale(${o.order_id})">จบการขาย</button>` : '')
                     }
@@ -1173,7 +1294,13 @@
                     const phoneStr = u.phone || '-';
                     tr.innerHTML = `
                         <td>${u.user_id}</td>
-                        <td>${u.username}</td>
+                        <td style="display:flex; align-items:center; gap:10px;">
+                            ${u.profile_picture ?
+                            `<img src="${u.profile_picture}" style="width:40px; height:40px; border-radius:50%; object-fit:cover;">` :
+                            `<div style="width:40px; height:40px; border-radius:50%; background:#eee; display:flex; align-items:center; justify-content:center; color:#888;"><i class="fas fa-user"></i></div>`
+                        }
+                            <span>${u.username}</span>
+                        </td>
                         <td>${u.email}</td>
                         <td>${phoneStr}</td>
                         <td>
@@ -1230,14 +1357,15 @@
 
             try {
                 const reports = await api.getReports();
+                allReports = reports || []; // Store globally
                 tbody.innerHTML = '';
 
-                if (!reports || reports.length === 0) {
+                if (!allReports || allReports.length === 0) {
                     tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">ไม่มีข้อความ</td></tr>';
                     return;
                 }
 
-                reports.forEach(r => {
+                allReports.forEach((r, index) => {
                     const tr = document.createElement('tr');
                     const dateStr = new Date(r.created_at).toLocaleString('th-TH');
                     tr.innerHTML = `
@@ -1246,8 +1374,8 @@
                         <td style="max-width: 150px; overflow: hidden; text-overflow: ellipsis;">${r.contact}</td>
                         <td><span class="status-badge" style="background:#e3f2fd; color:#1976d2;">${r.category}</span></td>
                         <td>
-                             <div style="display: flex; gap: 5px;">
-                                <button class="btn-view" onclick='viewReport(${JSON.stringify(r).replace(/'/g, "&apos;")})'>
+                            <div style="display: flex; gap: 5px;">
+                                <button class="btn-view" onclick="viewReport(${index})">
                                     <i class="fas fa-eye"></i> ดูรายละเอียด
                                 </button>
                             </div>
@@ -1260,7 +1388,17 @@
             }
         }
 
-        function viewReport(report) {
+        // Make sure viewReport is global
+        window.viewReport = function (index) {
+            console.log('Viewing report index:', index);
+            console.log('All Reports:', allReports);
+
+            const report = allReports[index];
+            if (!report) {
+                console.error('Report not found for index:', index);
+                return;
+            }
+
             document.getElementById('reportSenderName').innerText = report.name;
             document.getElementById('reportContact').innerText = report.contact;
             document.getElementById('reportCategory').innerText = report.category;
@@ -1269,8 +1407,10 @@
             const dateStr = new Date(report.created_at).toLocaleString('th-TH');
             document.getElementById('reportDate').innerText = `ส่งเมื่อ: ${dateStr}`;
 
-            document.getElementById('reportDetailsModal').classList.add('active');
-        }
+            const modal = document.getElementById('reportDetailsModal');
+            modal.classList.add('active');
+            modal.style.display = 'flex'; // Force display
+        };
 
         // Actions
         async function handleCompleteSale(orderId) {
@@ -1307,18 +1447,44 @@
         }
 
         async function updateStatus(orderId, newStatus) {
-            // ... (keep existing Swal if standard update, but for handleCompleteSale we already asked)
-            // But reuse of updateStatus might trigger another Swal if not careful.
-            // Let's modify updateStatus to be generic or just call api directly here if we want to avoid double prompt.
-            // However, the existing updateStatus has a prompt inside.
-            // Let's just use api directly in handleCompleteSale to avoid double prompt, OR refactor updateStatus.
-            // For simplicity, let's
+            // Check if status is cancellation to show modal
+            if (newStatus === 'cancelled') {
+                document.getElementById('rejectOrderId').value = orderId;
+                document.getElementById('rejectRemark').value = '';
+                document.getElementById('rejectOrderModal').classList.add('active');
+                return;
+            }
+
             try {
+                // For other statuses, send null remark
                 await api.updateOrderStatus(orderId, newStatus);
                 await Swal.fire({
                     icon: 'success',
                     title: 'สำเร็จ!',
                     text: 'อัปเดตสถานะเรียบร้อยแล้ว',
+                    timer: 1500,
+                    showConfirmButton: false
+                });
+                await refreshData();
+            } catch (err) {
+                Swal.fire('Error', err.message, 'error');
+            }
+        }
+
+        async function handleRejectSubmit(e) {
+            e.preventDefault();
+            const orderId = document.getElementById('rejectOrderId').value;
+            const remark = document.getElementById('rejectRemark').value;
+
+            try {
+                // Call API with remark using the updated client method
+                await api.updateOrderStatus(orderId, 'cancelled', remark);
+
+                closeModals();
+                await Swal.fire({
+                    icon: 'success',
+                    title: 'ยกเลิกคำสั่งซื้อแล้ว',
+                    text: 'บันทึกสถานะและหมายเหตุเรียบร้อย',
                     timer: 1500,
                     showConfirmButton: false
                 });
@@ -1422,9 +1588,13 @@
             modal.classList.add('active');
         }
 
-        function closeModals() {
-            document.querySelectorAll('.modal').forEach(m => m.classList.remove('active'));
-        }
+        // Make sure closeModals is global
+        window.closeModals = function () {
+            document.querySelectorAll('.modal').forEach(m => {
+                m.classList.remove('active');
+                m.style.display = 'none'; // Force hide
+            });
+        };
 
         async function handleProductSubmit(e) {
             e.preventDefault();
