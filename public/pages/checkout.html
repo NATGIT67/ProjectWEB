@@ -459,10 +459,19 @@
                 const orderResponse = await api.createOrder(address, slipBase64, paymentType);
 
                 if (orderResponse && (orderResponse.id || orderResponse.order_id)) {
-                    alert('สั่งซื้อสำเร็จ! เลขที่ออเดอร์: ' + (orderResponse.id || orderResponse.order_id));
-                    window.location.href = 'history.html';
+                    await Swal.fire({
+                        icon: 'success',
+                        title: 'สั่งซื้อสำเร็จ!',
+                        text: 'เลขที่ออเดอร์: ' + (orderResponse.id || orderResponse.order_id),
+                        confirmButtonText: 'ตกลง'
+                    });
+                    window.location.href = 'profile.html';
                 } else {
-                    alert('เกิดข้อผิดพลาด: ' + (orderResponse?.error || 'Unknown error'));
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'เกิดข้อผิดพลาด',
+                        text: (orderResponse?.error || 'Unknown error')
+                    });
                 }
             } catch (error) {
                 console.error('Order error:', error);

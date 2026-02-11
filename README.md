@@ -1,285 +1,135 @@
 # EasyRice E-Commerce Platform
 
-## 📋 ภาพรวม
-EasyRice เป็นแพลตฟอร์มอี-คอมเมิร์สสำหรับการขายข้าวออนไลน์ โดยใช้ Node.js + MySQL + Vanilla JavaScript
+## 📋 ข้อมูลผู้พัฒนา (Developer Information)
 
-## 📁 Project Structure
+**ชื่อโปรเจค**: An online information system for ordering seedlings -             ระบบสารสนเทศเพื่อการจัดการต้นกล้าข้าวและบริการปักดำออนไลน์
 
-```
-ProjectWEB/
-├── backend/              # Node.js/Express API server
-│   ├── config/
-│   ├── middleware/
-│   ├── routes/
-│   ├── utils/
-│   ├── server.js
-│   ├── package.json
-│   └── database.sql
-│
-├── frontend/             # HTML/CSS/JavaScript frontend
-│   └── app/
-│       ├── index.html
-│       ├── pages/
-│       ├── css/
-│       ├── js/
-│       └── images/
-│
-├── STRUCTURE.md          # Detailed structure info
-└── README.md            # This file
-```
+### รายชื่อนิสิตและหน้าที่ความรับผิดชอบ
+| รหัสนิสิต | ชื่อ-นามสกุล | หน้าที่ความรับผิดชอบ (Responsibilities) |
+|----------|--------------|--------------------------------------|
+| 67021613 | นางสาวชัญญาภัค วรพัฒนเมธ  | ออกแบบต้นแบบหน้าเว็บไซต์(Mockup) ทำ Frontend|
+|  67021680|  นายณัฐพงษ์ เพิ่มการนา| ทำ Backend ออกแบบโครงสร้างฐานข้อมูล(Mockup) ออกแบบต้นแบบหน้าเว็บไซต์(Database Schema) |
+| 67021871 | นางสาวบังอร แก้ววงษา  | ออกแบบต้นแบบหน้าเว็บไซต์ (Mockup) ทำ Frontend |
+| 67022210  | นางสาวศศิธร เนื้อมี | รายงานบทที่ 1-5  ทำ Backend ออกแบบโครงสร้างฐานข้อมูล (Database Schema)|
+| 67022333  | นายสิรภัทร จันทร์โท้ | [frontend ออกแบบแผนผังเว็บไซต์ (Sitemap) ] 
 
-ดูรายละเอียดในที่อย่างสมบูรณ์: [STRUCTURE.md](STRUCTURE.md)
+---
 
-## 🏗️ สถาปัตยกรรม
+## 📁 เอกสารประกอบ (Documents)
 
-### Backend
-- **Framework**: Express.js
-- **Database**: MySQL
-- **Authentication**: JWT (JSON Web Token)
-- **Password Hashing**: bcryptjs
+- **คู่มือการใช้งาน (PDF Manual)**: [manual.pdf](manual.pdf) *(หากไม่มีให้ดู [manual.md](manual.md))*
+- **โครงสร้างฐานข้อมูล (Database Schema)**: [database.sql](backend/database.sql)
+- **สไลด์นำเสนอ**: [presentation.pptx](presentation.pptx) *(ถ้ามี)*
 
-### Frontend
-- **HTML/CSS/JavaScript**: Vanilla (ไม่มี Framework)
-- **API Client**: Custom APIClient class
+---
 
-## 📦 โครงสร้าง Project
+## 🛠️ ขั้นตอนการติดตั้ง (Installation Steps)
 
-```
-ProjectWEB/
-├── config/
-│   └── db.js                 # MySQL connection pool
-├── middleware/
-│   └── auth.js              # JWT authentication middleware
-├── routes/
-│   ├── auth.js              # Authentication routes (register, login)
-│   └── api.js               # Protected API routes
-├── utils/
-│   └── validators.js        # Input validation functions
-├── project/
-│   ├── index.html           # Homepage
-│   ├── pages/
-│   │   ├── product-list.html     # Product listing with API
-│   │   ├── sign-in.html     # Login page with API
-│   │   ├── sign-up.html     # Registration page with API
-│   │   ├── checkout.html    # Checkout page
-│   │   ├── admin.html       # Admin panel
-│   │   └── ...
-│   ├── css/
-│   │   └── style.css        # Styling
-│   └── js/
-│       ├── api-client.js    # API client utility
-│       └── easyrice.js      # Main JavaScript
-├── database.sql             # Database schema
-├── test-data.sql           # Sample test data
-├── server.js               # Express server
-├── package.json            # Dependencies
-├── .env                    # Environment variables
-└── vercel.json            # Vercel deployment config
+เพื่อให้ระบบทำงานได้สมบูรณ์ กรุณาทำตามขั้นตอนดังนี้:
+
+### 1. ติดตั้ง Node.js
+ตรวจสอบว่าเครื่องของท่านมี Node.js ติดตั้งอยู่ (แนะนำเวอร์ชั่น 14.x ขึ้นไป)
+```bash
+node -v
 ```
 
-## 🚀 ติดตั้งและรัน
-
-### 1. ติดตั้ง Dependencies
+### 2. ดาวน์โหลด Library (npm install)
+เข้าไปที่โฟลเดอร์ `backend` และติดตั้ง dependencies ทั้งหมด:
 ```bash
 cd backend
 npm install
 ```
+*คำสั่งนี้จะอ่านไฟล์ `package.json` และดาวน์โหลด library ที่จำเป็น เช่น `express`, `mysql2`, `jsonwebtoken` มาให้โดยอัตโนมัติ*
 
-### 2. สร้าง Database
-```bash
-cd backend
-node setup-db.js
-```
+### 3. นำเข้าฐานข้อมูล (Import Database)
+ระบบใช้ MySQL ในการจัดเก็บข้อมูล
+1. เปิดโปรแกรมจัดการฐานข้อมูล (เช่น phpMyAdmin, MySQL Workbench)
+2. สร้าง Database ใหม่ชื่อ: `easyrice_db`
+3. ทำการ **Import** ไฟล์ SQL เพื่อสร้างตารางและข้อมูลตั้งต้น:
+   - ไฟล์: `backend/database.sql` (โครงสร้างตารางและข้อมูลหลัก)
+   - ไฟล์: `backend/test-data.sql` (ข้อมูลจำลองสำหรับทดสอบ - แนะนำให้ลงเพิ่ม)
 
-### 3. สร้าง .env File
+*หมายเหตุ: ไฟล์ .sql มีข้อมูล (Data) เบื้องต้นอยู่ภายในแล้ว*
+
+### 4. ตั้งค่า Environment Variables (.env)
+สร้างไฟล์ `.env` ในโฟลเดอร์ `backend/` และแก้ไขข้อมูลให้ตรงกับเครื่องของคุณ:
+
 ```bash
 cd backend
 cp .env.example .env
 ```
 
-แก้ไข `backend/.env` ให้ตรงกับการ setup ของคุณ:
-```
+แก้ไขไฟล์ `.env`:
+```env
 DB_HOST=localhost
 DB_USER=root
-DB_PASSWORD=YOUR_PASSWORD
+DB_PASSWORD=YOUR_DB_PASSWORD  <-- แก้ไขรหัสผ่าน Database ของท่าน
 DB_NAME=easyrice_db
 PORT=5000
-NODE_ENV=development
-JWT_SECRET=your-secret-key-here
+JWT_SECRET=secret_key_123     <-- เปลี่ยนได้ตามต้องการ
 ```
 
-### 4. รัน Server
-```bash
-cd backend
-npm start
+---
+
+## 🚀 ขั้นตอนการ Run Project
+
+เมื่อติดตั้งเสร็จแล้ว ให้เริ่มการทำงานของเซิร์ฟเวอร์ดังนี้:
+
+1. เปิด Terminal / Command Prompt
+2. เข้าไปที่โฟลเดอร์ `backend`:
+   ```bash
+   cd backend
+   ```
+3. รันคำสั่ง start:
+   ```bash
+   npm start
+   ```
+   *หากเซิร์ฟเวอร์เริ่มทำงานสำเร็จ จะขึ้นข้อความ "Server is running on port 5000"*
+
+---
+
+## 📖 การใช้งาน (Usage)
+
+เมื่อเซิร์ฟเวอร์ทำงาน (Run) อยู่ ให้เปิด Web Browser (Chrome, Edge) และเข้าใช้งานตามลิงก์ด้านล่าง:
+
+### 1. หน้าหลัก (Homepage)
+สำหรับลูกค้าทั่วไป เลือกซื้อสินค้า:
+**URL**: [http://localhost:5000](http://localhost:5000)
+
+### 2. หน้าแอดมิน (Admin Panel)
+สำหรับจัดการสินค้าและดูคำสั่งซื้อ:
+**URL**: [http://localhost:5000/pages/admin-panel.html](http://localhost:5000/pages/admin-panel.html)
+
+**บัญชี Admin ทดสอบ**:
+- Email: `admin@easyrice.com`
+- Password: `Admin@1234`
+
+### 3. หน้าสมาชิก (Member)
+- สมัครสมาชิก: [http://localhost:5000/pages/sign-up.html](http://localhost:5000/pages/sign-up.html)
+- เข้าสู่ระบบ: [http://localhost:5000/pages/sign-in.html](http://localhost:5000/pages/sign-in.html)
+
+---
+
+## 📁 โครงสร้างโปรเจค (Project Structure)
+
+```
+ProjectWEB/
+├── backend/              # Node.js/Express Server & API
+│   ├── server.js         # ไฟล์หลักในการ Run Server
+│   ├── database.sql      # ไฟล์ SQL Structure & Data
+│   └── ...
+├── public/               # Frontend (HTML/CSS/JS)
+│   ├── index.html        # หน้าแรก
+│   ├── result.pdf        # (ถ้ามีไฟล์ผลลัพธ์)
+│   └── pages/            # หน้าเว็บย่อยต่างๆ
+└── README.md             # เอกสารนี้
 ```
 
-Server จะทำงานบน `http://localhost:5000`
+ดูรายละเอียดโครงสร้างเพิ่มเติม: [STRUCTURE.md](STRUCTURE.md)
 
-### 5. เข้าถึง Frontend
-- **Homepage**: http://localhost:5000
-- **Products**: http://localhost:5000/pages/product-list.html
-- **Sign Up**: http://localhost:5000/pages/sign-up.html
-- **Login**: http://localhost:5000/pages/sign-in.html
+---
 
-## 📡 API Endpoints
+## 👨‍💻 ข้อมูลเพิ่มเติมสำหรับอาจารย์/ผู้ตรวจสอบ
 
-### Authentication
-- **POST** `/api/auth/register` - สมัครสมาชิกใหม่
-- **POST** `/api/auth/login` - เข้าสู่ระบบ
-- **GET** `/api/auth/me` - ดึงข้อมูลผู้ใช้ปัจจุบัน (ต้อง Token)
-
-### Products (Public)
-- **GET** `/api/products` - ดึงสินค้าทั้งหมด
-- **GET** `/api/products/:id` - ดึงสินค้าเฉพาะ
-
-### Products (Admin Only)
-- **POST** `/api/products` - สร้างสินค้าใหม่
-- **PUT** `/api/products/:id` - อัพเดตสินค้า
-- **DELETE** `/api/products/:id` - ลบสินค้า
-
-### Cart (Protected)
-- **GET** `/api/cart` - ดึงสินค้าในรถเข็น
-- **POST** `/api/cart` - เพิ่มสินค้าลงรถเข็น
-- **PUT** `/api/cart/:cartId` - อัพเดตจำนวนสินค้า
-- **DELETE** `/api/cart/:cartId` - ลบสินค้าจากรถเข็น
-
-### Orders (Protected)
-- **GET** `/api/orders` - ดึงออเดอร์ของผู้ใช้
-- **GET** `/api/orders/:orderId` - ดึงรายละเอียดออเดอร์
-- **POST** `/api/orders` - สร้างออเดอร์จากรถเข็น
-
-### Reviews (Protected)
-- **GET** `/api/reviews/product/:productId` - ดึงรีวิวของสินค้า
-- **POST** `/api/reviews` - สร้างรีวิวใหม่
-
-### Profile (Protected)
-- **PUT** `/api/profile` - อัพเดตข้อมูลโปรไฟล์
-
-### Admin Routes (Admin Only)
-- **GET** `/api/admin/orders` - ดึงออเดอร์ทั้งหมด
-- **PUT** `/api/admin/orders/:orderId` - อัพเดตสถานะออเดอร์
-
-## 🔐 Authentication
-
-### วิธีใช้ JWT
-
-1. **Register/Login** → ได้รับ `token`
-2. **เก็บ Token** ใน localStorage
-3. **ส่ง Token** ใน Header: `Authorization: Bearer <token>`
-
-ตัวอย่าง:
-```javascript
-// Login
-const response = await fetch('http://localhost:5000/api/auth/login', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify({ email: 'user@example.com', password: 'password123' })
-});
-const { token } = await response.json();
-localStorage.setItem('token', token);
-
-// Use token
-const cartResponse = await fetch('http://localhost:5000/api/cart', {
-  headers: {
-    'Authorization': `Bearer ${token}`
-  }
-});
-```
-
-## 🗄️ Database Schema
-
-### 7 Tables หลัก:
-1. **users** - ข้อมูลผู้ใช้
-2. **products** - สินค้า
-3. **orders** - ใบสั่งซื้อ
-4. **order_items** - รายการสินค้าในออเดอร์
-5. **cart** - รถเข็นช้อปปิ้ง
-6. **categories** - หมวดหมู่สินค้า
-7. **reviews** - รีวิวสินค้า
-
-## 📝 Usage Examples
-
-### Frontend API Client
-
-```javascript
-// อิมพอร์ต
-<script src="js/api-client.js"></script>
-
-// Register
-const result = await api.register('username', 'email@example.com', 'password123', 'Full Name', '0812345678');
-
-// Login
-const loginResult = await api.login('email@example.com', 'password123');
-api.setToken(loginResult.token);
-
-// Get products
-const products = await api.getProducts();
-
-// Add to cart
-await api.addToCart(productId, quantity);
-
-// Create order
-await api.createOrder('123 Main Street, Bangkok');
-
-// Get orders
-const orders = await api.getOrders();
-```
-
-## 🛠️ Development
-
-### npm Scripts
-```bash
-npm start      # เริ่มรัน server
-npm run dev    # รัน server ด้วย nodemon (auto-restart)
-```
-
-### Debugging
-เปิด Chrome DevTools (F12) → Console เพื่อดู error messages
-
-## 📱 Mobile Responsive
-- Design ใช้ CSS Grid และ Flexbox
-- Mobile-first approach
-- Responsive hamburger menu
-
-## 🔒 Security Notes
-- ✅ Passwords hashed with bcryptjs
-- ✅ JWT for stateless authentication
-- ✅ Input validation on all endpoints
-- ✅ CORS enabled
-- ⚠️ เปลี่ยน JWT_SECRET ก่อนใช้งาน production
-
-## 🚀 Deployment
-
-### Vercel Deploy
-1. Push code to GitHub
-2. Connect GitHub repository to Vercel
-3. Set environment variables in Vercel dashboard
-4. Deploy!
-
-เนื่องจาก Vercel ไม่รองรับ MySQL แนะนำให้ใช้:
-- MySQL: JawsDB (มี free tier)
-- หรือ Cloud Database อื่น
-
-## 🐛 Common Issues
-
-### Error: ECONNREFUSED (Cannot connect to MySQL)
-- ตรวจสอบ MySQL service กำลังรันอยู่
-- ตรวจสอบ `.env` มี credentials ถูกต้อง
-
-### Error: Unknown database 'easyrice_db'
-- รัน: `mysql -u root -p < database.sql`
-
-### Token expired
-- ลบ localStorage และ login ใหม่
-
-## 📚 Resources
-- [Express.js Docs](https://expressjs.com/)
-- [MySQL2 Docs](https://github.com/sidorares/node-mysql2)
-- [JWT Docs](https://jwt.io/)
-
-## 👨‍💻 Author
-Created for learning purposes
-
-## 📄 License
-MIT License
+- **คู่มือการทดสอบ API**: ดูที่ `backend/API_TESTING_GUIDE.md`
+- **ปัญหาที่อาจพบ**: หากเชื่อมต่อ Database ไม่ได้ ให้ตรวจสอบ `DB_PASSWORD` ในไฟล์ `.env` อีกครั้ง

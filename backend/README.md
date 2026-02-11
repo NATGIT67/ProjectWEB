@@ -447,20 +447,6 @@ Solution: User should login again to get fresh token
 
 ## 🚀 Deployment
 
-### Deploy to Vercel
-1. Create `vercel.json`:
-   ```json
-   {
-     "version": 2,
-     "builds": [{ "src": "server.js", "use": "@vercel/node" }],
-     "routes": [{ "src": "/(.*)", "dest": "server.js" }]
-   }
-   ```
-
-2. Set environment variables in Vercel dashboard
-
-3. Push to GitHub and connect to Vercel
-
 ### Database for Production
 Use cloud database services:
 - JawsDB (MySQL)

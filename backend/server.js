@@ -30,6 +30,30 @@ dotenv.config();
       // Ignore if exists
     }
 
+    // Check/Add remark
+    try {
+      await connection.query("ALTER TABLE orders ADD COLUMN remark TEXT");
+      console.log('Added remark column');
+    } catch (e) {
+      // Ignore if exists
+    }
+
+    // Check/Add remark
+    try {
+      await connection.query("ALTER TABLE orders ADD COLUMN remark TEXT");
+      console.log('Added remark column');
+    } catch (e) {
+      // Ignore if exists
+    }
+
+    // Check/Add profile_picture
+    try {
+      await connection.query("ALTER TABLE users ADD COLUMN profile_picture VARCHAR(255) DEFAULT NULL");
+      console.log('Added profile_picture column');
+    } catch (e) {
+      // Ignore if exists
+    }
+
     connection.release();
   } catch (e) {
     console.error('DB Schema check failed (non-fatal):', e.message);

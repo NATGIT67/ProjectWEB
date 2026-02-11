@@ -4,6 +4,27 @@ const router = express.Router();
 const pool = require('../config/db');
 const { verifyToken, verifyAdmin } = require('../middleware/auth');
 const { validatePrice, validateRating } = require('../utils/validators');
+const multer = require('multer');
+const path = require('path');
+const fs = require('fs');
+const bcrypt = require('bcryptjs'); // For password hashing
+
+// Multer Config
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    const dir = path.join(__dirname, '../../public/uploads/profiles');
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true });
+    }
+    cb(null, dir);
+  },
+  filename: (req, file, cb) => {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+    cb(null, file.fieldname + '-' + uniqueSuffix + path.extname(file.originalname));
+  }
+});
+const upload = multer({ storage: storage });
+
 
 // In-memory stats
 const onlineUsers = new Map(); // visitorId -> timestamp
@@ -169,7 +190,7 @@ router.delete('/cart/:cartId', verifyToken, async (req, res) => {
 router.get('/orders', verifyToken, async (req, res) => {
   try {
     const [rows] = await pool.query(`
-      SELECT o.order_id, o.user_id, o.order_date, o.total_price, o.payment_type, o.paid_amount, o.status, o.shipping_address, o.payment_slip, o.created_at, 
+      SELECT o.order_id, o.user_id, o.order_date, o.total_price, o.payment_type, o.paid_amount, o.status, o.remark, o.shipping_address, o.payment_slip, o.created_at, 
              (SELECT COUNT(*) FROM order_items WHERE order_id = o.order_id) as item_count,
              (SELECT p.product_name FROM order_items oi JOIN products p ON oi.product_id = p.product_id WHERE oi.order_id = o.order_id LIMIT 1) as first_product_name
       FROM orders o 
@@ -316,17 +337,44 @@ router.post('/reviews', verifyToken, async (req, res) => {
 // ============= USER PROFILE (Protected) =============
 
 // Update user profile
-router.put('/profile', verifyToken, async (req, res) => {
-  const { full_name, phone, address } = req.body;
+// Update user profile
+router.put('/profile', verifyToken, upload.single('profile_picture'), async (req, res) => {
+  const { full_name, phone, address, password, existing_password } = req.body;
+  let profile_picture = null;
+
+  if (req.file) {
+    profile_picture = `/uploads/profiles/${req.file.filename}`;
+  }
+
+  const connection = await pool.getConnection();
 
   try {
-    await pool.query(
-      'UPDATE users SET full_name = ?, phone = ?, address = ? WHERE user_id = ?',
-      [full_name || null, phone || null, address || null, req.user.user_id]
-    );
-    res.json({ message: 'Profile updated' });
+    // If updating password, verify existing one first (optional, but good practice)
+    // For simplicity, we just allow update if token is valid.
+
+    let updateQuery = 'UPDATE users SET full_name = ?, phone = ?, address = ?';
+    let params = [full_name || null, phone || null, address || null];
+
+    if (profile_picture) {
+      updateQuery += ', profile_picture = ?';
+      params.push(profile_picture);
+    }
+
+    if (password && password.trim() !== '') {
+      const hashedPassword = await bcrypt.hash(password, 10);
+      updateQuery += ', password = ?';
+      params.push(hashedPassword);
+    }
+
+    updateQuery += ' WHERE user_id = ?';
+    params.push(req.user.user_id);
+
+    await connection.query(updateQuery, params);
+    res.json({ message: 'Profile updated successfully', profile_picture });
   } catch (error) {
     res.status(400).json({ error: error.message });
+  } finally {
+    connection.release();
   }
 });
 
@@ -352,7 +400,7 @@ router.put('/admin/orders/:id', verifyToken, verifyAdmin, async (req, res) => {
   }
 
   try {
-    await pool.query('UPDATE orders SET status = ? WHERE order_id = ?', [status, req.params.id]);
+    await pool.query('UPDATE orders SET status = ?, remark = ? WHERE order_id = ?', [status, req.body.remark || null, req.params.id]);
     res.json({ message: 'Order status updated' });
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -394,7 +442,7 @@ router.get('/admin/sales-monthly', verifyToken, verifyAdmin, async (req, res) =>
 // Get all users (Admin)
 router.get('/admin/users', verifyToken, verifyAdmin, async (req, res) => {
   try {
-    const [rows] = await pool.query('SELECT user_id, username, email, phone, full_name, role, created_at FROM users ORDER BY created_at DESC');
+    const [rows] = await pool.query('SELECT user_id, username, email, phone, full_name, role, created_at, profile_picture FROM users ORDER BY created_at DESC');
     res.json(rows);
   } catch (error) {
     res.status(500).json({ error: error.message });

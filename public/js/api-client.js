@@ -24,9 +24,12 @@ class APIClient {
 
   // Headers with token
   getHeaders(contentType = 'application/json') {
-    const headers = {
-      'Content-Type': contentType,
-    };
+    const headers = {};
+
+    // For FormData, let browser set Content-Type
+    if (contentType !== 'multipart/form-data') {
+      headers['Content-Type'] = contentType;
+    }
 
     if (this.token) {
       headers['Authorization'] = `Bearer ${this.token}`;
@@ -38,9 +41,18 @@ class APIClient {
   // Generic fetch method
   async request(endpoint, options = {}) {
     const url = `${this.baseURL}${endpoint}`;
+
+    // Determine content type
+    let contentType = 'application/json';
+    if (options.body instanceof FormData) {
+      contentType = 'multipart/form-data';
+    } else if (options.contentType) {
+      contentType = options.contentType;
+    }
+
     const config = {
       ...options,
-      headers: this.getHeaders(options.contentType || 'application/json'),
+      headers: this.getHeaders(contentType),
     };
 
     try {
@@ -192,10 +204,16 @@ class APIClient {
 
   // ============= PROFILE =============
 
-  async updateProfile(fullName, phone, address) {
+  // ============= PROFILE =============
+
+  async updateProfile(data) {
+    // Check if data is FormData
+    const isFormData = data instanceof FormData;
+
     return this.request('/profile', {
       method: 'PUT',
-      body: JSON.stringify({ full_name: fullName, phone, address }),
+      body: isFormData ? data : JSON.stringify(data),
+      contentType: isFormData ? 'multipart/form-data' : 'application/json'
     });
   }
 
@@ -207,10 +225,10 @@ class APIClient {
     });
   }
 
-  async updateOrderStatus(orderId, status) {
+  async updateOrderStatus(orderId, status, remark = null) {
     return this.request(`/admin/orders/${orderId}`, {
       method: 'PUT',
-      body: JSON.stringify({ status }),
+      body: JSON.stringify({ status, remark }),
     });
   }
 
