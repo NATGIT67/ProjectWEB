@@ -1,13 +1,13 @@
-# API Testing Guide - EasyRice
+# คู่มือการทดสอบ API - EasyRice
 
-## 📝 ขั้นตอนการทดสอบ
+## 📝 ขั้นตอนการทดสอบ (Testing Steps)
 
-### 1️⃣ **ทดสอบ Health Check**
+### 1️⃣ **ทดสอบสถานะเซิร์ฟเวอร์ (Health Check)**
 ```bash
 curl http://localhost:5000/health
 ```
 
-Expected Response:
+ผลลัพธ์ที่คาดหวัง (Expected Response):
 ```json
 {"message": "Server is running"}
 ```
@@ -27,7 +27,7 @@ curl -X POST http://localhost:5000/api/auth/register \
   }'
 ```
 
-Expected Response:
+ผลลัพธ์ที่คาดหวัง:
 ```json
 {
   "message": "User registered successfully",
@@ -48,7 +48,7 @@ curl -X POST http://localhost:5000/api/auth/login \
   }'
 ```
 
-Expected Response:
+ผลลัพธ์ที่คาดหวัง:
 ```json
 {
   "message": "Login successful",
@@ -62,7 +62,7 @@ Expected Response:
 }
 ```
 
-**Save the token for next requests!**
+**สำคัญ: บันทึก Token ที่ได้ไว้เพื่อใช้ในคำสั่งถัดไป!**
 
 ---
 
@@ -74,12 +74,12 @@ curl http://localhost:5000/api/auth/me \
 
 ---
 
-### 5️⃣ **ดึงสินค้าทั้งหมด (Public)**
+### 5️⃣ **ดึงสินค้าทั้งหมด (สาธารณะ)**
 ```bash
 curl http://localhost:5000/api/products
 ```
 
-Expected Response:
+ผลลัพธ์ที่คาดหวัง:
 ```json
 [
   {
@@ -99,14 +99,14 @@ Expected Response:
 
 ---
 
-### 6️⃣ **ดึงสินค้าเฉพาะ**
+### 6️⃣ **ดึงสินค้าเฉพาะรายการ**
 ```bash
 curl http://localhost:5000/api/products/1
 ```
 
 ---
 
-### 7️⃣ **เพิ่มสินค้าลงรถเข็น (ต้อง Login)**
+### 7️⃣ **เพิ่มสินค้าลงตะกร้า (ต้อง Login)**
 ```bash
 curl -X POST http://localhost:5000/api/cart \
   -H "Content-Type: application/json" \
@@ -117,20 +117,20 @@ curl -X POST http://localhost:5000/api/cart \
   }'
 ```
 
-Expected Response:
+ผลลัพธ์ที่คาดหวัง:
 ```json
 {"message": "Item added to cart"}
 ```
 
 ---
 
-### 8️⃣ **ดึงรถเข็น**
+### 8️⃣ **ดูตะกร้าสินค้า**
 ```bash
 curl http://localhost:5000/api/cart \
   -H "Authorization: Bearer YOUR_TOKEN_HERE"
 ```
 
-Expected Response:
+ผลลัพธ์ที่คาดหวัง:
 ```json
 [
   {
@@ -149,7 +149,7 @@ Expected Response:
 
 ---
 
-### 9️⃣ **สร้างออเดอร์จากรถเข็น**
+### 9️⃣ **สร้างคำสั่งซื้อจากตะกร้า**
 ```bash
 curl -X POST http://localhost:5000/api/orders \
   -H "Content-Type: application/json" \
@@ -159,7 +159,7 @@ curl -X POST http://localhost:5000/api/orders \
   }'
 ```
 
-Expected Response:
+ผลลัพธ์ที่คาดหวัง:
 ```json
 {
   "message": "Order created",
@@ -169,7 +169,7 @@ Expected Response:
 
 ---
 
-### 🔟 **ดึงออเดอร์ของผู้ใช้**
+### 🔟 **ดูประวัติคำสั่งซื้อ**
 ```bash
 curl http://localhost:5000/api/orders \
   -H "Authorization: Bearer YOUR_TOKEN_HERE"
@@ -177,13 +177,13 @@ curl http://localhost:5000/api/orders \
 
 ---
 
-### 1️⃣1️⃣ **ดึงรายละเอียดออเดอร์**
+### 1️⃣1️⃣ **ดูรายละเอียดคำสั่งซื้อ**
 ```bash
 curl http://localhost:5000/api/orders/4 \
   -H "Authorization: Bearer YOUR_TOKEN_HERE"
 ```
 
-Expected Response:
+ผลลัพธ์ที่คาดหวัง:
 ```json
 {
   "order_id": 4,
@@ -211,7 +211,7 @@ Expected Response:
 
 ---
 
-### 1️⃣2️⃣ **สร้างรีวิว**
+### 1️⃣2️⃣ **เขียนรีวิว**
 ```bash
 curl -X POST http://localhost:5000/api/reviews \
   -H "Content-Type: application/json" \
@@ -225,14 +225,14 @@ curl -X POST http://localhost:5000/api/reviews \
 
 ---
 
-### 1️⃣3️⃣ **ดึงรีวิวสินค้า**
+### 1️⃣3️⃣ **ดูรีวิวสินค้า**
 ```bash
 curl http://localhost:5000/api/reviews/product/1
 ```
 
 ---
 
-### 1️⃣4️⃣ **อัพเดตโปรไฟล์ (Protected)**
+### 1️⃣4️⃣ **อัพเดตข้อมูลส่วนตัว**
 ```bash
 curl -X PUT http://localhost:5000/api/profile \
   -H "Content-Type: application/json" \
@@ -246,11 +246,11 @@ curl -X PUT http://localhost:5000/api/profile \
 
 ---
 
-## 🔐 Admin-Only Routes
+## 🔐 สำหรับ Admin เท่านั้น (Admin-Only Routes)
 
-ต้อง login ด้วยผู้ใช้ที่มี role `admin`
+ต้อง Login ด้วยบัญชีที่มี role `admin`
 
-### **สร้างสินค้า**
+### **เพิ่มสินค้าใหม่**
 ```bash
 curl -X POST http://localhost:5000/api/products \
   -H "Content-Type: application/json" \
@@ -267,7 +267,7 @@ curl -X POST http://localhost:5000/api/products \
 
 ---
 
-### **ดึงออเดอร์ทั้งหมด (Admin)**
+### **ดูคำสั่งซื้อทั้งหมด (Admin)**
 ```bash
 curl http://localhost:5000/api/admin/orders \
   -H "Authorization: Bearer ADMIN_TOKEN"
@@ -275,7 +275,7 @@ curl http://localhost:5000/api/admin/orders \
 
 ---
 
-### **อัพเดตสถานะออเดอร์ (Admin)**
+### **อัพเดตสถานะคำสั่งซื้อ (Admin)**
 ```bash
 curl -X PUT http://localhost:5000/api/admin/orders/1 \
   -H "Content-Type: application/json" \
@@ -285,11 +285,11 @@ curl -X PUT http://localhost:5000/api/admin/orders/1 \
   }'
 ```
 
-Valid statuses: `pending`, `confirmed`, `shipped`, `delivered`, `cancelled`
+สถานะที่ใช้ได้: `pending` (รอ), `confirmed` (ยืนยันแล้ว), `shipped` (จัดส่งแล้ว), `delivered` (ได้รับแล้ว), `cancelled` (ยกเลิก)
 
 ---
 
-### **ดึงผู้ใช้ทั้งหมด (Admin)**
+### **ดูรายชื่อผู้ใช้ทั้งหมด (Admin)**
 ```bash
 curl http://localhost:5000/api/admin/users \
   -H "Authorization: Bearer ADMIN_TOKEN"
@@ -297,15 +297,15 @@ curl http://localhost:5000/api/admin/users \
 
 ---
 
-## 🔧 Testing ด้วย Postman
+## 🔧 การทดสอบด้วย Postman
 
 ### ขั้นตอน:
-1. DownloadPostman: https://www.postman.com/downloads/
-2. Import Collection จากไฟล์ json ด้านล่าง
-3. Set environment variable `token` จากการ login
-4. ทำการทดสอบ API
+1. ดาวน์โหลด Postman: https://www.postman.com/downloads/
+2. Import Collection จาก JSON ข้างล่าง
+3. ตั้งค่า environment variable ชื่อ `token` หลังจาก Login
+4. เริ่มยิง API ทดสอบได้เลย
 
-### Postman Collection Template:
+### ตัวอย่าง Postman Collection:
 
 ```json
 {
@@ -349,42 +349,44 @@ curl http://localhost:5000/api/admin/users \
 
 ---
 
-## 📊 Expected HTTP Status Codes
+## 📊 รหัสสถานะ HTTP (HTTP Status Codes)
 
-| Code | Meaning |
+| Code | ความหมาย |
 |------|---------|
-| 200 | ✅ Success |
-| 201 | ✅ Created |
-| 400 | ❌ Bad Request (validation error) |
-| 401 | ❌ Unauthorized (no token) |
-| 403 | ❌ Forbidden (not admin) |
-| 404 | ❌ Not Found |
-| 500 | ❌ Server Error |
+| 200 | ✅ สำเร็จ (Success) |
+| 201 | ✅ สร้างสำเร็จ (Created) |
+| 400 | ❌ คำขอไม่ถูกต้อง (Bad Request) เช่น ข้อมูลไม่ครบ |
+| 401 | ❌ ไม่ได้รับอนุญาต (Unauthorized) เช่น ไม่มี Token |
+| 403 | ❌ ห้ามเข้าถึง (Forbidden) เช่น ไม่ใช่ Admin |
+| 404 | ❌ ไม่พบข้อมูล (Not Found) |
+| 500 | ❌ เซิร์ฟเวอร์มีปัญหา (Server Error) |
 
 ---
 
-## 🐛 Common Errors
+## 🐛 ปัญหาที่พบบ่อย (Common Errors)
 
 ### Error: "No token provided"
-- ตรวจสอบว่าส่ง Authorization header ในคำขอ
-- Format: `Authorization: Bearer YOUR_TOKEN`
+- ตรวจสอบว่าได้แนบ Header: `Authorization` ไปหรือยัง
+- รูปแบบที่ถูก: `Authorization: Bearer YOUR_TOKEN`
 
 ### Error: "Invalid token"
-- Token อาจหมดอายุ (30 days)
-- Login ใหม่เพื่อได้ token ใหม่
+- Token อาจจะหมดอายุ (อายุ 30 วัน)
+- ให้ทำการ Login ใหม่เพื่อนรับ Token ล่าสุด
 
 ### Error: "Admin access required"
-- ผู้ใช้ปัจจุบันไม่มีสิทธิ admin
-- ต้อง setup admin account ใน database
+- บัญชีที่ใช้ไม่มีสิทธิ์ Admin
+- ต้องตั้งค่า role='admin' ในฐานข้อมูลก่อน
 
 ### Error: "Cart is empty"
-- ต้องเพิ่มสินค้าลงรถเข็นก่อนสร้างออเดอร์
+- ต้องเพิ่มสินค้าลงตะกร้าก่อน ถึงจะกดสั่งซื้อ (Checkout) ได้
 
 ---
 
-## ✨ Tips
+## ✨ เคล็ดลับเพิ่มเติม
 
-1. **Save Token**: หลังจาก login ให้ save token ไว้ใน environment variable
-2. **Check Status**: ตรวจสอบ HTTP status code ของ response
-3. **Read Errors**: ข้อมูล error ใน JSON response จะช่วยแก้ปัญหา
-4. **Test Frontend**: ใช้ browser DevTools Console เพื่อ test api-client.js
+1. **เก็บ Token**: เวลาทดสอบ ให้ก๊อปปี้ Token จาก Response Login เก็บไว้ที่ Notepad หรือ Environment Variable ของ Postman
+2. **เช็ค Status Code**: ดูรหัส HTTP เสมอ ว่าเป็น 200 หรือไม่
+3. **อ่าน Error**: ถ้า API พัง ให้ดูข้อความ error ใน JSON response มันจะบอกสาเหตุ
+4. **ทดสอบ Frontend**: ลองใช้  `api-client.js` ใน Console ของ Browser ก็สะดวกดี (กด F12)
+
+---

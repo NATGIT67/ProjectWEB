@@ -1,123 +1,122 @@
-# EasyRice Admin Access - Setup Complete ✅
+# การตั้งค่าสิทธิ์ Admin - เสร็จสมบูรณ์ ✅
 
-## What Was Fixed
+## สิ่งที่ได้รับการแก้ไข
 
-### 1. Database Schema Issue ✅
-- **Problem**: Users table didn't have a 'role' column
-- **Solution**: Added 'role' column to users table with default value 'user'
-- **Status**: Admin user (ID 6, admin@easyrice.com) now has role='admin'
+### 1. ปัญหา Database Schema ✅
+- **ปัญหา**: ตาราง `users` ไม่มีคอลัมน์ `role`
+- **การแก้ไข**: เพิ่มคอลัมน์ `role` ในตาราง `users` โดยมีค่าเริ่มต้นเป็น 'user'
+- **สถานะ**: ผู้ใช้ Admin (ID 6, admin@easyrice.com) ถูกกำหนด role='admin' เรียบร้อยแล้ว
 
-### 2. Authentication Backend ✅
-- **Problem**: JWT tokens hardcoded role='user' for all users
-- **Solution**: Updated auth.js to read role from database for each user
-  - Register: Reads role from database after user creation
-  - Login: Queries role from database and includes in JWT
-  - /auth/me: Returns user data including role field
+### 2. ระบบยืนยันตัวตน (Authentication Backend) ✅
+- **ปัญหา**: JWT tokens ถูกกำหนดค่าตายตัวให้ role='user' สำหรับทุกคน
+- **การแก้ไข**: อัปเดตไฟล์ `auth.js` ให้อ่านค่า `role` จากฐานข้อมูลจริง
+  - **สมัครสมาชิก**: อ่านค่า role จากฐานข้อมูลหลังจากสร้าง user เสร็จ
+  - **เข้าสู่ระบบ**: ดึงค่า role จากฐานข้อมูลและใส่เข้าไปใน JWT Payload
+  - **API /auth/me**: ส่งคืนข้อมูลผู้ใช้รวมถึงฟิลด์ role
 
-### 3. Frontend Session Management ✅
-- **Updated sign-in.html**: Decodes JWT token and stores role in localStorage
-- **Updated sign-up.html**: Sets default role='user' in localStorage  
-- **Updated easyrice.js navbar**: 
-  - Shows "Admin" link in red only for users with role='admin'
-  - Hides admin link for regular users
-  - Logout clears role field
+### 3. การจัดการ Session ฝั่ง Frontend ✅
+- **แก้ไข sign-in.html**: ทำการถอดรหัส (Decode) JWT token และบันทึก `role` ลงใน localStorage
+- **แก้ไข sign-up.html**: กำหนดค่าเริ่มต้น `role='user'` ใน localStorage หลังสมัคร
+- **แก้ไข easyrice.js (Navbar)**: 
+  - แสดงลิงก์ "Admin" (สีแดง) เฉพาะผู้ที่มี `role='admin'`
+  - ซ่อนลิงก์ Admin สำหรับผู้ใช้ทั่วไป
+  - เมื่อ Logout จะลบค่า role ออกจากระบบ
 
-### 4. Vercel Configuration ✅
-- Created `vercel.json` for proper Vercel deployment
-- Created `.env.production` template for production database setup
 
-## How to Access Admin Panel
 
-### Method 1: Via Navbar (Recommended)
-1. Login with admin account:
+## วิธีการเข้าใช้งาน Admin Panel
+
+### วิธีที่ 1: ผ่าน Navbar (แนะนำ)
+1. เข้าสู่ระบบด้วยบัญชี Admin:
    - Email: `admin@easyrice.com`
    - Password: `Admin@1234`
-2. After login, click the red **Admin** link in navbar (appears next to Profile)
-3. This opens the admin dashboard at `/pages/admin.html`
+2. หลังจากล็อกอิน คลิกลิงก์ **Admin** สีแดง ที่แถบเมนูด้านบน (ข้างๆ โปรไฟล์)
+3. ระบบจะพาไปยังหน้า Admin Dashboard ที่ `/pages/admin.html`
 
-### Method 2: Direct URL
-1. Make sure you're logged in as admin
-2. Navigate to: `http://localhost:5000/pages/admin.html`
-3. The page will verify your role and grant access
+### วิธีที่ 2: เข้าผ่าน URL โดยตรง
+1. ตรวจสอบว่าล็อกอินด้วยบัญชี Admin อยู่
+2. พิมพ์ URL: `http://localhost:5000/pages/admin.html`
+3. ระบบจะตรวจสอบสิทธิ์และอนุญาตให้เข้าใช้งาน
 
-## Test Credentials
+## ข้อมูลบัญชีทดสอบ (Test Credentials)
 
-### Admin Account
+### บัญชี Admin
 - **Email**: admin@easyrice.com
 - **Password**: Admin@1234
 - **Role**: admin
 
-### Regular User (for testing)
-- Create new account via sign-up page
-- Will have role='user' by default
-- Cannot access admin panel
+### บัญชีผู้ใช้ทั่วไป (User)
+- สร้างบัญชีใหม่ผ่านหน้าสมัครสมาชิก
+- จะได้รับสิทธิ์ `role='user'` โดยอัตโนมัติ
+- ไม่สามารถเข้าถึงหน้า Admin Panel ได้
 
-## Technical Details
+## ข้อมูลเชิงเทคนิค (Technical Details)
 
-### JWT Token Structure (Admin)
+### โครงสร้าง JWT Token (สำหรับ Admin)
 ```
 Header: {alg: "HS256", typ: "JWT"}
 Payload: {
   user_id: 6,
   username: "admin",
   email: "admin@easyrice.com",
-  role: "admin",  // ← Now includes role
+  role: "admin",  // ← ระบุสิทธิ์ตรงนี้
   iat: 1770374382,
   exp: 1772966382
 }
 ```
 
-### Admin Verification Flow
-1. User clicks "Admin" link in navbar
-2. admin.html loads and calls `GET /api/auth/me`
-3. Backend returns user data including role='admin'
-4. JavaScript checks: `if (user.role === 'admin')`
-5. If admin → Show dashboard
-6. If not admin → Redirect to home
+### ขั้นตอนการตรวจสอบสิทธิ์ Admin
+1. ผู้ใช้คลิกลิงก์ "Admin"
+2. หน้า `admin.html` โหลดและเรียก API `GET /api/auth/me`
+3. Backend ส่งข้อมูลผู้ใช้กลับมาพร้อม `role='admin'`
+4. JavaScript ตรวจสอบเงื่อนไข: `if (user.role === 'admin')`
+5. ถ้าเป็น Admin → แสดงหน้า Dashboard
+6. ถ้าไม่ใช่ → ดีดกลับไปหน้าหลัก (Home)
 
-### Admin API Endpoints (Protected)
-All these endpoints require role='admin':
-- `GET /api/admin/users` - List all users
-- `GET /api/admin/orders` - View all orders
-- `POST /api/products` - Add new product
-- `PUT /api/products/:id` - Edit product
-- `DELETE /api/products/:id` - Delete product
+### API Endpoints สำหรับ Admin (Protected)
+Endpoints เหล่านี้ต้องใช้ `role='admin'` เท่านั้น:
+- `GET /api/admin/users` - ดูรายชื่อผู้ใช้ทั้งหมด
+- `GET /api/admin/orders` - ดูคำสั่งซื้อทั้งหมด
+- `POST /api/products` - เพิ่มสินค้าใหม่
+- `PUT /api/products/:id` - แก้ไขสินค้า
+- `DELETE /api/products/:id` - ลบสินค้า
 
-## Troubleshooting
+## การแก้ปัญหาเบื้องต้น (Troubleshooting)
 
-### "Admin link not showing in navbar?"
-1. Clear browser localStorage: Press F12 → Application → Clear all
-2. Login again with admin account
-3. Check that `role: "admin"` is in localStorage
-4. F5 to refresh page
+### "ลิงก์ Admin ไม่ขึ้นใน Navbar?"
+1. ล้าง localStorage: กด F12 → Application → Clear all
+2. ล็อกอินใหม่ด้วยบัญชี admin
+3. ตรวจสอบ localStorage ว่ามีค่า `role: "admin"` หรือไม่
+4. กด F5 เพื่อรีเฟรชหน้าเว็บ
 
-### "Cannot access admin page?"
-1. Verify you're logged in: Check localStorage for `is_logged_in: "true"`
-2. Check role value: It should be `"admin"` not `"user"`
-3. Check JWT token by decoding it on jwt.io
-4. Look at browser console for errors (F12)
+### "เข้าหน้า Admin แล้วโดนเด้งออก?"
+1. ตรวจสอบการล็อกอิน: ดู localStorage ว่า `is_logged_in: "true"`
+2. ตรวจสอบ role: ต้องเป็น `"admin"` เท่านั้น ห้ามเป็น `"user"`
+3. ลองนำ Token ไปแปะในเว็บ jwt.io เพื่อดูไส้ใน
+4. ดู Error ใน Console (F12)
 
-### "Admin API returns 403 Forbidden?"
-1. The backend is correctly rejecting non-admin access
-2. Verify your JWT token includes role='admin'
-3. Check Authorization header format: `Bearer <token>`
+### "Admin API ขึ้น Error 403 Forbidden?"
+1. Backend ปฏิเสธการเข้าถึงเพราะสิทธิ์ไม่ถึง
+2. ตรวจสอบว่า Token มี `role='admin'`
+3. ตรวจสอบ Header ตอนส่ง Request: `Authorization: Bearer <token>`
 
-## Next Steps for Production
+## ขั้นตอนต่อไปสำหรับ Production
 
-### Before Deploying to Vercel:
-1. Set up production database (PlanetScale, Supabase, or Railway MySQL)
-2. Update environment variables in Vercel Dashboard:
-   - DB_HOST (production database host)
-   - DB_USER (production database user)
-   - DB_PASSWORD (production database password)
-   - JWT_SECRET (new random string for production)
-3. Create admin account on production database
-4. Test admin access on Vercel deployment
-5. Update frontend API URLs if using custom domain
+### สิ่งที่ต้องเตรียม:
+1. เตรียมฐานข้อมูล Production (เช่น PlanetScale, Supabase, หรือ Railway MySQL)
+2. ตั้งค่า Environment Variables:
+   - `DB_HOST` (Host ของฐานข้อมูลจริง)
+   - `DB_USER` (User ของฐานข้อมูลจริง)
+   - `DB_PASSWORD` (Password ของฐานข้อมูลจริง)
+   - `JWT_SECRET` (ตั้งรหัสลับใหม่ที่ยาวและซับซ้อน)
+3. สร้างบัญชี Admin ในฐานข้อมูลจริง
+4. ทดสอบระบบ Admin
+5. อัปเดต API URLs ใน Frontend หากใช้ Custom Domain
 
-### Create Admin on Production:
+### วิธีสร้าง Admin ใน Production:
+ยิง API เพื่อสมัครสมาชิกก่อน:
 ```bash
-curl -X POST https://your-domain.vercel.app/api/auth/register \
+curl -X POST https://your-domain.com/api/auth/register \
   -H "Content-Type: application/json" \
   -d '{
     "username": "admin",
@@ -128,47 +127,20 @@ curl -X POST https://your-domain.vercel.app/api/auth/register \
   }'
 ```
 
-Then promote to admin via database:
+จากนั้นเข้าไปแก้ role ใน Database:
 ```sql
 UPDATE users SET role='admin' WHERE email='admin@yourcompany.com';
 ```
 
-## Files Modified
+## สรุปสถานะ (Status Summary)
 
-1. **backend/routes/auth.js**
-   - Register: Read role from database
-   - Login: Include role in JWT
-   - /auth/me: Return role in response
+✅ ระบบสิทธิ์ Admin ใช้งานได้
+✅ ปรับปรุง Database Schema แล้ว
+✅ JWT Token มีการระบุ Role
+✅ Frontend แสดงลิงก์ Admin ถูกต้องตามสิทธิ์
+✅ API ฝั่ง Admin มีการป้องกัน
 
-2. **backend/setup-admin-role.js** (New)
-   - Added role column to users table
-   - Promoted admin@easyrice.com to admin role
+⏳ เหลือแค่ตั้งค่า Database ใน Production (ผู้ใช้ต้องทำเอง)
 
-3. **frontend/app/pages/sign-in.html**
-   - Decode JWT and extract role field
-   - Save role to localStorage
-
-4. **frontend/app/pages/sign-up.html**
-   - Set default role='user' in localStorage
-
-5. **frontend/app/js/easyrice.js**
-   - Check role and show admin link only for admins
-   - Clear role on logout
-
-6. **vercel.json** (New)
-   - Configure Vercel deployment
-
-7. **.env.production** (New)
-   - Template for production environment variables
-
-## Status Summary
-
-✅ Admin role system working
-✅ Database schema updated
-✅ JWT tokens include role
-✅ Frontend displays admin link
-✅ Admin API endpoints protected
-✅ Vercel configuration created
-⏳ Production database setup needed (user's responsibility)
-
-Last Updated: 2026-02-06
+---
+แก้ไขล่าสุด: 2026-02-11
