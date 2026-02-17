@@ -98,6 +98,16 @@ router.post('/products', verifyToken, verifyAdmin, async (req, res) => {
   }
 });
 
+// Upload product image (Admin)
+router.post('/products/upload', verifyToken, verifyAdmin, upload.single('image'), async (req, res) => {
+  try {
+    const imageUrl = `/uploads/products/${req.file.filename}`;
+    res.json({ imageUrl });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 // Update product (Admin)
 router.put('/products/:id', verifyToken, verifyAdmin, async (req, res) => {
   const { product_name, description, category, price, stock, image_url } = req.body;
