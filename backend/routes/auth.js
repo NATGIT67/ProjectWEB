@@ -42,9 +42,15 @@ router.post('/register', async (req, res) => {
       [username, email, hashedPassword, full_name || null, phone || null]
     );
 
-    // Get role from database
-    const [newUser] = await pool.query('SELECT role FROM users WHERE user_id = ?', [result.insertId]);
-    const userRole = newUser[0]?.role || 'user';
+    // Get role from database (if column exists)
+    let userRole = 'user';
+    try {
+      const [newUser] = await pool.query('SELECT role FROM users WHERE user_id = ?', [result.insertId]);
+      userRole = newUser[0]?.role || 'user';
+    } catch (err) {
+      // column might not exist yet; default to 'user'
+      console.log('🔧 role column missing when registering, defaulting to user');
+    }
 
     // Generate token
     const token = jwt.sign(

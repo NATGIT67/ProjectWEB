@@ -36,6 +36,16 @@ async function createDatabase() {
       }
     }
 
+    // ensure role column exists (in case database was created before the column existed)
+    try {
+      await connection.query(
+        "ALTER TABLE users ADD COLUMN IF NOT EXISTS role VARCHAR(20) NOT NULL DEFAULT 'user'"
+      );
+      console.log('🔧 ตรวจสอบ role column: มีหรือสร้างแล้ว');
+    } catch (err) {
+      console.error('❌ ไม่สามารถตรวจสอบ/เพิ่ม role column:', err.message);
+    }
+
     await connection.end();
     console.log('\n✨ Database สร้างเสร็จแล้ว!');
     console.log('📊 Database: easyrice_db');

@@ -46,15 +46,18 @@ async function setupAdminRole() {
     }
 
     // 3. ตรวจสอบผลลัพธ์
-    const [users] = await connection.execute(
-      'SELECT user_id, email, role FROM users WHERE role = ?',
-      ['admin']
-    );
-    
-    console.log('\n📋 Admin users ในระบบ:');
-    users.forEach(u => {
-      console.log(`   - User ID ${u.user_id}: ${u.email} (role: ${u.role})`);
-    });
+    try {
+      const [users] = await connection.execute(
+        'SELECT user_id, email, role FROM users WHERE role = ?',
+        ['admin']
+      );
+      console.log('\n📋 Admin users ในระบบ:');
+      users.forEach(u => {
+        console.log(`   - User ID ${u.user_id}: ${u.email} (role: ${u.role})`);
+      });
+    } catch (err) {
+      console.log('🔧 ไม่สามารถอ่านข้อมูล role จาก users ได้ (อาจยังไม่มีคอลัมน์)');
+    }
 
     connection.release();
     console.log('\n✅ ตั้งค่า admin role เสร็จแล้ว!');

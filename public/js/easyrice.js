@@ -211,7 +211,8 @@ class ShoppingCart {
 // ============ FORM VALIDATION ============
 class FormValidator {
     static email(email) {
-        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        // improved regex similar to backend
+        return /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(email);
     }
 
     static phone(phone) {

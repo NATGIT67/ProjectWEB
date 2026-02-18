@@ -1,6 +1,7 @@
 // Validate email format
 const validateEmail = (email) => {
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  // more permissive regex lifted from HTML5 spec (simplified)
+  const emailRegex = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
   return emailRegex.test(email);
 };
 

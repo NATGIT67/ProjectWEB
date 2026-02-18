@@ -125,6 +125,7 @@
         </div>
     </div>
 
+    <script src="../js/easyrice.js"></script>
     <script src="../js/api-client.js"></script>
     <script>
         document.getElementById('signUpForm').addEventListener('submit', async function (e) {
@@ -139,8 +140,21 @@
             const username = email.split('@')[0]; // แยกชื่อผู้ใช้จากอีเมล
 
             // ตรวจสอบความถูกต้อง
+            // ตรวจสอบว่ากรอกครบ
             if (!fullname || !email || !phone || !password || !confirmPassword) {
                 showMessage('กรุณากรอกข้อมูลให้ครบถ้วน', false);
+                return;
+            }
+
+            // ตรวจ email เบื้องต้น
+            if (!FormValidator.email(email)) {
+                showMessage('อีเมลไม่ถูกต้อง', false);
+                return;
+            }
+
+            // ตรวจ phone เบื้องต้น
+            if (!FormValidator.phone(phone)) {
+                showMessage('เลขโทรศัพท์ไม่ถูกต้อง', false);
                 return;
             }
 

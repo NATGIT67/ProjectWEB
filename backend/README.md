@@ -285,6 +285,7 @@ The API uses JWT (JSON Web Tokens) for authentication.
 
 ### How it works:
 1. User registers or logs in
+> **Note:** If you upgrade from an earlier version, make sure the `users` table has a `role` column. You can run `node setup-admin-role.js` or re-run `node setup-db.js` which will add it automatically.
 2. Server returns a JWT token
 3. Client stores token in localStorage
 4. Client sends token in `Authorization` header for protected routes
